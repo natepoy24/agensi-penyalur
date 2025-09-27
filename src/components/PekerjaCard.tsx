@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Briefcase, MapPin } from 'lucide-react';
 
-// Definisikan 'tipe' data untuk properti komponen
-type PekerjaProps = {
+// Pastikan tipe ini diekspor agar bisa digunakan di file lain
+export type PekerjaProps = {
   id: number;
   nama: string;
   kategori: string;
