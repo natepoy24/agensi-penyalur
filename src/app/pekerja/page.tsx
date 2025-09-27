@@ -1,15 +1,36 @@
 // src/app/pekerja/page.tsx
-import PekerjaCard, { type PekerjaProps } from '../../components/PekerjaCard'; // <-- PERBAIKAN DI SINI
+import PekerjaCard, { type PekerjaProps } from '@/components/PekerjaCard';
 import { Search } from 'lucide-react';
+import { createClient } from '@/utils/supabase/server'; // 1. Path import diubah
 
-const daftarPekerja: PekerjaProps[] = [
-  { id: 1, nama: 'Rina Setiawati', kategori: 'Baby Sitter', status: 'Tersedia', fotoUrl: '/images/rina.jpg', pengalaman: 5, lokasi: 'Jakarta Selatan' },
-  { id: 2, nama: 'Budi Santoso', kategori: 'Perawat Lansia', status: 'Tersedia', fotoUrl: '/images/budi.jpg', pengalaman: 8, lokasi: 'Jakarta Pusat' },
-  { id: 3, nama: 'Citra Lestari', kategori: 'Asisten Rumah Tangga', status: 'Dipesan', fotoUrl: '/images/citra.jpg', pengalaman: 4, lokasi: 'Tangerang' },
-  { id: 4, nama: 'Anisa Putri', kategori: 'Baby Sitter', status: 'Tersedia', fotoUrl: '/images/anisa.jpg', pengalaman: 3, lokasi: 'Bekasi' },
-];
+export const dynamic = 'force-dynamic';
 
-export default function PekerjaPage() {
+export default async function PekerjaPage() {
+  const supabase = await createClient(); // 2. Memanggil createClient dengan await
+  let daftarPekerja: PekerjaProps[] = [];
+
+  const { data, error } = await supabase
+    .from('pekerja')
+    .select('*');
+
+  if (error) {
+    console.error('Error mengambil data pekerja:', error);
+    return (
+      <main>
+        <div className="bg-white pt-32 pb-20 px-4">
+          <div className="container mx-auto text-center">
+            <h1 className="text-2xl font-bold text-red-600">Terjadi kesalahan saat memuat data.</h1>
+            <p className="mt-2 text-red-500">{error.message}</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (data) {
+    daftarPekerja = data as PekerjaProps[];
+  }
+  
   return (
     <main>
       <div className="bg-white pt-32 pb-20 px-4">
@@ -43,9 +64,13 @@ export default function PekerjaPage() {
           
           {/* Grid Kartu Pekerja */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {daftarPekerja.map((pekerja) => (
-              <PekerjaCard key={pekerja.id} pekerja={pekerja} />
-            ))}
+            {daftarPekerja && daftarPekerja.length > 0 ? (
+              daftarPekerja.map((pekerja) => (
+                <PekerjaCard key={pekerja.id} pekerja={pekerja} />
+              ))
+            ) : (
+              <p className="col-span-full text-center text-slate-500">Belum ada pekerja yang terdaftar.</p>
+            )}
           </div>
         </div>
       </div>
