@@ -6,9 +6,10 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { type FormState } from './lib/definitions';
 
-// --- Aksi untuk Menambah Pekerja Baru ---
-export async function addPekerja(prevState: any, formData: FormData) {
+// --- Perubahan di sini fungsi tambah pekerja: ganti 'any' dengan 'FormState' ---
+export async function addPekerja(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
+
   const fotoFile = formData.get('fotoUrl') as File;
   const dataToInsert = {
     nama: formData.get('nama') as string,
@@ -17,35 +18,43 @@ export async function addPekerja(prevState: any, formData: FormData) {
     pengalaman: parseInt(formData.get('pengalaman') as string, 10),
     lokasi: formData.get('lokasi') as string,
     deskripsi: formData.get('deskripsi') as string,
-    gaji: parseInt(formData.get('gaji') as string, 10), // Tambahkan ini
+    gaji: parseInt(formData.get('gaji') as string, 10),
     keterampilan: formData.get('keterampilan') as string,
   };
+
   if (!fotoFile || fotoFile.size === 0) {
     return { error: 'Foto pekerja wajib diisi.' };
   }
+
   const filePath = `public/${Date.now()}_${fotoFile.name}`;
   const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, fotoFile);
   if (uploadError) { return { error: `Gagal mengunggah foto: ${uploadError.message}` }; }
+
   const { data: publicUrlData } = supabase.storage.from('avatars').getPublicUrl(filePath);
   const fotoUrl = publicUrlData.publicUrl;
+
   const { error: insertError } = await supabase.from('pekerja').insert([{ ...dataToInsert, fotoUrl }]);
   if (insertError) { return { error: `Gagal menyimpan data: ${insertError.message}` }; }
+  
   revalidatePath('/admin/dashboard'); 
   redirect('/admin/dashboard'); 
 }
 
-// --- Aksi untuk Memperbarui Data Pekerja ---
-export async function updatePekerja(prevState: any, formData: FormData) {
+// --- Perubahan di sini fungsi edit pekerja: ganti 'any' dengan 'FormState' ---
+export async function updatePekerja(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
+
   const id = formData.get('id') as string;
   const fotoFile = formData.get('fotoUrl') as File;
   let fotoUrl = formData.get('currentFotoUrl') as string;
+
   if (fotoFile && fotoFile.size > 0) {
     const filePath = `public/${Date.now()}_${fotoFile.name}`;
     const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, fotoFile);
     if (uploadError) { return { error: `Gagal mengunggah foto baru: ${uploadError.message}` }; }
     fotoUrl = supabase.storage.from('avatars').getPublicUrl(filePath).data.publicUrl;
   }
+
   const dataToUpdate = {
     nama: formData.get('nama') as string,
     kategori: formData.get('kategori') as string,
@@ -53,12 +62,14 @@ export async function updatePekerja(prevState: any, formData: FormData) {
     pengalaman: parseInt(formData.get('pengalaman') as string, 10),
     lokasi: formData.get('lokasi') as string,
     deskripsi: formData.get('deskripsi') as string,
-    fotoUrl: fotoUrl,
-    gaji: parseInt(formData.get('gaji') as string, 10), // Tambahkan ini
+    gaji: parseInt(formData.get('gaji') as string, 10),
     keterampilan: formData.get('keterampilan') as string,
+    fotoUrl: fotoUrl,
   };
+
   const { error: updateError } = await supabase.from('pekerja').update(dataToUpdate).eq('id', id);
   if (updateError) { return { error: `Gagal memperbarui data: ${updateError.message}` }; }
+
   revalidatePath('/admin/dashboard');
   revalidatePath(`/pekerja/${id}`);
   redirect('/admin/dashboard');
@@ -99,6 +110,7 @@ export async function deletePekerjaById(id: number, fotoUrl: string | null) {
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  revalidatePath('/', 'layout');
+  
+  // Redirect ke halaman utama setelah logout
   redirect('/');
 }
