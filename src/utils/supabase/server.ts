@@ -2,7 +2,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-// Pastikan ada 'export async function' di sini
+// Ini adalah versi yang benar untuk Anda: async dengan try...catch
 export async function createClient() {
   const cookieStore = await cookies()
 
@@ -15,10 +15,18 @@ export async function createClient() {
           return cookieStore.get(name)?.value
         },
         set(name: string, value: string, options: CookieOptions) {
-          cookieStore.set({ name, value, ...options })
+          try {
+            cookieStore.set({ name, value, ...options })
+          } catch (error) {
+            // Abaikan error jika dipanggil dari Server Component
+          }
         },
         remove(name: string, options: CookieOptions) {
-          cookieStore.delete({ name, ...options })
+          try {
+            cookieStore.delete({ name, ...options })
+          } catch (error) {
+            // Abaikan error jika dipanggil dari Server Component
+          }
         },
       },
     }

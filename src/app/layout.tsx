@@ -1,36 +1,34 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+// src/app/layout.tsx
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { createClient } from '@/utils/supabase/server';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Penyalur Jasa Mandiri",
-  description: "Solusi Terpercaya Kebutuhan Rumah Tangga Anda",
+  title: 'Agensi Penyalur APSA',
+  description: 'Solusi Terpercaya untuk Kebutuhan Rumah dan Keluarga Anda',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Mengambil data user di server menggunakan await
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      ><Header />
-        {children}
-      <Footer />
+      <body className={inter.className}>
+        {/* Meneruskan data user sebagai 'prop' ke komponen Header */}
+        <Header user={user} />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

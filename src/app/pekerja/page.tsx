@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/server'; // 1. Path import diubah
 export const dynamic = 'force-dynamic';
 
 export default async function PekerjaPage() {
-  const supabase = await createClient(); // 2. Memanggil createClient dengan await
+  const supabase = await createClient();
   let daftarPekerja: PekerjaProps[] = [];
 
   const { data, error } = await supabase

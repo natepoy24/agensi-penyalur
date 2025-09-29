@@ -1,9 +1,9 @@
 // src/components/PekerjaCard.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import { Briefcase, MapPin } from 'lucide-react';
+import { Briefcase, MapPin, Wallet } from 'lucide-react'; // 1. Tambahkan ikon Wallet
 
-// Pastikan tipe ini diekspor agar bisa digunakan di file lain
+// Tipe data (pastikan sudah diperbarui)
 export type PekerjaProps = {
   id: number;
   nama: string;
@@ -12,6 +12,15 @@ export type PekerjaProps = {
   fotoUrl: string;
   pengalaman: number;
   lokasi: string;
+  deskripsi: string;
+  gaji?: number;
+  keterampilan?: string;
+};
+
+// Fungsi kecil untuk format angka
+const formatRupiah = (angka: number | null | undefined) => {
+  if (angka === null || typeof angka === 'undefined' || angka === 0) return 'N/A';
+  return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
 export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
@@ -34,11 +43,11 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
           {pekerja.status}
         </span>
       </div>
-      <div className="p-5">
-        <h3 className="text-xl font-bold text-slate-800 truncate">{pekerja.nama}</h3>
-        <p className="text-sm font-semibold text-emerald-700 mt-1">{pekerja.kategori}</p>
+      <div className="p-5 flex flex-col h-full">
+        <h3 className="text-xl font-bold text-center text-slate-800 truncate">{pekerja.nama}</h3>
+        <p className="text-sm font-semibold text-center text-emerald-700 mt-1">{pekerja.kategori}</p> 
 
-        <div className="mt-4 flex flex-col gap-2 text-sm text-slate-600">
+        <div className="mt-4 flex-grow space-y-2 text-sm text-slate-600">
           <div className="flex items-center gap-2">
             <Briefcase size={16} />
             <span>{pekerja.pengalaman} tahun pengalaman</span>
@@ -46,6 +55,11 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
           <div className="flex items-center gap-2">
             <MapPin size={16} />
             <span>{pekerja.lokasi}</span>
+          </div>
+          {/* --- 2. TAMBAHKAN BAGIAN GAJI DI SINI --- */}
+          <div className="flex items-center gap-2 pt-1">
+            <Wallet size={16} />
+            <span className="font-semibold">Rp {formatRupiah(pekerja.gaji)}</span>
           </div>
         </div>
 

@@ -1,0 +1,104 @@
+// src/app/actions.ts
+"use server";
+
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/server';
+import { type FormState } from './lib/definitions';
+
+// --- Aksi untuk Menambah Pekerja Baru ---
+export async function addPekerja(prevState: any, formData: FormData) {
+  const supabase = await createClient();
+  const fotoFile = formData.get('fotoUrl') as File;
+  const dataToInsert = {
+    nama: formData.get('nama') as string,
+    kategori: formData.get('kategori') as string,
+    status: formData.get('status') as string,
+    pengalaman: parseInt(formData.get('pengalaman') as string, 10),
+    lokasi: formData.get('lokasi') as string,
+    deskripsi: formData.get('deskripsi') as string,
+    gaji: parseInt(formData.get('gaji') as string, 10), // Tambahkan ini
+    keterampilan: formData.get('keterampilan') as string,
+  };
+  if (!fotoFile || fotoFile.size === 0) {
+    return { error: 'Foto pekerja wajib diisi.' };
+  }
+  const filePath = `public/${Date.now()}_${fotoFile.name}`;
+  const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, fotoFile);
+  if (uploadError) { return { error: `Gagal mengunggah foto: ${uploadError.message}` }; }
+  const { data: publicUrlData } = supabase.storage.from('avatars').getPublicUrl(filePath);
+  const fotoUrl = publicUrlData.publicUrl;
+  const { error: insertError } = await supabase.from('pekerja').insert([{ ...dataToInsert, fotoUrl }]);
+  if (insertError) { return { error: `Gagal menyimpan data: ${insertError.message}` }; }
+  revalidatePath('/admin/dashboard'); 
+  redirect('/admin/dashboard'); 
+}
+
+// --- Aksi untuk Memperbarui Data Pekerja ---
+export async function updatePekerja(prevState: any, formData: FormData) {
+  const supabase = await createClient();
+  const id = formData.get('id') as string;
+  const fotoFile = formData.get('fotoUrl') as File;
+  let fotoUrl = formData.get('currentFotoUrl') as string;
+  if (fotoFile && fotoFile.size > 0) {
+    const filePath = `public/${Date.now()}_${fotoFile.name}`;
+    const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, fotoFile);
+    if (uploadError) { return { error: `Gagal mengunggah foto baru: ${uploadError.message}` }; }
+    fotoUrl = supabase.storage.from('avatars').getPublicUrl(filePath).data.publicUrl;
+  }
+  const dataToUpdate = {
+    nama: formData.get('nama') as string,
+    kategori: formData.get('kategori') as string,
+    status: formData.get('status') as string,
+    pengalaman: parseInt(formData.get('pengalaman') as string, 10),
+    lokasi: formData.get('lokasi') as string,
+    deskripsi: formData.get('deskripsi') as string,
+    fotoUrl: fotoUrl,
+    gaji: parseInt(formData.get('gaji') as string, 10), // Tambahkan ini
+    keterampilan: formData.get('keterampilan') as string,
+  };
+  const { error: updateError } = await supabase.from('pekerja').update(dataToUpdate).eq('id', id);
+  if (updateError) { return { error: `Gagal memperbarui data: ${updateError.message}` }; }
+  revalidatePath('/admin/dashboard');
+  revalidatePath(`/pekerja/${id}`);
+  redirect('/admin/dashboard');
+}
+
+//hapus pekerja//
+export async function deletePekerjaById(id: number, fotoUrl: string | null) {
+  "use server";
+
+  const supabase = await createClient();
+
+  // Hapus dari database
+  const { error: deleteError } = await supabase.from('pekerja').delete().eq('id', id);
+
+  if (deleteError) {
+    console.error('Direct Delete Error:', deleteError);
+    throw new Error(`Gagal menghapus data dari database: ${deleteError.message}`);
+  }
+
+  // Hapus dari storage hanya jika fotoUrl ada dan valid
+  if (fotoUrl && fotoUrl.includes('/avatars/')) {
+    const filePath = fotoUrl.split('/avatars/')[1];
+    if (filePath) {
+      const { error: storageError } = await supabase.storage.from('avatars').remove([filePath]);
+      
+      // JIKA GAGAL HAPUS FILE, LEMPAR ERROR
+      if (storageError) {
+        console.error("Storage Delete Error:", storageError.message);
+        throw new Error(`Data berhasil dihapus, tapi gagal hapus file di storage: ${storageError.message}`);
+      }
+    }
+  }
+
+  revalidatePath('/admin/dashboard');
+  redirect('/admin/dashboard');
+}
+
+export async function signOut() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  revalidatePath('/', 'layout');
+  redirect('/');
+}
