@@ -67,7 +67,8 @@ export default function AddPekerjaForm() {
         </div>
         <div className="md:col-span-2">
           <label htmlFor="fotoUrl" className="block text-sm font-semibold text-slate-800">Foto Pekerja</label>
-          <input type="file" id="fotoUrl" name="fotoUrl" required accept="image/png, image/jpeg, image/jpg" className="mt-1 block w-full text-sm text-slate-500" />
+          <input type="file" id="fotoUrl" name="fotoUrl" required accept="image/png, image/jpeg, image/jpg" className="block w-full cursor-pointer rounded-lg border border-slate-300 text-sm text-slate-500 file:mr-4 file:border-0 file:bg-emerald-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700"/>
+
         </div>
         <div className="md:col-span-2">
           <label htmlFor="keterampilan" className="block text-sm font-semibold text-slate-800">Keterampilan</label>
