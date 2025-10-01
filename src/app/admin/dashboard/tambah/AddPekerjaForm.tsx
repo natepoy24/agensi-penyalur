@@ -1,14 +1,21 @@
 // src/app/admin/dashboard/tambah/AddPekerjaForm.tsx
 "use client";
 
-import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom'; // <-- Perbaikan ada di sini
+import { useActionState, useEffect } from 'react';
+import { useFormStatus } from 'react-dom';
 import { addPekerja } from '@/app/actions';
+import toast from 'react-hot-toast';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  
+  // --- PERBAIKAN DI SINI: Tambahkan 'return' ---
   return (
-    <button type="submit" disabled={pending} className="px-6 py-2 bg-emerald-600 text-white font-semibold rounded-md hover:bg-emerald-700 disabled:bg-slate-400">
+    <button 
+      type="submit" 
+      disabled={pending} 
+      className="px-6 py-2 bg-emerald-600 text-white font-semibold rounded-md hover:bg-emerald-700 disabled:bg-slate-400"
+    >
       {pending ? 'Menyimpan...' : 'Simpan Pekerja'}
     </button>
   );
@@ -18,9 +25,14 @@ export default function AddPekerjaForm() {
   const initialState = { error: '' };
   const [state, formAction] = useActionState(addPekerja, initialState);
 
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error);
+    }
+  }, [state]);
+
   return (
     <form action={formAction} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
-      {/* ... sisa kode formulir ... */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="nama" className="block text-sm font-semibold text-slate-800">Nama Lengkap</label>
@@ -38,7 +50,7 @@ export default function AddPekerjaForm() {
           <label htmlFor="status" className="block text-sm font-semibold text-slate-800">Status</label>
           <select id="status" name="status" required className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900">
             <option value="Tersedia">Tersedia</option>
-            <option value="Dipesan">Dipesan</option>
+            <option value="Akan Tersedia">Akan Tersedia</option>
           </select>
         </div>
         <div>
@@ -55,10 +67,7 @@ export default function AddPekerjaForm() {
         </div>
         <div className="md:col-span-2">
           <label htmlFor="fotoUrl" className="block text-sm font-semibold text-slate-800">Foto Pekerja</label>
-          <input type="file" id="fotoUrl" name="fotoUrl" required accept="image/png, image/jpeg, image/jpg" className="mt-1 block w-full cursor-pointer rounded-lg border border-slate-300 text-sm text-slate-500
-                       file:mr-4 file:border-0 file:bg-emerald-600 file:px-4
-                       file:py-2 file:text-sm file:font-semibold file:text-white
-                       hover:file:bg-emerald-700" />
+          <input type="file" id="fotoUrl" name="fotoUrl" required accept="image/png, image/jpeg, image/jpg" className="mt-1 block w-full text-sm text-slate-500" />
         </div>
         <div className="md:col-span-2">
           <label htmlFor="keterampilan" className="block text-sm font-semibold text-slate-800">Keterampilan</label>
@@ -71,7 +80,6 @@ export default function AddPekerjaForm() {
         </div>
       </div>
       <div className="flex items-center justify-end gap-4 pt-4 border-t">
-        {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
         <SubmitButton />
       </div>
     </form>

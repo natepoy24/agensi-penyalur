@@ -37,7 +37,8 @@ export async function addPekerja(prevState: FormState, formData: FormData): Prom
   if (insertError) { return { error: `Gagal menyimpan data: ${insertError.message}` }; }
   
   revalidatePath('/admin/dashboard'); 
-  redirect('/admin/dashboard'); 
+  redirect('/admin/dashboard?message=Data pekerja berhasil ditambahkan!'); 
+
 }
 
 // --- Perubahan di sini fungsi edit pekerja: ganti 'any' dengan 'FormState' ---
@@ -72,7 +73,8 @@ export async function updatePekerja(prevState: FormState, formData: FormData): P
 
   revalidatePath('/admin/dashboard');
   revalidatePath(`/pekerja/${id}`);
-  redirect('/admin/dashboard');
+  // Kirim pesan sukses melalui URL
+  redirect('/admin/dashboard?message=Data pekerja berhasil diperbarui!');
 }
 
 //hapus pekerja//
@@ -104,7 +106,7 @@ export async function deletePekerjaById(id: number, fotoUrl: string | null) {
   }
 
   revalidatePath('/admin/dashboard');
-  redirect('/admin/dashboard');
+  redirect('/admin/dashboard?message=Data pekerja berhasil dihapus!');
 }
 
 export async function signOut() {
@@ -112,5 +114,5 @@ export async function signOut() {
   await supabase.auth.signOut();
   
   // Redirect ke halaman utama setelah logout
-  redirect('/');
+  redirect('/?message=Logout berhasil!');
 }

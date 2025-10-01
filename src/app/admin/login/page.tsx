@@ -24,7 +24,7 @@ export default function LoginPage() {
       setLoading(false);
     } else {
       router.refresh();
-      router.push('/admin/dashboard');
+      router.push('/admin/dashboard?message=Login berhasil!');
     }
   };
 

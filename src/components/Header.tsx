@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 // --- PERUBAHAN DI BARIS INI ---
 import SignOutButton from '@/components/SignOutButton';
+import toast from 'react-hot-toast';
 
 export default function Header({ user }: { user: User | null }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function Header({ user }: { user: User | null }) {
       <header className="w-full bg-white shadow-md z-40">
         <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="text-xl font-bold text-slate-800">APSA</Link>
-          
+ 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <Link href="/" className="hover:text-emerald-600">Beranda</Link>
             <Link href="/tentang" className="hover:text-emerald-600">Tentang Kami</Link>

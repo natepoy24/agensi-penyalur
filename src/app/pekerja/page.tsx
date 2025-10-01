@@ -1,33 +1,43 @@
 // src/app/pekerja/page.tsx
 import PekerjaCard, { type PekerjaProps } from '@/components/PekerjaCard';
-import { Search } from 'lucide-react';
-import { createClient } from '@/utils/supabase/server'; // 1. Path import diubah
+import { createClient } from '@/utils/supabase/server';
+import FilterControls from '@/components/FilterControls';
 
 export const dynamic = 'force-dynamic';
 
-export default async function PekerjaPage() {
+export default async function PekerjaPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  // --- PERBAIKAN DI BARIS INI ---
   const supabase = await createClient();
   let daftarPekerja: PekerjaProps[] = [];
 
-  const { data, error } = await supabase
-    .from('pekerja')
-    .select('*');
+  // Bangun query ke Supabase secara dinamis
+  let query = supabase.from('pekerja').select('*');
 
-  if (error) {
-    console.error('Error mengambil data pekerja:', error);
-    return (
-      <main>
-        <div className="bg-white pt-32 pb-20 px-4">
-          <div className="container mx-auto text-center">
-            <h1 className="text-2xl font-bold text-red-600">Terjadi kesalahan saat memuat data.</h1>
-            <p className="mt-2 text-red-500">{error.message}</p>
-          </div>
-        </div>
-      </main>
-    );
+  // Tambahkan filter 'kategori' jika ada di URL
+  if (searchParams.kategori) {
+    query = query.eq('kategori', searchParams.kategori);
   }
 
-  if (data) {
+  // Tambahkan filter 'status' jika ada di URL
+  if (searchParams.status) {
+    query = query.eq('status', searchParams.status);
+  }
+
+  // Tambahkan filter pencarian nama jika ada di URL
+  if (searchParams.search) {
+    query = query.ilike('nama', `%${searchParams.search}%`);
+  }
+
+  // Eksekusi query
+  const { data, error } = await query.order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching pekerja:', error);
+  } else if (data) {
     daftarPekerja = data as PekerjaProps[];
   }
   
@@ -35,7 +45,6 @@ export default async function PekerjaPage() {
     <main>
       <div className="bg-white pt-32 pb-20 px-4">
         <div className="container mx-auto">
-          {/* Judul & Filter */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-slate-800">Tenaga Kerja Profesional Kami</h1>
             <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
@@ -43,33 +52,17 @@ export default async function PekerjaPage() {
             </p>
           </div>
 
-          {/* Bagian Filter */}
-          <div className="mb-10 flex flex-col md:flex-row gap-4 rounded-lg bg-slate-50 p-4 border">
-            <div className="relative flex-grow">
-              <input type="text" placeholder="Cari berdasarkan nama..." className="w-full rounded-md border border-slate-300 py-2 pl-10 pr-4 focus:border-emerald-500 focus:ring-emerald-500 text-slate-900" />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-            </div>
-            <select className="rounded-md border border-slate-300 py-2 px-4 focus:border-emerald-500 focus:ring-emerald-500 text-slate-900">
-              <option>Semua Kategori</option>
-              <option>Baby Sitter</option>
-              <option>Perawat Lansia</option>
-              <option>Asisten Rumah Tangga</option>
-            </select>
-            <select className="rounded-md border border-slate-300 py-2 px-4 focus:border-emerald-500 focus:ring-emerald-500 text-slate-900">
-              <option>Semua Status</option>
-              <option>Tersedia</option>
-              <option>Dipesan</option>
-            </select>
-          </div>
+          <FilterControls />
           
-          {/* Grid Kartu Pekerja */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {daftarPekerja && daftarPekerja.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {daftarPekerja.length > 0 ? (
               daftarPekerja.map((pekerja) => (
                 <PekerjaCard key={pekerja.id} pekerja={pekerja} />
               ))
             ) : (
-              <p className="col-span-full text-center text-slate-500">Belum ada pekerja yang terdaftar.</p>
+              <p className="col-span-full text-center text-slate-500">
+                Tidak ada pekerja yang cocok dengan kriteria Anda.
+              </p>
             )}
           </div>
         </div>
