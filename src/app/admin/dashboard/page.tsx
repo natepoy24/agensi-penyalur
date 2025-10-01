@@ -12,7 +12,7 @@ export default async function DashboardPage() {
 
   if (error) {
     console.error('Error fetching pekerja:', error);
-    // Di sini bisa ditambahkan komponen UI untuk menampilkan error jika diperlukan
+    // Di sini bisa ditambahkan komponen UI untuk menampilkan error
   }
 
 
