@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Toaster } from 'react-hot-toast'; // 1. Impor komponen Toaster
 import NotificationHandler from '@/components/NotificationHandler'; // Impor komponen baru
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ['latin'] });
 
