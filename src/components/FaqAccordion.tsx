@@ -14,11 +14,11 @@ type FaqItemData = {
 const faqData: FaqItemData[] = [
   { 
     q: "Bagaimana proses seleksi pekerja di APSA?", 
-    a: "Setiap calon pekerja kami melalui proses seleksi yang sangat ketat, meliputi verifikasi identitas (KTP, KK), wawancara mendalam, tes kesehatan, serta pengecekan latar belakang untuk memastikan mereka dapat dipercaya." 
+    a: "Setiap calon pekerja kami melalui proses seleksi yang sangat ketat, meliputi verifikasi identitas (KTP, KK), wawancara mendalam, uji kompetensi(kecuali ART), serta pengecekan latar belakang untuk memastikan mereka dapat dipercaya." 
   },
   { 
     q: "Berapa lama waktu yang dibutuhkan untuk mendapatkan pekerja?", 
-    a: "Kami berusaha menyediakan calon yang cocok dalam waktu 1-7 hari kerja setelah kriteria kami terima secara lengkap, tergantung pada ketersediaan kandidat." 
+    a: "Jika anda memilih pekerja dengan kategori tersedia yang ada di list kami, anda dapat mendapatkan pekerja dalam waktu singkat, anda memesan hari ini, kami bisa antarkan langsung ke tempat anda. Namun jika tidak ada kandidat kami yang cocok, kami akan berusaha menyediakan calon yang cocok dalam waktu 1-7 hari kerja setelah kriteria kami terima secara lengkap, tergantung pada ketersediaan kandidat." 
   },
   { 
     q: "Apa yang terjadi jika saya tidak cocok dengan pekerja?", 
