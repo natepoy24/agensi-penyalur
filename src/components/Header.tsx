@@ -17,7 +17,7 @@ export default function Header({ user }: { user: User | null }) {
     <>
       <header className="w-full bg-white shadow-md z-40">
         <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="text-xl font-bold text-slate-800">APSA</Link>
+          <Link href="/" className="text-xl font-bold text-slate-800">Jasa Mandiri</Link>
  
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <Link href="/" className="hover:text-emerald-600">Beranda</Link>

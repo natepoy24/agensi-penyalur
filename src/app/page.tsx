@@ -21,7 +21,7 @@ export default function HomePage() {
       <section>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">Temukan Bantuan Profesional untuk Keluarga Anda</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">Temukan Pekerja Profesional untuk Keluarga Anda</h1>
             <p className="mt-4 text-lg text-gray-600 max-w-xl mx-auto md:mx-0">Kami menyediakan pekerja rumah tangga, baby sitter, dan perawat lansia yang terverifikasi, terlatih, dan terpercaya.</p>
             <Link href="/pekerja" className="mt-8 inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-blue-700 transition">
               Lihat Daftar Pekerja
