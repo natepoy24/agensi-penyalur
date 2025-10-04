@@ -20,6 +20,8 @@ export async function addPekerja(prevState: FormState, formData: FormData): Prom
     deskripsi: formData.get('deskripsi') as string,
     gaji: parseInt(formData.get('gaji') as string, 10),
     keterampilan: formData.get('keterampilan') as string,
+    umur: parseInt(formData.get('umur') as string, 10), // Tambahkan ini
+    suku: formData.get('suku') as string, // Tambahkan ini
   };
 
   if (!fotoFile || fotoFile.size === 0) {
@@ -66,6 +68,8 @@ export async function updatePekerja(prevState: FormState, formData: FormData): P
     gaji: parseInt(formData.get('gaji') as string, 10),
     keterampilan: formData.get('keterampilan') as string,
     fotoUrl: fotoUrl,
+    umur: parseInt(formData.get('umur') as string, 10), // Tambahkan ini
+    suku: formData.get('suku') as string, // Tambahkan ini
   };
 
   const { error: updateError } = await supabase.from('pekerja').update(dataToUpdate).eq('id', id);

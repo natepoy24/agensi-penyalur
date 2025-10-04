@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Clock, Mail, MapPin, Phone } from 'lucide-react'; // Impor ikon Clock
 
 export default function KontakPage() {
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ export default function KontakPage() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Data Formulir yang Terkirim:", formData);
-    alert('Pesan Anda sudah kami terima, mohon tunggu balasan dari kami');
+    alert('Fungsionalitas kirim email akan dibuat nanti.');
   };
 
   return (
@@ -42,25 +42,32 @@ export default function KontakPage() {
           {/* Grid: Info Kontak & Form */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             
-            {/* Kolom Kiri: Informasi Kontak */}
+            {/* --- Kolom Kiri: Informasi Kontak (Diperbarui) --- */}
             <div className="space-y-6">
               <div>
                 <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-                  <MapPin className="w-8 h-8 text-emerald-600" /> Alamat Kantor
+                  <MapPin className="w-8 h-8 text-blue-600" /> Alamat Kantor
                 </h3>
-                <p className="mt-2 text-slate-600">Jl. Jenderal Sudirman Kav. 52-53, Jakarta Selatan, Indonesia</p>
+                <p className="mt-2 text-slate-600">Jl Gunung Balong III No 78 Lebak Bulus Cilandak Jak-Sel 12440</p>
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-                  <Mail className="w-8 h-8 text-emerald-600" /> Email
+                  <Mail className="w-8 h-8 text-blue-600" /> Email
                 </h3>
-                <p className="mt-2 text-slate-600">info@apsa.com</p>
+                <a href="mailto:info@penyalurkerja.com" className="mt-2 text-slate-600 hover:text-blue-600">{`info@penyalurkerja.com`}</a>
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-                  <Phone className="w-8 h-8 text-emerald-600" /> Telepon
+                  <Phone className="w-8 h-8 text-blue-600" /> Telepon
                 </h3>
-                <p className="mt-2 text-slate-600">(021) 123-4567</p>
+                <p className="mt-2 text-slate-600">Call / Whatsapp: <a href="https://api.whatsapp.com/send?phone=6282122415552" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600">0821-2241-5552</a></p>
+                <p className="mt-1 text-slate-600">Call / Whatsapp: <a href="https://api.whatsapp.com/send?phone=6281323337872" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600">0813-2333-7872</a></p>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                  <Clock className="w-8 h-8 text-blue-600" /> Jam Operasional
+                </h3>
+                <p className="mt-2 text-slate-600">Senin - Minggu, 07:00 - 22:00</p>
               </div>
             </div>
 
@@ -69,24 +76,39 @@ export default function KontakPage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-700">Nama Lengkap</label>
-                  <input type="text" id="name" name="name" required value={formData.name} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 text-slate-900" />
+                  <input type="text" id="name" name="name" required value={formData.name} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-slate-900" />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-slate-700">Alamat Email</label>
-                  <input type="email" id="email" name="email" required value={formData.email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 text-slate-900" />
+                  <input type="email" id="email" name="email" required value={formData.email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-slate-900" />
                 </div>
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-slate-700">Pesan Anda</label>
-                  <textarea id="message" name="message" rows={5} required value={formData.message} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 text-slate-900"></textarea>
+                  <textarea id="message" name="message" rows={5} required value={formData.message} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-slate-900"></textarea>
                 </div>
                 <div>
-                  <button type="submit" className="w-full py-3 px-4 bg-emerald-600 text-white font-semibold rounded-md hover:bg-emerald-700 transition-colors">
+                  <button type="submit" className="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors">
                     Kirim Pesan
                   </button>
                 </div>
               </form>
             </div>
+          </div>
 
+          {/* --- Bagian Peta (Baru) --- */}
+          <div className="mt-20">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Lokasi Kami</h2>
+            <div className="w-full aspect-video rounded-lg overflow-hidden shadow-lg">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.811890479109!2d106.77708317475148!3d-6.289196593700088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1a23616238b%3A0x6b73b5a102c6fae2!2sJl.%20Gn.%20Balong%203%2C%20RT.3%2FRW.4%2C%20Lebak%20Bulus%2C%20Kec.%20Cilandak%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sen!2sid!4v1728020963283!5m2!1sen!2sid" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen={true} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
           </div>
         </div>
       </div>

@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 const workflowSteps = [
   { step: "1", title: "Perekrutan & Validasi", description: "Proses dimulai dari Job Order, perekrutan, hingga validasi data calon pekerja secara ketat." },
-  { step: "2", title: "Tes Kesehatan", description: "Setiap calon pekerja wajib menjalani tes kesehatan menyeluruh untuk memastikan kondisi prima." },
-  { step: "3", title: "Penampungan & Pelatihan", description: "Pekerja ditampung di mess dan mendapatkan pelatihan sesuai kebutuhan spesifik pekerjaan." },
+  { step: "2", title: "Penampungan & Pelatihan", description: "Pekerja ditampung di mess dan mendapatkan pelatihan sesuai kebutuhan spesifik pekerjaan." },
+  { step: "4", title: "Uji Kompentensi", description: "Untuk kategori pekerja highrisk seperti baby sitter dan perawat lansia, akan kami adakan uji kompentensi terlebih dahulu sebelum disalurkan, dan setiap setahun sekali, kami juga mengadakan sertifikasi baby sitter dan perawat lansia, sudah diawasi langsung oleh kemnaker." },
   { step: "4", title: "Orientasi & Kontrak", description: "Orientasi pra-penempatan dan penandatanganan kontrak kerja yang jelas dan transparan." },
   { step: "5", title: "Penempatan", description: "Pekerja diantar dan ditempatkan di lokasi pengguna jasa sesuai dengan kesepakatan." },
   { step: "6", title: "Monitoring & Pelaporan", description: "Kami melakukan monitoring pasca-penempatan dan melaporkan status ke instansi terkait." },
@@ -28,7 +28,7 @@ export default function TentangPage() {
             <div className="order-2 md:order-1">
               <h2 className="text-3xl font-bold text-gray-800">Kisah Kami: Visi untuk Memberdayakan</h2>
               <p className="mt-4 text-gray-600 leading-relaxed">
-                APSA lahir dari kepedulian mendalam terhadap dua aspek fundamental: kebutuhan keluarga akan bantuan domestik yang tepercaya dan potensi besar masyarakat untuk berkembang jika diberi kesempatan. Kami melihat sebuah jembatan yang perlu dibangun—antara keluarga yang mencari ketenangan dan individu berbakat yang mencari jalan menuju kehidupan yang lebih baik.
+                Jasa mandiri lahir dari kepedulian mendalam terhadap dua aspek fundamental: kebutuhan keluarga akan bantuan domestik yang tepercaya dan potensi besar masyarakat untuk berkembang jika diberi kesempatan. Kami melihat sebuah jembatan yang perlu dibangun antara keluarga yang mencari ketenangan dan individu berbakat yang mencari jalan menuju kehidupan yang lebih baik.
               </p>
               <p className="mt-4 text-gray-600 leading-relaxed">
                 Lebih dari sekadar agensi, kami adalah mitra dalam peningkatan kesejahteraan sosial. Misi kami adalah menciptakan lapangan kerja yang layak, terutama bagi masyarakat menengah ke bawah, serta memberikan bimbingan dan arahan agar mereka dapat meraih peluang kerja yang lebih baik.
@@ -36,8 +36,8 @@ export default function TentangPage() {
             </div>
             <div className="order-1 md:order-2">
               <Image 
-                src="/Image/kisah-kami.svg"
-                alt="Tim APSA sedang berdiskusi"
+                src="/Image/kisah-kami.jpg"
+                alt="Tim jasa mandiri sedang berdiskusi"
                 width={600}
                 height={450}
                 className="rounded-xl shadow-2xl w-full"
@@ -50,7 +50,7 @@ export default function TentangPage() {
         <section className="bg-white p-8 md:p-12 rounded-xl shadow-lg max-w-4xl mx-auto mb-20">
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Profil Perusahaan</h2>
           <p className="text-gray-600 leading-relaxed text-center">
-            APSA adalah lembaga penyalur pekerja rumah tangga yang berdedikasi untuk menjembatani kebutuhan keluarga di Indonesia dengan para pekerja profesional dan terpercaya. Berdiri sejak tahun 2010, kami telah berhasil membantu ribuan keluarga menemukan asisten yang tepat.
+            Jasa Mandiri adalah lembaga penyalur pekerja rumah tangga yang berdedikasi untuk menjembatani kebutuhan keluarga di Indonesia dengan para pekerja profesional dan terpercaya. Berdiri sejak tahun 2010, kami telah berhasil membantu ribuan keluarga menemukan asisten yang tepat.
           </p>
           <p className="mt-4 text-gray-600 leading-relaxed text-center">
             Visi kami adalah menjadi mitra terdepan dan paling diandalkan bagi setiap keluarga dalam menyediakan solusi tenaga kerja domestik yang berkualitas. Misi kami adalah melakukan proses seleksi yang ketat, memberikan pelatihan yang relevan, dan memastikan penempatan yang sesuai demi kepuasan klien dan kesejahteraan pekerja.

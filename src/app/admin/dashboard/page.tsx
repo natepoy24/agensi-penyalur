@@ -12,9 +12,8 @@ export default async function DashboardPage() {
 
   if (error) {
     console.error('Error fetching pekerja:', error);
-    // Di sini bisa ditambahkan komponen UI untuk menampilkan error
+    // Di sini bisa ditambahkan komponen UI untuk menampilkan 
   }
-
 
   return (
     <div className="relative min-h-screen bg-white">

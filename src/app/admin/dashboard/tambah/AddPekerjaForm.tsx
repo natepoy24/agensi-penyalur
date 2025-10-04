@@ -1,15 +1,16 @@
 // src/app/admin/dashboard/tambah/AddPekerjaForm.tsx
 "use client";
 
-import { useActionState, useEffect } from 'react';
+import { useActionState, useEffect, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import { addPekerja } from '@/app/actions';
 import toast from 'react-hot-toast';
+import SukuInput from '@/components/SukuInput'; // Impor komponen SukuInput
 
+// Komponen terpisah untuk tombol agar bisa menampilkan status "pending"
 function SubmitButton() {
   const { pending } = useFormStatus();
-  
-  // --- PERBAIKAN DI SINI: Tambahkan 'return' ---
+
   return (
     <button 
       type="submit" 
@@ -22,8 +23,9 @@ function SubmitButton() {
 }
 
 export default function AddPekerjaForm() {
-  const initialState = { error: '' };
+  const initialState = { error: undefined, success: undefined };
   const [state, formAction] = useActionState(addPekerja, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (state?.error) {
@@ -32,11 +34,15 @@ export default function AddPekerjaForm() {
   }, [state]);
 
   return (
-    <form action={formAction} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
+    <form ref={formRef} action={formAction} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="nama" className="block text-sm font-semibold text-slate-800">Nama Lengkap</label>
           <input type="text" id="nama" name="nama" required className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900" />
+        </div>
+        <div>
+          <label htmlFor="umur" className="block text-sm font-semibold text-slate-800">Umur</label>
+          <input type="number" id="umur" name="umur" defaultValue={18} required className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900" />
         </div>
         <div>
           <label htmlFor="kategori" className="block text-sm font-semibold text-slate-800">Kategori</label>
@@ -44,6 +50,8 @@ export default function AddPekerjaForm() {
             <option value="Baby Sitter">Baby Sitter</option>
             <option value="Perawat Lansia">Perawat Lansia</option>
             <option value="Asisten Rumah Tangga">Asisten Rumah Tangga</option>
+            <option value="Supir">Supir</option>
+            <option value="Tukang Kebun">Tukang Kebun</option>
           </select>
         </div>
         <div>
@@ -61,14 +69,27 @@ export default function AddPekerjaForm() {
           <label htmlFor="gaji" className="block text-sm font-semibold text-slate-800">Gaji (per bulan)</label>
           <input type="number" id="gaji" name="gaji" required defaultValue={0} className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900" />
         </div>
+        
+        {/* Menggunakan komponen SukuInput */}
+        <SukuInput />
+
         <div className="md:col-span-2">
-          <label htmlFor="lokasi" className="block text-sm font-semibold text-slate-800">Lokasi</label>
+          <label htmlFor="lokasi" className="block text-sm font-semibold text-slate-800">Kota Asal</label>
           <input type="text" id="lokasi" name="lokasi" required className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900" />
         </div>
         <div className="md:col-span-2">
           <label htmlFor="fotoUrl" className="block text-sm font-semibold text-slate-800">Foto Pekerja</label>
-          <input type="file" id="fotoUrl" name="fotoUrl" required accept="image/png, image/jpeg, image/jpg" className="block w-full cursor-pointer rounded-lg border border-slate-300 text-sm text-slate-500 file:mr-4 file:border-0 file:bg-emerald-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700"/>
-
+          <input 
+            type="file" 
+            id="fotoUrl" 
+            name="fotoUrl" 
+            required 
+            accept="image/png, image/jpeg, image/jpg"
+            className="mt-1 block w-full cursor-pointer rounded-lg border border-slate-300 text-sm text-slate-500
+                       file:mr-4 file:border-0 file:bg-emerald-600 file:px-4
+                       file:py-2 file:text-sm file:font-semibold file:text-white
+                       hover:file:bg-emerald-700"
+          />
         </div>
         <div className="md:col-span-2">
           <label htmlFor="keterampilan" className="block text-sm font-semibold text-slate-800">Keterampilan</label>

@@ -7,6 +7,7 @@ import { useActionState, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 import { updatePekerja } from '@/app/actions';
 import toast from 'react-hot-toast';
+import SukuInput from '@/components/SukuInput';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -38,6 +39,10 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
           <input type="text" id="nama" name="nama" required defaultValue={pekerja.nama} className="mt-1 block w-full border rounded-md text-slate-900 px-3 py-2" />
         </div>
         <div>
+          <label htmlFor="umur" className="block text-sm font-semibold text-slate-800">Umur</label>
+          <input type="number" id="umur" name="umur" defaultValue={18} required className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900" />
+        </div>
+        <div>
           <label htmlFor="kategori" className="block text-sm font-semibold text-slate-900">Kategori</label>
           <select id="kategori" name="kategori" required defaultValue={pekerja.kategori} className="mt-1 block w-full border rounded-md text-slate-900 px-3 py-2">
             <option value="Baby Sitter">Baby Sitter</option>
@@ -56,6 +61,7 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
           <label htmlFor="pengalaman" className="block text-sm font-semibold text-slate-900">Pengalaman (Tahun)</label>
           <input type="number" id="pengalaman" name="pengalaman" required defaultValue={pekerja.pengalaman} className="mt-1 block w-full border rounded-md text-slate-900 px-3 py-2" />
         </div>
+         <SukuInput defaultValue={pekerja.suku} />
         <div>
           <label htmlFor="gaji" className="block text-sm font-semibold text-slate-900">Gaji (per bulan)</label>
           <input type="number" id="gaji" name="gaji" required defaultValue={pekerja.gaji || 0} className="mt-1 block w-full border rounded-md text-slate-900 px-3 py-2" />
@@ -88,7 +94,7 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
         </div>
 
         <div className="md:col-span-2">
-          <label htmlFor="lokasi" className="block text-sm font-semibold text-slate-900">Lokasi</label>
+          <label htmlFor="lokasi" className="block text-sm font-semibold text-slate-900">Kota Asal</label>
           <input type="text" id="lokasi" name="lokasi" required defaultValue={pekerja.lokasi} className="mt-1 block w-full border rounded-md text-slate-900 px-3 py-2" />
         </div>
         <div className="md:col-span-2">
