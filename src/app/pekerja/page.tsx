@@ -5,11 +5,12 @@ import FilterControls from '@/components/FilterControls';
 
 export const dynamic = 'force-dynamic';
 
-export default async function PekerjaPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+export default async function PekerjaPage(
+  props: {
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   // Ekstrak semua nilai dari 'searchParams' SEBELUM await pertama
   const kategori = searchParams.kategori;
   const status = searchParams.status;
@@ -38,7 +39,7 @@ export default async function PekerjaPage({
   } else if (data) {
     daftarPekerja = data as PekerjaProps[];
   }
-  
+
   return (
     <main>
       <div className="bg-white pt-32 pb-20 px-4">

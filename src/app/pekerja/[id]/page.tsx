@@ -21,7 +21,8 @@ async function getPekerjaById(id: string) {
   return data;
 }
 
-export default async function PekerjaDetailPage({ params }: { params: { id: string } }) {
+export default async function PekerjaDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const pekerja = await getPekerjaById(params.id);
 
   if (!pekerja) {
@@ -34,7 +35,7 @@ export default async function PekerjaDetailPage({ params }: { params: { id: stri
   };
 
   const keterampilanList = pekerja.keterampilan?.split(',').map((skill: string) => skill.trim()).filter((skill: string) => skill);
-  
+
   // --- 1. Membuat Link WhatsApp Dinamis ---
   const whatsappNumber = "6282122415552"; // Nomor HP tujuan (format internasional)
   const message = `Halo, apakah ${pekerja.kategori} dengan nama ${pekerja.nama} masih tersedia?`;
