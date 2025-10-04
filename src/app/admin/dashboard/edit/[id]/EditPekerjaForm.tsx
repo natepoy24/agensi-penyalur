@@ -48,6 +48,8 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
             <option value="Baby Sitter">Baby Sitter</option>
             <option value="Perawat Lansia">Perawat Lansia</option>
             <option value="Asisten Rumah Tangga">Asisten Rumah Tangga</option>
+            <option value="Supir">Supir</option>
+            <option value="Tukang Kebun">Tukang Kebun</option>
           </select>
         </div>
         <div>

@@ -10,29 +10,27 @@ export default async function PekerjaPage({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
-  // --- PERBAIKAN DI BARIS INI ---
+  // Ekstrak semua nilai dari 'searchParams' SEBELUM await pertama
+  const kategori = searchParams.kategori;
+  const status = searchParams.status;
+  const search = searchParams.search;
+
   const supabase = await createClient();
   let daftarPekerja: PekerjaProps[] = [];
 
-  // Bangun query ke Supabase secara dinamis
   let query = supabase.from('pekerja').select('*');
 
-  // Tambahkan filter 'kategori' jika ada di URL
-  if (searchParams.kategori) {
-    query = query.eq('kategori', searchParams.kategori);
+  // Gunakan variabel yang sudah diekstrak
+  if (kategori) {
+    query = query.eq('kategori', kategori);
+  }
+  if (status) {
+    query = query.eq('status', status);
+  }
+  if (search) {
+    query = query.ilike('nama', `%${search}%`);
   }
 
-  // Tambahkan filter 'status' jika ada di URL
-  if (searchParams.status) {
-    query = query.eq('status', searchParams.status);
-  }
-
-  // Tambahkan filter pencarian nama jika ada di URL
-  if (searchParams.search) {
-    query = query.ilike('nama', `%${searchParams.search}%`);
-  }
-
-  // Eksekusi query
   const { data, error } = await query.order('created_at', { ascending: false });
 
   if (error) {
@@ -51,9 +49,7 @@ export default async function PekerjaPage({
               Temukan partner terpercaya untuk membantu kebutuhan keluarga Anda.
             </p>
           </div>
-
           <FilterControls />
-          
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {daftarPekerja.length > 0 ? (
               daftarPekerja.map((pekerja) => (

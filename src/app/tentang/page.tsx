@@ -4,7 +4,7 @@ import Image from 'next/image';
 const workflowSteps = [
   { step: "1", title: "Perekrutan & Validasi", description: "Proses dimulai dari Job Order, perekrutan, hingga validasi data calon pekerja secara ketat." },
   { step: "2", title: "Penampungan & Pelatihan", description: "Pekerja ditampung di mess dan mendapatkan pelatihan sesuai kebutuhan spesifik pekerjaan." },
-  { step: "4", title: "Uji Kompentensi", description: "Untuk kategori pekerja highrisk seperti baby sitter dan perawat lansia, akan kami adakan uji kompentensi terlebih dahulu sebelum disalurkan, dan setiap setahun sekali, kami juga mengadakan sertifikasi baby sitter dan perawat lansia, sudah diawasi langsung oleh kemnaker." },
+  { step: "3", title: "Uji Kompentensi", description: "Untuk kategori pekerja highrisk seperti baby sitter dan perawat lansia, akan kami adakan uji kompentensi terlebih dahulu sebelum disalurkan, dan setiap setahun sekali, kami juga mengadakan sertifikasi baby sitter dan perawat lansia, sudah diawasi langsung oleh kemnaker." },
   { step: "4", title: "Orientasi & Kontrak", description: "Orientasi pra-penempatan dan penandatanganan kontrak kerja yang jelas dan transparan." },
   { step: "5", title: "Penempatan", description: "Pekerja diantar dan ditempatkan di lokasi pengguna jasa sesuai dengan kesepakatan." },
   { step: "6", title: "Monitoring & Pelaporan", description: "Kami melakukan monitoring pasca-penempatan dan melaporkan status ke instansi terkait." },
@@ -81,8 +81,9 @@ export default function TentangPage() {
             <p className="mt-4 text-lg text-gray-600">Kami mengikuti proses yang terstruktur untuk memastikan kualitas dan keamanan.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {workflowSteps.map((item) => (
-              <div key={item.step} className="bg-white p-6 rounded-xl shadow-lg flex items-start space-x-4">
+            {/* --- PERBAIKAN DI BARIS INI --- */}
+            {workflowSteps.map((item, index) => (
+              <div key={index} className="bg-white p-6 rounded-xl shadow-lg flex items-start space-x-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl">
                   {item.step}
                 </div>
