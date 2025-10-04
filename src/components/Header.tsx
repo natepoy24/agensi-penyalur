@@ -5,9 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
-// --- PERUBAHAN DI BARIS INI ---
-import SignOutButton from '@/components/SignOutButton';
-import toast from 'react-hot-toast';
+import SignOutButton from './SignOutButton';
 
 export default function Header({ user }: { user: User | null }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,8 +15,15 @@ export default function Header({ user }: { user: User | null }) {
     <>
       <header className="w-full bg-white shadow-md z-40">
         <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="text-xl font-bold text-slate-800">Jasa Mandiri</Link>
- 
+          <div>
+            <Link href="/" className="text-xl font-bold text-slate-800">
+              PT Jasa Mandiri
+            </Link>
+            <p className="text-xs text-slate-500 -mt-1">
+              Lembaga Penempatan Pekerja Rumah Tangga
+            </p>
+          </div>
+
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <Link href="/" className="hover:text-emerald-600">Beranda</Link>
             <Link href="/tentang" className="hover:text-emerald-600">Tentang Kami</Link>
@@ -30,11 +35,15 @@ export default function Header({ user }: { user: User | null }) {
           <div className="hidden md:flex items-center gap-4">
             {user ? (
               <>
-                <Link href="/admin/dashboard" className="text-sm font-semibold text-emerald-600 hover:underline">Dasbor</Link>
+                <Link href="/admin/dashboard" className="text-sm font-semibold text-emerald-600 hover:underline">
+                  Dasbor
+                </Link>
                 <SignOutButton />
               </>
             ) : (
-              <Link href="/admin/login" className="px-4 py-2 text-sm font-semibold bg-emerald-600 text-white rounded-md hover:bg-emerald-700">Login Admin</Link>
+              <Link href="/admin/login" className="px-4 py-2 text-sm font-semibold bg-emerald-600 text-white rounded-md hover:bg-emerald-700">
+                Login Admin
+              </Link>
             )}
           </div>
 
@@ -47,20 +56,44 @@ export default function Header({ user }: { user: User | null }) {
       </header>
       
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center md:hidden">
-          <button onClick={closeMenu} className="absolute top-7 right-4" aria-label="Tutup menu"><X className="h-8 w-8 text-slate-800" /></button>
+        <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center md-hidden">
+          <button onClick={closeMenu} className="absolute top-7 right-4" aria-label="Tutup menu">
+            <X className="h-8 w-8 text-slate-800" />
+          </button>
+          
           <nav className="flex flex-col items-center gap-8 text-2xl font-semibold text-slate-800">
             <Link href="/" onClick={closeMenu}>Beranda</Link>
             <Link href="/tentang" onClick={closeMenu}>Tentang Kami</Link>
             <Link href="/layanan" onClick={closeMenu}>Layanan</Link>
             <Link href="/pekerja" onClick={closeMenu}>Pekerja</Link>
             <Link href="/kontak" onClick={closeMenu}>Kontak</Link>
-            <div className="mt-8 border-t border-slate-200 pt-8 w-full flex justify-center">
-              {user ? (<SignOutButton />) : (<Link href="/admin/login" className="px-6 py-2 bg-emerald-600 text-white rounded-md text-xl" onClick={closeMenu}>Login Admin</Link>)}
+            
+            {/* --- PERUBAHAN DI SINI --- */}
+            <div className="mt-8 border-t border-slate-200 pt-8 w-full flex flex-col items-center gap-6">
+              {user ? (
+                <>
+                  <Link 
+                    href="/admin/dashboard" 
+                    className="px-6 py-2 border-2 border-emerald-600 text-emerald-600 rounded-md text-xl"
+                    onClick={closeMenu}
+                  >
+                    Dasbor
+                  </Link>
+                  <SignOutButton />
+                </>
+              ) : (
+                <Link 
+                  href="/admin/login"
+                  className="px-6 py-2 bg-emerald-600 text-white rounded-md text-xl"
+                  onClick={closeMenu}
+                >
+                  Login Admin
+                </Link>
+              )}
             </div>
           </nav>
         </div>
       )}
     </>
   );
-}
+} 

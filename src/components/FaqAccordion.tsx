@@ -13,7 +13,7 @@ type FaqItemData = {
 // Data untuk FAQ, sekarang menggunakan tipe yang sudah kita definisikan
 const faqData: FaqItemData[] = [
   { 
-    q: "Bagaimana proses seleksi pekerja di APSA?", 
+    q: "Bagaimana proses seleksi pekerja di Jasa mandiri?", 
     a: "Setiap calon pekerja kami melalui proses seleksi yang sangat ketat, meliputi verifikasi identitas (KTP, KK), wawancara mendalam, uji kompetensi(kecuali ART), serta pengecekan latar belakang untuk memastikan mereka dapat dipercaya." 
   },
   { 

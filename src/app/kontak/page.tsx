@@ -100,7 +100,7 @@ export default function KontakPage() {
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Lokasi Kami</h2>
             <div className="w-full aspect-video rounded-lg overflow-hidden shadow-lg">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.811890479109!2d106.77708317475148!3d-6.289196593700088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1a23616238b%3A0x6b73b5a102c6fae2!2sJl.%20Gn.%20Balong%203%2C%20RT.3%2FRW.4%2C%20Lebak%20Bulus%2C%20Kec.%20Cilandak%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sen!2sid!4v1728020963283!5m2!1sen!2sid" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.687293502949!2d106.78843769999999!3d-6.304753400000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69efd022e06d2b%3A0xfc3df798e49f58fb!2sJasa%20ART!5e0!3m2!1sid!2sid!4v1759607438399!5m2!1sid!2sid"
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 
