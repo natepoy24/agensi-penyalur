@@ -14,7 +14,7 @@ const services = [
       { name: "ART Masak:", detail: "Memiliki keahlian memasak menu harian selain tugas kebersihan." },
       { name: "ART Serabutan:", detail: "Mencakup semua tugas (kebersihan, momong, dan masak)." },
     ],
-    salary: "Rp 2.200.000 - Rp 3.000.000"
+    salary: "Rp 2.500.000 - Rp 3.500.000"
   },
   {
     title: "Baby Sitter Profesional",
@@ -26,7 +26,7 @@ const services = [
       { name: "Anak Berkebutuhan Khusus:", detail: "Pendampingan sabar untuk anak autis atau kondisi khusus lainnya." },
       { name: "Baby Sitter Serabutan:", detail: "Fokus utama mengasuh anak ditambah pekerjaan rumah tangga ringan." },
     ],
-    salary: "Rp 2.500.000 - Rp 4.000.000"
+    salary: "Rp 3.000.000 - Rp 5.000.000"
   },
   {
     title: "Perawat Lansia (Home Care)",
@@ -37,14 +37,14 @@ const services = [
       { name: "Perawat Lansia Medis:", detail: "Memiliki kualifikasi medis dasar (misal: ganti perban, suntik insulin)." },
       { name: "Perawat Lansia Serabutan:", detail: "Fokus utama merawat lansia ditambah pekerjaan rumah tangga ringan." },
     ],
-    salary: "Rp 2.700.000 - Rp 4.500.000+"
+    salary: "Rp 3.000.000 - Rp 5.000.000+"
   }
 ];
 
 export default function LayananPage() {
   return (
     <main>
-      <div className="bg-slate-50 pt-32 pb-20 px-4">
+      <div className="pt-32 pb-20 px-4">
         <div className="container mx-auto">
           {/* Judul Halaman */}
           <div className="text-center mb-12">
@@ -76,7 +76,7 @@ export default function LayananPage() {
                     </ul>
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-200">
-                    <h4 className="font-semibold text-gray-700">Estimasi Gaji</h4>
+                    <h4 className="font-semibold text-gray-700">Estimasi Gaji Tahun 2025</h4>
                     <p className="text-gray-600 text-lg font-medium mt-1">{service.salary}</p>
                   </div>
                 </div>

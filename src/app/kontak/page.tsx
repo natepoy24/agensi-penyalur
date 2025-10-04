@@ -27,7 +27,7 @@ export default function KontakPage() {
 
   return (
     <main>
-      <div className="bg-white pt-32 pb-20 px-4">
+      <div className="pt-32 pb-20 px-4">
         <div className="container mx-auto">
           {/* Judul Halaman */}
           <div className="text-center mb-16">

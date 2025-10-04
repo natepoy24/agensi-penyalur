@@ -42,7 +42,7 @@ export default async function PekerjaPage(
 
   return (
     <main>
-      <div className="bg-white pt-32 pb-20 px-4">
+      <div className="pt-32 pb-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-slate-800">Tenaga Kerja Profesional Kami Yang Siap Kerja</h1>

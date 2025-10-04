@@ -12,7 +12,7 @@ const workflowSteps = [
 
 export default function TentangPage() {
   return (
-    <main className="bg-slate-50 pt-32 pb-20 px-4">
+    <main className="pt-32 pb-20 px-4">
       <div className="container mx-auto">
         {/* Judul Halaman */}
         <div className="text-center mb-16">

@@ -11,7 +11,7 @@ const features = [
   { icon: <FileText/>, title: "Proses Cepat & Mudah", text: "Kami bantu Anda menemukan kandidat yang tepat dengan proses yang efisien dan transparan." },
   { icon: <Award/>, title: "Garansi Penempatan", text: "Kami memberikan garansi penggantian pekerja jika dirasa kurang cocok." },
   { icon: <LifeBuoy/>, title: "Dukungan Penuh", text: "Tim kami siap memberikan dukungan dan mediasi selama masa kontrak kerja." },
-  { icon: <Building/>, title: "Legalitas Jelas", text: "Sebagai lembaga resmi, kami beroperasi di bawah naungan hukum yang jelas." },
+  { icon: <Building/>, title: "Legalitas Jelas", text: "Sebagai perusahaan resmi, kami beroperasi di bawah naungan hukum yang jelas. Bersertifikat standar terverifikasi KEMNAKER & DINASKER" },
 ];
 
 export default function HomePage() {
