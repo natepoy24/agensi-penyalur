@@ -6,6 +6,7 @@ import { createClient } from '@/utils/supabase/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Toaster } from 'react-hot-toast';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import NotificationHandler from '@/components/NotificationHandler';
 
 const inter = Inter({ subsets: ['latin'] });
