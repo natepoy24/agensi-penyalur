@@ -43,7 +43,7 @@ export default async function PekerjaDetailPage(props: { params: Promise<{ id: s
 
   return (
     <main>
-      <div className="pt-32 pb-20 px-4">
+      <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             

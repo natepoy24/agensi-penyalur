@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react'; // Impor ikon Clock
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export default function KontakPage() {
   const [formData, setFormData] = useState({
@@ -27,8 +28,9 @@ export default function KontakPage() {
 
   return (
     <main>
-      <div className="pt-32 pb-20 px-4">
+      <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
+          <Breadcrumbs currentPage='Kontak' currentPath='kontak'/>
           {/* Judul Halaman */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-slate-800">
