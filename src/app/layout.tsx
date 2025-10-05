@@ -5,27 +5,33 @@ import './globals.css';
 import { createClient } from '@/utils/supabase/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Toaster } from 'react-hot-toast'; // 1. Impor komponen Toaster
-import NotificationHandler from '@/components/NotificationHandler'; // Impor komponen baru
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Toaster } from 'react-hot-toast';
+import NotificationHandler from '@/components/NotificationHandler';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Agensi Penyalur APSA',
-  description: 'Solusi Terpercaya untuk Kebutuhan Rumah dan Keluarga Anda',
+  title: {
+    template: '%s | PT Jasa Mandiri',
+    default: 'PT Jasa Mandiri - Penyalur ART, Baby Sitter, & Perawat Lansia Terpercaya',
+  },
+  description: 'PT Jasa Mandiri adalah yayasan penyalur ART, baby sitter, dan perawat lansia profesional di Jakarta dan sekitarnya. Terverifikasi, terlatih, dan bergaransi.',
+  keywords: ['penyalur art', 'yayasan baby sitter', 'penyalur baby sitter', 'jasa perawat lansia', 'agen pembantu rumah tangga', 'penyalur pembantu', 'home care jakarta'],
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode; }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-
   return (
-    <html lang="en">
+    <html lang="id">
       <body className={inter.className}>
         <Toaster position="top-center" />
-        <NotificationHandler /> {/* <-- Tambahkan komponen ini */}
+        <NotificationHandler />
         <Header user={user} />
         <main>{children}</main>
         <Footer />

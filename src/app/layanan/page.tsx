@@ -30,7 +30,7 @@ const services = [
   },
   {
     title: "Perawat Lansia (Home Care)",
-    imageSrc: "/Image/Perawat-lansia.svg",
+    imageSrc: "/Image/perawat-lansia.svg",
     description: "Pendampingan penuh kasih untuk menjaga kualitas hidup lansia, dari bantuan harian hingga perawatan khusus.",
     subCategories: [
       { name: "Perawat Lansia Pemula:", detail: "Pendampingan aktivitas harian secara non-medis." },
