@@ -59,6 +59,7 @@ export default async function RootLayout({
         <Header user={user} />
         <main>{children}</main>
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );
