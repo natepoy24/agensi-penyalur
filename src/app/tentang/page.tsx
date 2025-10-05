@@ -4,7 +4,7 @@ import Image from 'next/image';
 const workflowSteps = [
   { step: "1", title: "Perekrutan & Validasi", description: "Proses dimulai dari Job Order, perekrutan, hingga validasi data calon pekerja secara ketat." },
   { step: "2", title: "Penampungan & Pelatihan", description: "Pekerja ditampung di mess dan mendapatkan pelatihan sesuai kebutuhan spesifik pekerjaan." },
-  { step: "3", title: "Uji Kompentensi", description: "Untuk kategori pekerja highrisk seperti baby sitter dan perawat lansia, akan kami adakan uji kompentensi terlebih dahulu sebelum disalurkan, dan setiap setahun sekali, kami juga mengadakan sertifikasi baby sitter dan perawat lansia, sudah diawasi langsung oleh kemnaker." },
+  { step: "3", title: "Uji Kompentensi", description: "Untuk kategori pekerja highrisk seperti baby sitter dan perawat lansia, akan kami adakan uji kompentensi terlebih dahulu sebelum disalurkan." },
   { step: "4", title: "Orientasi & Kontrak", description: "Orientasi pra-penempatan dan penandatanganan kontrak kerja yang jelas dan transparan." },
   { step: "5", title: "Penempatan", description: "Pekerja diantar dan ditempatkan di lokasi pengguna jasa sesuai dengan kesepakatan." },
   { step: "6", title: "Monitoring & Pelaporan", description: "Kami melakukan monitoring pasca-penempatan dan melaporkan status ke instansi terkait." },
