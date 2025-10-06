@@ -56,7 +56,7 @@ export default function HomePage() {
           </div>
           <div className="hidden md:block">
             <Image
-              src="/Image/hero-image.png"
+              src="/Image/hero-image.webp"
               alt="Seorang baby sitter profesional dari PT Jasa Mandiri sedang mendampingi anak-anak"
               width={1035}
               height={690}
