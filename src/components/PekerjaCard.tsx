@@ -2,10 +2,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Briefcase, MapPin, Wallet } from 'lucide-react';
+import slugify from 'slugify';
 
 export type PekerjaProps = {
   id: number;
   nama: string;
+  slug: string;
   kategori: 'Baby Sitter' | 'Perawat Lansia' | 'Asisten Rumah Tangga' | 'Supir' | 'Tukang Kebun';
   status: 'Tersedia' | 'Akan Tersedia';
   fotoUrl: string;
@@ -24,6 +26,7 @@ const formatRupiah = (angka: number | null | undefined) => {
 };
 
 export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
+  const kategoriSlug = slugify(pekerja.kategori, {lower:true, strict:true, remove: /[*+~.()'"!:@]/g });
   const getStatusClass = () => {
     switch (pekerja.status) {
       case 'Tersedia':
@@ -68,7 +71,7 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
           <p><Wallet className="inline-block w-4 h-4 mr-2" /><strong>Gaji:</strong> Rp {formatRupiah(pekerja.gaji)}</p>
         </div>
         <div className="mt-4">
-          <Link href={`/pekerja/${pekerja.id}`} className="block w-full text-center rounded-lg bg-blue-600 text-white font-semibold py-3 px-4 hover:bg-blue-700 transition">
+          <Link href={`/pekerja/${kategoriSlug}/${pekerja.slug}`} className="block w-full text-center rounded-lg bg-blue-600 text-white font-semibold py-3 px-4 hover:bg-blue-700 transition">
             Lihat Detail
           </Link>
         </div>

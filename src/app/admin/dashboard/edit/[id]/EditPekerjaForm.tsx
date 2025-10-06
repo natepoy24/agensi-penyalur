@@ -40,7 +40,7 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
         </div>
         <div>
           <label htmlFor="umur" className="block text-sm font-semibold text-slate-800">Umur</label>
-          <input type="number" id="umur" name="umur" defaultValue={18} required className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900" />
+          <input type="number" id="umur" name="umur" defaultValue={pekerja.umur} required className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900" />
         </div>
         <div>
           <label htmlFor="kategori" className="block text-sm font-semibold text-slate-900">Kategori</label>

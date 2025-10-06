@@ -5,14 +5,18 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { type FormState } from './lib/definitions';
+import slugify from 'slugify';
 
 // --- Perubahan di sini fungsi tambah pekerja: ganti 'any' dengan 'FormState' ---
 export async function addPekerja(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
 
   const fotoFile = formData.get('fotoUrl') as File;
+  const nama =formData.get('nama') as string;
+  const slug = slugify(nama, {lower: true, strict: true, remove: /[*+~.()'"!:@]/g});
   const dataToInsert = {
     nama: formData.get('nama') as string,
+    slug: slug,
     kategori: formData.get('kategori') as string,
     status: formData.get('status') as string,
     pengalaman: parseInt(formData.get('pengalaman') as string, 10),
@@ -50,6 +54,8 @@ export async function updatePekerja(prevState: FormState, formData: FormData): P
   const id = formData.get('id') as string;
   const fotoFile = formData.get('fotoUrl') as File;
   let fotoUrl = formData.get('currentFotoUrl') as string;
+  const nama= formData.get('nama') as string;
+  const slug = slugify(nama, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g });
 
   if (fotoFile && fotoFile.size > 0) {
     const filePath = `public/${Date.now()}_${fotoFile.name}`;
@@ -60,6 +66,7 @@ export async function updatePekerja(prevState: FormState, formData: FormData): P
 
   const dataToUpdate = {
     nama: formData.get('nama') as string,
+    slug: slug,
     kategori: formData.get('kategori') as string,
     status: formData.get('status') as string,
     pengalaman: parseInt(formData.get('pengalaman') as string, 10),

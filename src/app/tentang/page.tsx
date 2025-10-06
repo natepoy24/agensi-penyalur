@@ -116,7 +116,7 @@ export default function TentangPage() {
         </section>
 
         {/* Alur Kerja */}
-        <section className="max-w-5xl mx-auto">
+        <section id='alur-kerja' className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800">Alur Kerja Profesional Kami</h2>
             <p className="mt-4 text-lg text-gray-600">

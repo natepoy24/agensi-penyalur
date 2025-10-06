@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import slugify from 'slugify'; // Impor library slugify
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -19,7 +20,11 @@ const formatRupiah = (number: number | null | undefined) => {
 }
 
 // Komponen untuk satu kartu pekerja di dalam slider
-const WorkerCard = ({ worker }: { worker: PekerjaProps }) => (
+const WorkerCard = ({ worker }: { worker: PekerjaProps }) => {
+  // Buat slug untuk kategori
+  const kategoriSlug = slugify(worker.kategori, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g });
+
+  return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col">
         <div className="p-6 flex-grow">
             <div className="flex items-start justify-between mb-4">
@@ -30,7 +35,6 @@ const WorkerCard = ({ worker }: { worker: PekerjaProps }) => (
                         <p className="text-blue-600 font-semibold">{worker.kategori}</p>
                     </div>
                 </div>
-                {/* --- PERUBAHAN 1: Tambahkan Suku sebagai Badge --- */}
                 <div className="flex flex-col items-end gap-2">
                     <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800 flex-shrink-0">{worker.status}</span>
                     {worker.suku && (
@@ -44,11 +48,13 @@ const WorkerCard = ({ worker }: { worker: PekerjaProps }) => (
                 <p><Wallet className="inline-block w-4 h-4 mr-2" /><strong>Gaji:</strong> {formatRupiah(worker.gaji)}</p>
             </div>
         </div>
-        <Link href={`/pekerja/${worker.id}`} className="block w-full text-center bg-blue-600 text-white font-semibold py-3 px-4 hover:bg-blue-700 transition">
+        {/* Gunakan format URL yang baru */}
+        <Link href={`/pekerja/${kategoriSlug}/${worker.slug}`} className="block w-full text-center bg-blue-600 text-white font-semibold py-3 px-4 hover:bg-blue-700 transition">
             Lihat Detail
         </Link>
     </div>
-);
+  );
+};
 
 export default function FeaturedWorkers() {
     const [workers, setWorkers] = useState<PekerjaProps[]>([]);
@@ -61,8 +67,7 @@ export default function FeaturedWorkers() {
                 .from('pekerja')
                 .select('*')
                 .eq('status', 'Tersedia')
-                // --- PERUBAHAN 2: Ubah limit menjadi 6 ---
-                .limit(6);
+                .limit(6); // Ambil maksimal 6 pekerja
 
             if (filter !== 'Semua') {
                 query = query.eq('kategori', filter);
