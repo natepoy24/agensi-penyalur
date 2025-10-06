@@ -1,8 +1,6 @@
-// src/utils/supabase/server.ts
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-// ✅ Versi bebas warning (gunakan _error untuk abaikan error)
 export async function createClient() {
   const cookieStore = await cookies()
 
@@ -17,15 +15,15 @@ export async function createClient() {
         set(name: string, value: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value, ...options })
-          } catch (_error) {
-            // error diabaikan karena tidak relevan di Server Component
+          } catch {
+            // Abaikan error jika dipanggil dari Server Component
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.delete({ name, ...options })
-          } catch (_error) {
-            // error diabaikan karena tidak relevan di Server Component
+          } catch {
+            // Abaikan error jika dipanggil dari Server Component
           }
         },
       },

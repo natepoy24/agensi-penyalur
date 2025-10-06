@@ -1,5 +1,4 @@
 // src/app/admin/dashboard/page.tsx
-import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import BackgroundDecoration from '@/components/BackgroundDecoration';
