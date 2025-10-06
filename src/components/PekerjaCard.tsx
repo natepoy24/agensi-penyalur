@@ -54,10 +54,8 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
 
         {/* --- TAMBAHAN BARU: Badge Suku di Kiri Atas --- */}
         {pekerja.suku && (
-          <span className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-300 text-slate-800">
-            <strong>Suku </strong>
-            {pekerja.suku}
-          </span>
+          <p className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-300 text-slate-800"> Suku {pekerja.suku}
+          </p>
         )}
       </div>
 

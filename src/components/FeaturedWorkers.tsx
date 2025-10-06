@@ -45,7 +45,7 @@ const WorkerCard = ({ worker }: { worker: PekerjaProps }) => {
           <div className="flex flex-col items-end gap-2">
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800 flex-shrink-0">{worker.status}</span>
             {worker.suku && (
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 flex-shrink-0"><strong>Suku </strong>{worker.suku}</span>
+              <p className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 flex-shrink-0">Suku {worker.suku}</p>
             )}
           </div>
         </div>
