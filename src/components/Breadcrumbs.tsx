@@ -11,7 +11,6 @@ interface BreadcrumbsProps {
 
 export default function Breadcrumbs({
   currentPage,
-  currentPath,
   parentPage,
   parentPath,
 }: BreadcrumbsProps) {

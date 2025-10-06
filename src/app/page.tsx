@@ -76,7 +76,7 @@ export default function HomePage() {
           Selamat datang di <strong>PT Jasa Mandiri</strong>, sebuah
           <Link href="/tentang" className="text-blue-600 hover:underline font-semibold"> yayasan penyalur pekerja rumah tangga (ART)</Link> 
           terkemuka. Kami juga berperan sebagai 
-          <Link href="/layanan" className="text-blue-600 hover:underline font-semibold"> agensi baby sitter profesional</Link> 
+          <Link href="/layanan" className="text-blue-600 hover:underline font-semibold"> agensi baby sitter profesional </Link> 
           dan penyedia 
           <Link href="/layanan/perawat-lansia" className="text-blue-600 hover:underline font-semibold"> jasa perawat lansia (home care)</Link> 
           yang andal dan berpengalaman di Jakarta.

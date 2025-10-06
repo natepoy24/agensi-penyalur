@@ -116,7 +116,7 @@ export default function PerawatLansiaPage() {
             <p className="mt-8 text-center text-gray-700">
               Estimasi gaji untuk layanan Perawat Lansia:{" "}
               <strong className="text-blue-600 text-lg">
-                Rp 3.500.000 - Rp 5.000.000 per bulan
+                Rp 3.500.000 - Rp 5.000.000+ per bulan
               </strong>
             </p>
           </section>

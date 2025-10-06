@@ -119,7 +119,7 @@ export default function BabySitterPage() {
             <p className="mt-8 text-center text-gray-700">
               Estimasi gaji untuk layanan Baby Sitter:{" "}
               <strong className="text-blue-600 text-lg">
-                Rp 3.000.000 - Rp 4.500.000 per bulan
+                Rp 3.000.000 - Rp 5.000.000 per bulan
               </strong>
             </p>
           </section>

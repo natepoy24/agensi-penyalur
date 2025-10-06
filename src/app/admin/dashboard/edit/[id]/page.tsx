@@ -23,6 +23,7 @@ export default async function EditPekerjaPage(props: { params: Promise<{ id: str
 
   return (
     <main className="py-24 px-4 bg-white">
+      <BackgroundDecoration/>
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-slate-800 mb-8">Edit Profil Pekerja</h1>
         <EditPekerjaForm pekerja={pekerja} />
