@@ -1,41 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
 import { removeBackground } from "@imgly/background-removal";
+import sharp from "sharp";
+import fs from "fs";
+import path from "path";
 
-// Edge runtime lebih cepat dan aman di Vercel Free plan
-export const runtime = "edge";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
-    // Ambil file dari request
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
     if (!file) {
       return NextResponse.json({ error: "File tidak ditemukan." }, { status: 400 });
     }
 
-    // Konversi file ke ArrayBuffer
-    const inputBuffer = Buffer.from(await file.arrayBuffer());
+    const arrayBuffer = await file.arrayBuffer();
+    const inputBuffer = Buffer.from(arrayBuffer);
 
-    // Hapus background (client-side engine WASM di Edge)
-    const outputBlob = await removeBackground(inputBuffer);
+    // Jalankan proses background removal
+    const outputBlob = await removeBackground(inputBuffer, {
+      progress: (p) => {
+            if (typeof p === "number" && !isNaN(p)) {
+                console.log(`Progress: ${Math.round(p * 100)}%`);
+                 } else {
+              console.log("Progress update:", p);
+            }
+        }
+
+    });
+
     const outputBuffer = Buffer.from(await outputBlob.arrayBuffer());
 
-    // Ambil background template dari public folder (bukan dari fs)
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/Image/templatebg.jpeg`);
-    if (!res.ok) throw new Error("Template tidak ditemukan.");
-    const templateArrayBuffer = await res.arrayBuffer();
-    const templateBuffer = Buffer.from(templateArrayBuffer);
+    // Gabungkan dengan template background
+    const templatePath = path.join(process.cwd(), "public", "Image", "templatebg.jpeg");
+    const templateBuffer = fs.readFileSync(templatePath);
 
-    // Gunakan sharp di edge-safe mode
-    const sharpMod = await import("sharp");
-    const sharpInstance = sharpMod.default;
-
-    const result = await sharpInstance(templateBuffer)
+    const result = await sharp(templateBuffer)
       .composite([{ input: outputBuffer, gravity: "south" }])
       .toFormat("webp", { quality: 85 })
       .toBuffer();
 
-    // Kirim hasil base64
     const base64 = result.toString("base64");
     return NextResponse.json({
       success: true,
