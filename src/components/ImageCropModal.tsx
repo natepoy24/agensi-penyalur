@@ -4,15 +4,15 @@
 import { useRef, useState } from "react";
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-
-// Pastikan Anda sudah menginisialisasi client Supabase di tempat lain dan mengimpornya
-// import { supabase } from "@/lib/supabaseClient"; 
+// DITAMBAHKAN: Impor tipe SupabaseClient
+import { type SupabaseClient } from "@supabase/supabase-js";
 
 type ImageCropModalProps = {
   upImg: string | null;
   onClose: () => void;
   onComplete: (file: File) => void;
-  supabase: any; // Atau gunakan tipe SupabaseClient yang benar
+  // DIUBAH: Gunakan tipe SupabaseClient yang spesifik, bukan 'any'
+  supabase: SupabaseClient; 
 };
 
 // Fungsi helper untuk mengubah Blob menjadi Base64
@@ -43,7 +43,6 @@ export default function ImageCropModal({ upImg, onClose, onComplete, supabase }:
     setCrop(initialCrop);
   }
 
-  // Fungsi ini menangani crop di client dan memanggil Edge Function untuk proses berat
   async function handleProcessImage() {
     if (!completedCrop || !imgRef.current) {
       alert("Silakan pilih area untuk dipotong.");
@@ -54,7 +53,6 @@ export default function ImageCropModal({ upImg, onClose, onComplete, supabase }:
     setProgress(0);
     setStatus("1/2: Memotong gambar...");
 
-    // --- Langkah 1: Crop Gambar (Tetap di Klien) ---
     const croppedBlob = await getCroppedBlob(imgRef.current, completedCrop);
     if (!croppedBlob) {
         setProcessing(false);
@@ -63,12 +61,11 @@ export default function ImageCropModal({ upImg, onClose, onComplete, supabase }:
     setProgress(50);
     setStatus("2/2: Memproses gambar di server...");
 
+    // DIUBAH: Blok try...catch yang lebih type-safe
     try {
-        // --- Langkah 2 & 3: Panggil Edge Function ---
         const base64Image = await blobToBase64(croppedBlob);
-
         const { data: finalImageBlob, error } = await supabase.functions.invoke(
-            'process-worker-image', // Nama function kita
+            'process-worker-image',
             { body: { image: base64Image } }
         );
 
@@ -77,16 +74,23 @@ export default function ImageCropModal({ upImg, onClose, onComplete, supabase }:
         }
 
         const finalFile = new File([finalImageBlob], "processed-image.webp", { type: "image/webp" });
-
         setStatus("✓ Gambar sudah siap diunggah.");
         setProgress(100);
 
         onComplete(finalFile);
         onClose();
 
-    } catch (err: any) {
-        console.error("Gagal memproses gambar di server:", err);
-        alert("Terjadi kesalahan saat memproses gambar di server: " + err.message);
+    } catch (err) { // Tangkap sebagai 'unknown'
+        let errorMessage = "Terjadi kesalahan yang tidak diketahui.";
+        // Lakukan pengecekan tipe sebelum mengakses properti
+        if (err instanceof Error) {
+            errorMessage = "Terjadi kesalahan saat memproses gambar di server: " + err.message;
+            console.error("Gagal memproses gambar di server:", err);
+        } else {
+            console.error("Error tidak terduga:", err);
+        }
+        
+        alert(errorMessage);
         setStatus("Gagal memproses gambar.");
         setProgress(0);
     } finally {
@@ -94,12 +98,10 @@ export default function ImageCropModal({ upImg, onClose, onComplete, supabase }:
     }
   }
 
-  // Fungsi helper untuk mendapatkan hasil crop sebagai Blob
   function getCroppedBlob(image: HTMLImageElement, crop: Crop): Promise<Blob | null> {
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-    // Tentukan ukuran output yang lebih besar untuk kualitas lebih baik
     const outputWidth = 800;
     const outputHeight = 800;
     canvas.width = outputWidth;
@@ -117,13 +119,14 @@ export default function ImageCropModal({ upImg, onClose, onComplete, supabase }:
     return new Promise((resolve) => {
       canvas.toBlob((blob) => {
         resolve(blob);
-      }, "image/png", 1); // Gunakan PNG untuk menjaga kualitas sebelum dikirim ke server
+      }, "image/png", 1);
     });
   }
 
   return (
     upImg && (
       <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        {/* ... sisa JSX Anda tidak berubah ... */}
         <div className="bg-white rounded-xl shadow-xl p-6 max-w-lg w-full">
           <h2 className="text-2xl font-bold mb-4 text-slate-800">Potong & Siapkan Foto</h2>
           <div className="max-h-[60vh] overflow-y-auto mb-4 bg-slate-100 p-2 rounded-md">
