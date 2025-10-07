@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { removeBackground } from "@imgly/background-removal";
 import sharp from "sharp";
-import path from "path";
 import fs from "fs";
 
 export const runtime = "nodejs"; // Pastikan dijalankan di server, bukan edge
+import path from "path";
 
 export async function POST(req: NextRequest) {
   try {
@@ -47,11 +47,12 @@ export async function POST(req: NextRequest) {
       success: true,
       image: `data:image/webp;base64,${base64}`,
     });
-  } catch (error: any) {
-    console.error("❌ Gagal remove background:", error);
-    return NextResponse.json(
-      { error: error.message || "Gagal memproses gambar." },
-      { status: 500 }
-    );
-  }
+    } catch (error) {
+        console.error("❌ Gagal remove background:", error);
+
+        const message =
+            error instanceof Error ? error.message : "Gagal memproses gambar.";
+
+        return NextResponse.json({ error: message }, { status: 500 });
+    }
 }
