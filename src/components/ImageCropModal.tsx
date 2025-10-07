@@ -1,16 +1,31 @@
+// src/components/ImageCropModal.tsx
 "use client";
 
 import { useRef, useState } from "react";
-import ReactCrop, { Crop, centerCrop, makeAspectCrop } from "react-image-crop";
+import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+
+// Pastikan Anda sudah menginisialisasi client Supabase di tempat lain dan mengimpornya
+// import { supabase } from "@/lib/supabaseClient"; 
 
 type ImageCropModalProps = {
   upImg: string | null;
   onClose: () => void;
   onComplete: (file: File) => void;
+  supabase: any; // Atau gunakan tipe SupabaseClient yang benar
 };
 
-export default function ImageCropModal({ upImg, onClose, onComplete }: ImageCropModalProps) {
+// Fungsi helper untuk mengubah Blob menjadi Base64
+function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+export default function ImageCropModal({ upImg, onClose, onComplete, supabase }: ImageCropModalProps) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<Crop>();
@@ -28,99 +43,92 @@ export default function ImageCropModal({ upImg, onClose, onComplete }: ImageCrop
     setCrop(initialCrop);
   }
 
-  async function handleCrop() {
+  // Fungsi ini menangani crop di client dan memanggil Edge Function untuk proses berat
+  async function handleProcessImage() {
     if (!completedCrop || !imgRef.current) {
-      alert("Silakan pilih area untuk dipotong terlebih dahulu.");
+      alert("Silakan pilih area untuk dipotong.");
       return;
     }
 
     setProcessing(true);
-    setStatus("Memotong gambar...");
-    setProgress(10);
+    setProgress(0);
+    setStatus("1/2: Memotong gambar...");
 
-    const image = imgRef.current;
+    // --- Langkah 1: Crop Gambar (Tetap di Klien) ---
+    const croppedBlob = await getCroppedBlob(imgRef.current, completedCrop);
+    if (!croppedBlob) {
+        setProcessing(false);
+        return;
+    }
+    setProgress(50);
+    setStatus("2/2: Memproses gambar di server...");
+
+    try {
+        // --- Langkah 2 & 3: Panggil Edge Function ---
+        const base64Image = await blobToBase64(croppedBlob);
+
+        const { data: finalImageBlob, error } = await supabase.functions.invoke(
+            'process-worker-image', // Nama function kita
+            { body: { image: base64Image } }
+        );
+
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        const finalFile = new File([finalImageBlob], "processed-image.webp", { type: "image/webp" });
+
+        setStatus("✓ Gambar sudah siap diunggah.");
+        setProgress(100);
+
+        onComplete(finalFile);
+        onClose();
+
+    } catch (err: any) {
+        console.error("Gagal memproses gambar di server:", err);
+        alert("Terjadi kesalahan saat memproses gambar di server: " + err.message);
+        setStatus("Gagal memproses gambar.");
+        setProgress(0);
+    } finally {
+        setProcessing(false);
+    }
+  }
+
+  // Fungsi helper untuk mendapatkan hasil crop sebagai Blob
+  function getCroppedBlob(image: HTMLImageElement, crop: Crop): Promise<Blob | null> {
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-
-    canvas.width = completedCrop.width * scaleX;
-    canvas.height = completedCrop.height * scaleY;
-
+    // Tentukan ukuran output yang lebih besar untuk kualitas lebih baik
+    const outputWidth = 800;
+    const outputHeight = 800;
+    canvas.width = outputWidth;
+    canvas.height = outputHeight;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) return Promise.resolve(null);
 
-    ctx.drawImage(
-      image,
-      completedCrop.x * scaleX,
-      completedCrop.y * scaleY,
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-    canvas.toBlob(async (blob) => {
-      if (!blob) return;
-      setStatus("Menghapus latar belakang di server...");
-      setProgress(40);
-
-      try {
-        const formData = new FormData();
-        formData.append("file", blob);
-
-        const res = await fetch("/api/remove-bg", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!res.ok) throw new Error("Gagal memproses gambar di server");
-
-        const resultBlob = await res.blob();
-        setProgress(90);
-        setStatus("Menyiapkan hasil akhir...");
-
-        // Buat file hasil akhir
-        const finalFile = new File([resultBlob], "processed-image.webp", {
-          type: "image/webp",
-        });
-
-        // Isi otomatis ke input file di form
-        const inputEl = document.querySelector('input[type="file"]') as HTMLInputElement;
-        if (inputEl) {
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(finalFile);
-          inputEl.files = dataTransfer.files;
-        }
-
-        setProgress(100);
-        setStatus("✓ Gambar sudah dipotong & siap diunggah.");
-        onComplete(finalFile);
-        onClose();
-      } catch (err) {
-        console.error(err);
-        setStatus("Terjadi kesalahan saat memproses gambar.");
-      } finally {
-        setProcessing(false);
-      }
-    }, "image/jpeg", 0.95);
+    const cropX = crop.x * scaleX;
+    const cropY = crop.y * scaleY;
+    const cropWidth = crop.width * scaleX;
+    const cropHeight = crop.height * scaleY;
+    
+    ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, 0, 0, outputWidth, outputHeight);
+    
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        resolve(blob);
+      }, "image/png", 1); // Gunakan PNG untuk menjaga kualitas sebelum dikirim ke server
+    });
   }
 
   return (
     upImg && (
       <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-xl p-6 max-w-lg w-full">
-          <h2 className="text-2xl font-bold mb-4 text-slate-800">Potong & Hapus Latar</h2>
-
-          <div className="max-h-[60vh] overflow-y-auto mb-4">
-            <ReactCrop
-              crop={crop}
-              onChange={(c) => setCrop(c)}
-              onComplete={(c) => setCompletedCrop(c)}
-              aspect={1}
-            >
-              <img ref={imgRef} src={upImg} onLoad={onImageLoad} alt="Preview" />
+          <h2 className="text-2xl font-bold mb-4 text-slate-800">Potong & Siapkan Foto</h2>
+          <div className="max-h-[60vh] overflow-y-auto mb-4 bg-slate-100 p-2 rounded-md">
+            <ReactCrop crop={crop} onChange={setCrop} onComplete={setCompletedCrop} aspect={1}>
+              <img ref={imgRef} src={upImg} onLoad={onImageLoad} alt="Preview" style={{ maxHeight: '60vh' }}/>
             </ReactCrop>
           </div>
 
@@ -137,18 +145,10 @@ export default function ImageCropModal({ upImg, onClose, onComplete }: ImageCrop
           )}
 
           <div className="flex justify-end gap-3 mt-4">
-            <button
-              onClick={onClose}
-              disabled={processing}
-              className="px-4 py-2 text-sm font-semibold border border-slate-300 rounded-md hover:bg-slate-100"
-            >
+            <button onClick={onClose} disabled={processing} className="px-4 py-2 text-sm font-semibold border rounded-md hover:bg-slate-100 disabled:opacity-60">
               Batal
             </button>
-            <button
-              onClick={handleCrop}
-              disabled={processing}
-              className="px-4 py-2 text-sm font-semibold bg-emerald-600 text-white rounded-md hover:bg-emerald-700 disabled:opacity-60"
-            >
+            <button onClick={handleProcessImage} disabled={processing} className="px-4 py-2 text-sm font-semibold bg-emerald-600 text-white rounded-md hover:bg-emerald-700 disabled:opacity-60">
               {processing ? "Memproses..." : "Simpan & Lanjutkan"}
             </button>
           </div>

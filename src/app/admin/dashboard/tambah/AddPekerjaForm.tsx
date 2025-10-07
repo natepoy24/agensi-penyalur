@@ -8,6 +8,9 @@ import toast from "react-hot-toast";
 import SukuInput from "@/components/SukuInput";
 import ImageCropModal from "@/components/ImageCropModal";
 
+// LANGKAH 1 (DIUBAH): Sesuaikan path dan nama import sesuai file Anda
+import { createClient } from "@/utils/supabase/client"; 
+
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
@@ -22,6 +25,9 @@ function SubmitButton() {
 }
 
 export default function AddPekerjaForm() {
+  // LANGKAH 2 (DITAMBAHKAN): Panggil fungsi untuk membuat instance Supabase di dalam komponen
+  const supabase = createClient();
+
   const initialState = { error: undefined, success: undefined };
   const [state, formAction] = useActionState(addPekerja, initialState);
 
@@ -34,39 +40,34 @@ export default function AddPekerjaForm() {
     if (state?.error) toast.error(state.error);
   }, [state]);
 
-  // === Ketika file dipilih → buka modal crop ===
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setImageToCrop(URL.createObjectURL(file));
   };
 
-  // === Callback saat cropping selesai ===
   const handleCropComplete = (croppedFile: File) => {
     setCroppedImageFile(croppedFile);
-    // Kosongkan file input agar tidak kirim file asli
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // === Saat form dikirim ===
   const handleFormSubmit = (formData: FormData) => {
-    // Gunakan hasil crop jika ada
     if (croppedImageFile) {
       formData.set("fotoUrl", croppedImageFile, croppedImageFile.name);
     } else if (fileInputRef.current?.files?.[0]) {
       formData.set("fotoUrl", fileInputRef.current.files[0]);
     }
-
     formAction(formData);
   };
 
   return (
     <>
-      {/* Modal Crop Gambar */}
       {imageToCrop && (
         <ImageCropModal
           upImg={imageToCrop}
           onClose={() => setImageToCrop(null)}
           onComplete={handleCropComplete}
+          // LANGKAH 3: Sekarang `supabase` adalah instance yang valid
+          supabase={supabase} 
         />
       )}
 
@@ -74,6 +75,7 @@ export default function AddPekerjaForm() {
         action={handleFormSubmit}
         className="space-y-6 bg-white p-8 rounded-lg shadow-md"
       >
+        {/* ... sisa form Anda tidak perlu diubah ... */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Nama */}
           <div>
