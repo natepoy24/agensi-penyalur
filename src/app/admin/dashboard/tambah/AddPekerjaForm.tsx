@@ -8,8 +8,6 @@ import toast from "react-hot-toast";
 import SukuInput from "@/components/SukuInput";
 import ImageCropModal from "@/components/ImageCropModal";
 
-// LANGKAH 1 (DIUBAH): Sesuaikan path dan nama import sesuai file Anda
-import { createClient } from "@/utils/supabase/client"; 
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -25,8 +23,6 @@ function SubmitButton() {
 }
 
 export default function AddPekerjaForm() {
-  // LANGKAH 2 (DITAMBAHKAN): Panggil fungsi untuk membuat instance Supabase di dalam komponen
-  const supabase = createClient();
 
   const initialState = { error: undefined, success: undefined };
   const [state, formAction] = useActionState(addPekerja, initialState);
@@ -66,8 +62,6 @@ export default function AddPekerjaForm() {
           upImg={imageToCrop}
           onClose={() => setImageToCrop(null)}
           onComplete={handleCropComplete}
-          // LANGKAH 3: Sekarang `supabase` adalah instance yang valid
-          supabase={supabase} 
         />
       )}
 
