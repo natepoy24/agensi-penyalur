@@ -11,6 +11,17 @@ import slugify from 'slugify';
 export async function addPekerja(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
 
+  const bahasaAsing = formData.getAll('bahasa_asing') as string[];
+  const bahasaLain = formData.get('bahasa_lain_text') as string;
+  if (bahasaLain) {
+    bahasaAsing.push(bahasaLain);
+  }
+
+  // Proses masakan khusus
+  const masakanKhusus = formData.get('masakan_khusus_radio') === 'true'
+    ? formData.get('masakan_khusus_text') as string
+    : null;
+
   const fotoFile = formData.get('fotoUrl') as File;
   const nama =formData.get('nama') as string;
   const slug = slugify(nama, {lower: true, strict: true, remove: /[*+~.()'"!:@]/g});
@@ -24,8 +35,18 @@ export async function addPekerja(prevState: FormState, formData: FormData): Prom
     deskripsi: formData.get('deskripsi') as string,
     gaji: parseInt(formData.get('gaji') as string, 10),
     keterampilan: formData.get('keterampilan') as string,
-    umur: parseInt(formData.get('umur') as string, 10), // Tambahkan ini
-    suku: formData.get('suku') as string, // Tambahkan ini
+    umur: parseInt(formData.get('umur') as string, 10), 
+    suku: formData.get('suku') as string,
+    kekurangan: formData.get('kekurangan') as string,
+    bisa_bawa_motor: formData.get('bisa_bawa_motor') === 'true',
+    takut_anjing: formData.get('takut_anjing') === 'true',
+    status_perkawinan: formData.get('status_perkawinan') as string,
+    agama: formData.get('agama') as string,
+    bahasa_asing: bahasaAsing, // Simpan sebagai array
+    bisa_masak_babi: formData.get('bisa_masak_babi') === 'true',
+    masakan_khusus: masakanKhusus,
+    keahlian_khusus: formData.get('keahlian_khusus') as string,
+    
   };
 
   if (!fotoFile || fotoFile.size === 0) {
@@ -51,6 +72,17 @@ export async function addPekerja(prevState: FormState, formData: FormData): Prom
 export async function updatePekerja(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
 
+  const bahasaAsing = formData.getAll('bahasa_asing') as string[];
+  const bahasaLain = formData.get('bahasa_lain_text') as string;
+  if (bahasaLain) {
+    bahasaAsing.push(bahasaLain);
+  }
+
+  // Proses masakan khusus
+  const masakanKhusus = formData.get('masakan_khusus_radio') === 'true'
+    ? formData.get('masakan_khusus_text') as string
+    : null;
+
   const id = formData.get('id') as string;
   const fotoFile = formData.get('fotoUrl') as File;
   let fotoUrl = formData.get('currentFotoUrl') as string;
@@ -75,8 +107,17 @@ export async function updatePekerja(prevState: FormState, formData: FormData): P
     gaji: parseInt(formData.get('gaji') as string, 10),
     keterampilan: formData.get('keterampilan') as string,
     fotoUrl: fotoUrl,
-    umur: parseInt(formData.get('umur') as string, 10), // Tambahkan ini
-    suku: formData.get('suku') as string, // Tambahkan ini
+    umur: parseInt(formData.get('umur') as string, 10), 
+    suku: formData.get('suku') as string, 
+    kekurangan: formData.get('kekurangan') as string,
+    bisa_bawa_motor: formData.get('bisa_bawa_motor') === 'true',
+    takut_anjing: formData.get('takut_anjing') === 'true',
+    status_perkawinan: formData.get('status_perkawinan') as string,
+    agama: formData.get('agama') as string,
+    bahasa_asing: bahasaAsing, // Simpan sebagai array
+    bisa_masak_babi: formData.get('bisa_masak_babi') === 'true',
+    masakan_khusus: masakanKhusus,
+    keahlian_khusus: formData.get('keahlian_khusus') as string,
   };
 
   const { error: updateError } = await supabase.from('pekerja').update(dataToUpdate).eq('id', id);
