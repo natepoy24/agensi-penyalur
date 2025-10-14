@@ -1,10 +1,8 @@
 "use client";
 
-import { $getRoot, $getSelection, EditorState } from "lexical";
-import { useEffect, useState } from "react";
+import { EditorState } from "lexical";
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";

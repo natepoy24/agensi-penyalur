@@ -15,17 +15,25 @@ type Props = {
  * Fungsi untuk membuat deskripsi singkat dari konten Lexical JSON.
  * Mengambil teks dari paragraf pertama.
  */
-function generateDescriptionFromContent(content: any): string {
+function generateDescriptionFromContent(content: string | object): string {
   const defaultDescription = "Baca selengkapnya artikel menarik dari PT Jasa Mandiri.";
-  if (typeof content !== 'object' || !content?.root?.children) {
+  
+  let parsedContent: { root?: { children?: any[] } };
+  try {
+    parsedContent = typeof content === 'string' ? JSON.parse(content) : content;
+  } catch (e) {
+    return defaultDescription;
+  }
+
+  if (typeof parsedContent !== 'object' || !parsedContent?.root?.children) {
     return defaultDescription;
   }
   try {
-    const firstParagraph = content.root.children.find((node: any) => node.type === 'paragraph');
+    const firstParagraph = parsedContent.root.children.find((node: { type: string }) => node.type === 'paragraph');
     if (firstParagraph && firstParagraph.children) {
       const textContent = firstParagraph.children
-        .filter((child: any) => child.type === 'text')
-        .map((child: any) => child.text)
+        .filter((child: { type: string }) => child.type === 'text')
+        .map((child: { text: string }) => child.text)
         .join(' ');
       return textContent.length > 155 ? textContent.substring(0, 155) + '...' : textContent;
     }
@@ -35,7 +43,7 @@ function generateDescriptionFromContent(content: any): string {
   return defaultDescription;
 }
 
-export default async function ArtikelDetailPage({ params }: { params: { slug: string } }) {
+export default async function ArtikelDetailPage({ params }: Props) {
   const supabase = await createClient();
 
   const { data: article, error } = await supabase
@@ -67,7 +75,7 @@ export default async function ArtikelDetailPage({ params }: { params: { slug: st
   );
 }
 
-export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const supabase = await createClient();
   const { data: article } = await supabase
     .from('artikel')

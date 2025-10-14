@@ -1,7 +1,7 @@
 // src/app/admin/dashboard/artikel/tambah/page.tsx
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import { addArtikel } from "@/app/actions";
 import toast from "react-hot-toast";

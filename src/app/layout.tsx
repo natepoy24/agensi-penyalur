@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import { Toaster } from 'react-hot-toast';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NotificationHandler from '@/components/NotificationHandler';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -54,6 +55,7 @@ export default async function RootLayout({
   return (
     <html lang="id">
       <body className={inter.className}>
+        <GoogleAnalytics />
         <Toaster position="top-center" />
         <NotificationHandler />
         <Header user={user} />

@@ -9,33 +9,23 @@ import {
   $isRangeSelection,
 } from "lexical";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link"; // Pastikan ini diimpor
-import { $isAtNodeEnd, $getSelectionStyleValueForProperty } from "@lexical/selection";
 import { mergeRegister } from "@lexical/utils";
 import {
   Bold,
   Italic,
   Underline,
-  Strikethrough,
   Heading1,
-  Heading2,
-  Heading3,
   List,
-  ListOrdered,
-  Quote,
   Link, // 1. Impor ikon Link
 } from "lucide-react";
 import {
   $isHeadingNode,
-  $isQuoteNode,
   $createHeadingNode,
-  $createQuoteNode,
 } from "@lexical/rich-text";
 import {
   $isListItemNode,
-  $isListNode,
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
-  REMOVE_LIST_COMMAND,
 } from "@lexical/list";
 
 const LowPriority = 1;
@@ -46,7 +36,6 @@ export default function ToolbarPlugin() {
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
-  const [isStrikethrough, setIsStrikethrough] = useState(false);
   const [blockType, setBlockType] = useState("paragraph");
   const [isLink, setIsLink] = useState(false); // 2. State untuk melacak link
 
@@ -57,7 +46,6 @@ export default function ToolbarPlugin() {
       setIsBold(selection.hasFormat("bold"));
       setIsItalic(selection.hasFormat("italic"));
       setIsUnderline(selection.hasFormat("underline"));
-      setIsStrikethrough(selection.hasFormat("strikethrough"));
 
       // Cek apakah seleksi adalah link
       const node = selection.anchor.getNode();
