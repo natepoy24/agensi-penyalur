@@ -1,9 +1,11 @@
 // src/app/pekerja/[kategori]/[slug]/page.tsx
-import { User, Users, Briefcase, MapPin, Sparkles, Wallet, Bike, Dog, Heart, BookOpen, Utensils, Languages, XCircle } from 'lucide-react'; // 1. Tambahkan XCircle di sini
+import { User, Users, Briefcase, MapPin, Sparkles, Wallet, Bike, Dog, Heart, BookOpen, Utensils, Languages, XCircle } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { type PekerjaProps } from '@/components/PekerjaCard';
 import ImageLightbox from '@/components/ImageLightbox';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import slugify from 'slugify'; // Impor slugify
 
 async function getPekerjaBySlug(slug: string) {
   const supabase = await createClient();
@@ -20,7 +22,8 @@ async function getPekerjaBySlug(slug: string) {
   return data as PekerjaProps | null;
 }
 
-export default async function PekerjaDetailPage({ params }: { params: { slug: string } }) {
+// Komponen sekarang menerima 'kategori' dan 'slug' dari params
+export default async function PekerjaDetailPage({ params }: { params: { kategori: string, slug: string } }) {
   const pekerja = await getPekerjaBySlug(params.slug);
 
   if (!pekerja) {
@@ -36,13 +39,26 @@ export default async function PekerjaDetailPage({ params }: { params: { slug: st
   const kekuranganList = pekerja.kekurangan?.split(',').map((item: string) => item.trim()).filter((item: string) => item);
   
   const whatsappUrl = `https://api.whatsapp.com/send?phone=6282122415552&text=${encodeURIComponent(`Halo, apakah ${pekerja.kategori} dengan nama ${pekerja.nama} masih tersedia?`)}`;
+  
+  // Buat slug untuk kategori (untuk link filter)
+  const kategoriSlug = slugify(pekerja.kategori, { lower: true, strict: true });
 
   return (
     <main>
-      <div className="bg-slate-50 pt-32 pb-20 px-4">
+      <div className="bg-slate-50 pt-24 pb-20 px-4">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            
+          
+          {/* --- PERBAIKAN BREADCRUMBS DI SINI --- */}
+          <Breadcrumbs 
+            crumbs={[
+              { name: 'Beranda', path: '/' },
+              { name: 'Pekerja', path: '/pekerja' },
+              { name: pekerja.kategori, path: `/pekerja?kategori=${pekerja.kategori}` }, // Link ke halaman filter
+              { name: pekerja.nama, path: `/pekerja/${kategoriSlug}/${pekerja.slug}` }
+            ]}
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">   
             {/* Kolom Kiri: Foto dengan Lightbox */}
             <div className="md:col-span-1">
               <ImageLightbox src={pekerja.fotoUrl} alt={`Foto ${pekerja.nama}`} />

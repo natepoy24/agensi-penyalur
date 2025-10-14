@@ -30,7 +30,12 @@ export default function KontakPage() {
     <main>
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
-          <Breadcrumbs currentPage='Kontak' currentPath='kontak'/>
+          <Breadcrumbs 
+            crumbs={[
+              { name: 'Beranda', path: '/' },
+              { name: 'Kontak', path: '/kontak' },
+            ]}
+          />
           {/* Judul Halaman */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-slate-800">

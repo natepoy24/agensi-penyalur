@@ -20,10 +20,6 @@ export const metadata: Metadata = {
   ],
 };
 
-// ✅ Schema.org JSON-LD (kita pertahankan)
-const serviceSchema = { /* ... (kode schema Anda tidak berubah) ... */ };
-const breadcrumbSchema = { /* ... (kode schema Anda tidak berubah) ... */ };
-
 // Data untuk ditampilkan di halaman
 const subKategoriPL = [
     { 
@@ -44,21 +40,15 @@ const subKategoriPL = [
 export default function PerawatLansiaPage() {
   return (
     <main>
-      {/* JSON-LD Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           {/* Breadcrumbs */}
-          <Breadcrumbs parentPage="Layanan" parentPath="layanan"
-            currentPage="Perawat-lansia" currentPath="/layanan/perawat-lansia   "
+          <Breadcrumbs 
+            crumbs={[
+              { name: 'Beranda', path: '/' },
+              { name: 'Layanan', path: '/layanan' },
+              { name: 'Perawat Lansia', path: '/layanan/perawat-lansia' }
+            ]}
           />
 
           {/* Header Section */}

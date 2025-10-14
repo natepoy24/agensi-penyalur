@@ -39,7 +39,12 @@ export default function TentangPage() {
   return (
     <main className="pt-20 pb-20 px-4">
       <div className="container mx-auto">
-          <Breadcrumbs currentPage='Tentang kami' currentPath='tentang'/>
+          <Breadcrumbs 
+            crumbs={[
+              { name: 'Beranda', path: '/' },
+              { name: 'Tentang Kami', path: '/tentang' },
+            ]}
+          />
         {/* Judul Halaman */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900">Tentang PT Jasa Mandiri</h1>

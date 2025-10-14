@@ -37,6 +37,7 @@ export default function Footer() {
             <Link href="/layanan" className="text-slate-300 hover:text-white">Layanan</Link>
             <Link href="/pekerja" className="text-slate-300 hover:text-white">Pekerja</Link>
             <Link href="/kontak" className="text-slate-300 hover:text-white">Kontak</Link>
+            <Link href="/artikel" className="text-slate-300 hover:text-white">Artikel</Link>
           </nav>
         </div>
 

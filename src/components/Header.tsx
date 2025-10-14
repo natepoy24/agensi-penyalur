@@ -30,6 +30,7 @@ export default function Header({ user }: { user: User | null }) {
             <Link href="/layanan" className="hover:text-emerald-600">Layanan</Link>
             <Link href="/pekerja" className="hover:text-emerald-600">Pekerja</Link>
             <Link href="/kontak" className="hover:text-emerald-600">Kontak</Link>
+            <Link href="/artikel" className="hover:text-emerald-600">Artikel</Link>
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
@@ -67,6 +68,7 @@ export default function Header({ user }: { user: User | null }) {
             <Link href="/layanan" onClick={closeMenu}>Layanan</Link>
             <Link href="/pekerja" onClick={closeMenu}>Pekerja</Link>
             <Link href="/kontak" onClick={closeMenu}>Kontak</Link>
+            <Link href="/artikel" onClick={closeMenu}>Artikel</Link>
             
             {/* --- PERUBAHAN DI SINI --- */}
             <div className="mt-8 border-t border-slate-200 pt-8 w-full flex flex-col items-center gap-6">

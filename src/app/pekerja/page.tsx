@@ -46,7 +46,12 @@ export default async function PekerjaPage(
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-            <Breadcrumbs currentPage='Pekerja' currentPath='pekerja'/>
+          <Breadcrumbs 
+            crumbs={[
+              { name: 'Beranda', path: '/' },
+              { name: 'Pekerja', path: '/pekerja' },
+            ]}
+          />
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-slate-800">Tenaga Kerja Profesional Kami Yang Siap Kerja</h1>
             <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
               Temukan partner terpercaya untuk membantu kebutuhan keluarga Anda.

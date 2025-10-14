@@ -74,7 +74,12 @@ export default function LayananPage() {
         <div className="container mx-auto">
           {/* Judul Halaman */}
           <div className="text-center mb-12">
-            <Breadcrumbs currentPage="Layanan" currentPath="layanan" />
+          <Breadcrumbs 
+            crumbs={[
+              { name: 'Beranda', path: '/' },
+              { name: 'Layanan', path: '/layanan' },
+            ]}
+          />
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
               Layanan Profesional Kami
             </h1>

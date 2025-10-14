@@ -41,47 +41,20 @@ const subKategoriART = [
   },
 ];
 
-// ✅ Skema JSON-LD untuk Breadcrumbs (DIKEMBALIKAN)
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Beranda",
-      "item": "https://penyalurkerja.com", // Ganti dengan domain Anda nanti
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Layanan",
-      "item": "https://penyalurkerja.com/layanan", // Ganti dengan domain Anda nanti
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Pekerja Rumah Tangga (ART)",
-      "item": "https://penyalurkerja.com/layanan/art", // Ganti dengan domain Anda nanti
-    },
-  ],
-};
-
 // ✅ Komponen Halaman
 export default function LayananARTPage() {
   return (
     <main>
-      {/* 2. Tambahkan kembali script untuk skema JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           {/* 3. Tambahkan kembali komponen Breadcrumbs visual */}
-          <Breadcrumbs parentPage="Layanan" parentPath="layanan" currentPage="Pekerja Rumah Tangga (ART)" currentPath="/layanan/art"/>
-
+          <Breadcrumbs 
+            crumbs={[
+              { name: 'Beranda', path: '/' },
+              { name: 'Layanan', path: '/layanan' },
+              { name: 'Pekerja Rumah Tangga (ART)', path: '/layanan/art' }
+            ]}
+          />
           {/* Judul & Deskripsi Utama */}
           <section className="text-center my-12">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900">

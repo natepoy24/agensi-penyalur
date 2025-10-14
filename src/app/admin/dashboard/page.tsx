@@ -14,19 +14,34 @@ export default async function DashboardPage() {
     // Di sini bisa ditambahkan komponen UI untuk menampilkan 
   }
 
-  return (
+ return (
     <div className="relative min-h-screen bg-white">
       <BackgroundDecoration />
       <div className="relative z-10 container mx-auto p-8 pt-24">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-bold text-slate-800">Dasbor Admin</h1>
-            <p className="mt-2 text-slate-600">Kelola data tenaga kerja di sini.</p>
+            <p className="mt-2 text-slate-600">
+              Kelola data tenaga kerja dan artikel di sini.
+            </p>
           </div>
-          <Link href="/admin/dashboard/tambah" className="px-4 py-2 bg-emerald-600 text-white font-semibold rounded-md hover:bg-emerald-700">
-            + Tambah Pekerja Baru
-          </Link>
+          {/* Bungkus tombol dalam div */}
+          <div className="flex gap-4"> 
+            <Link 
+              href="/admin/dashboard/artikel"
+              className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+            >
+              Kelola Artikel
+            </Link>
+            <Link 
+              href="/admin/dashboard/tambah"
+              className="px-4 py-2 bg-emerald-600 text-white font-semibold rounded-md hover:bg-emerald-700"
+            >
+              + Tambah Pekerja Baru
+            </Link>
+          </div>
         </div>
+        
         <div className="w-full overflow-x-auto bg-white/80 backdrop-blur-sm rounded-lg shadow-md border">
           <table className="w-full text-sm text-left text-slate-700">
             <thead className="text-xs text-slate-500 uppercase bg-slate-100/80">
