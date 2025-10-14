@@ -2,8 +2,8 @@
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import ArticleRenderer from './ArticleRenderer';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import type { Metadata, ResolvingMetadata } from 'next';
+import Breadcrumbs from '@/components/Breadcrumbs'; 
+import type { Metadata } from 'next';
 
 export const revalidate = 3600; // Revalidate setiap 1 jam
 
@@ -16,12 +16,17 @@ type Props = {
  * Mengambil teks dari paragraf pertama.
  */
 function generateDescriptionFromContent(content: string | object): string {
-  const defaultDescription = "Baca selengkapnya artikel menarik dari PT Jasa Mandiri.";
+  const defaultDescription =
+    'Baca selengkapnya artikel menarik dari PT Jasa Mandiri.';
   
-  let parsedContent: { root?: { children?: any[] } };
+  // Definisikan tipe yang lebih spesifik untuk node Lexical
+  type LexicalNode = { type: string; children?: LexicalNode[]; text?: string };
+  let parsedContent: { root?: { children?: LexicalNode[] } };
+
   try {
     parsedContent = typeof content === 'string' ? JSON.parse(content) : content;
-  } catch (e) {
+  } catch (_e) {
+    // Variabel error tidak digunakan, jadi kita beri awalan underscore
     return defaultDescription;
   }
 
@@ -29,13 +34,17 @@ function generateDescriptionFromContent(content: string | object): string {
     return defaultDescription;
   }
   try {
-    const firstParagraph = parsedContent.root.children.find((node: { type: string }) => node.type === 'paragraph');
+    const firstParagraph = parsedContent.root.children.find(
+      (node) => node.type === 'paragraph',
+    );
     if (firstParagraph && firstParagraph.children) {
       const textContent = firstParagraph.children
-        .filter((child: { type: string }) => child.type === 'text')
-        .map((child: { text: string }) => child.text)
+        .filter((child) => child.type === 'text')
+        .map((child) => child.text)
         .join(' ');
-      return textContent.length > 155 ? textContent.substring(0, 155) + '...' : textContent;
+      return textContent.length > 155
+        ? textContent.substring(0, 155) + '...'
+        : textContent;
     }
   } catch (error) {
     console.error("Failed to generate description from content", error);

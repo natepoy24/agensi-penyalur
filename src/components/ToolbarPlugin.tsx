@@ -24,7 +24,6 @@ import {
 } from "@lexical/rich-text";
 import {
   $isListItemNode,
-  INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
 } from "@lexical/list";
 

@@ -37,7 +37,13 @@ export default function ImageLightbox({ src, alt }: ImageLightboxProps) {
           onClick={() => setIsOpen(false)}
         >
           <div className="relative max-w-4xl max-h-[90vh]">
-            <img src={src} alt={alt} className="w-auto h-auto max-w-full max-h-[90vh] rounded-lg" />
+            <Image
+              src={src}
+              alt={alt}
+              width={1200}
+              height={800}
+              className="w-auto h-auto max-w-full max-h-[90vh] rounded-lg object-contain"
+            />
             <button 
               className="absolute -top-2 -right-2 text-white bg-slate-800 rounded-full p-1"
               aria-label="Tutup gambar"

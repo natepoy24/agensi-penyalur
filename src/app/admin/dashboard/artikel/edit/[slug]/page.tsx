@@ -4,7 +4,6 @@ import { useActionState, useEffect, useState, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import { updateArtikel } from "@/app/actions";
 import toast from "react-hot-toast";
-import { UploadCloud } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { notFound, useParams } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -52,8 +51,6 @@ export default function EditArtikelPage() {
   const [editorState, setEditorState] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [fileName, setFileName] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
@@ -92,7 +89,6 @@ export default function EditArtikelPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFileName(file.name);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
