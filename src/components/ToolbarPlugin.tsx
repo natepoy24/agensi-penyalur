@@ -25,6 +25,7 @@ import {
 import {
   $isListItemNode,
   INSERT_UNORDERED_LIST_COMMAND,
+  $isListNode,
 } from "@lexical/list";
 
 const LowPriority = 1;
@@ -67,7 +68,9 @@ export default function ToolbarPlugin() {
       if (elementDOM !== null) {
         if ($isListItemNode(element)) {
           const parentList = element.getParent();
-          setBlockType(parentList.getTag());
+          if ($isListNode(parentList)) {
+            setBlockType(parentList.getTag());
+          }
         } else {
           const type = $isHeadingNode(element)
             ? element.getTag()
