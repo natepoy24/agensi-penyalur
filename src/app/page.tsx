@@ -110,8 +110,8 @@ export default function HomePage() {
         <h2 className="sr-only">Pertanyaan Umum tentang Penyalur Pekerja Rumah Tangga</h2>
         <FaqAccordion />
         <p className="text-center mt-4">
-          Untuk informasi lebih lanjut, kunjungi halaman 
-          <Link href="/faq" className="text-blue-600 hover:underline font-semibold"> Pertanyaan yang Sering Diajukan</Link>.
+          Untuk informasi lebih lanjut, Hubungi kami 
+          <Link href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20PT%20Jasa%20Mandiri,%20saya%20ingin%20berkonsultasi." className="text-blue-600 hover:underline font-semibold"> Pertanyaan yang Sering Diajukan</Link>.
         </p>
       </section>
 
