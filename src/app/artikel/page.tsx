@@ -3,10 +3,24 @@ import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import SchemaInjector from '@/components/SchemaInjector';
+import { generateSchema, type FAQItem } from '@/app/lib/schemaGenerator';
 
 export const revalidate = 3600; // Revalidate data setiap 1 jam
 
+const faqData: FAQItem[] = [
+  {
+    question: "Seberapa sering artikel baru diterbitkan?",
+    answer: "Kami berusaha untuk menerbitkan artikel baru secara berkala, membahas tips, berita, dan wawasan terbaru seputar dunia kerja domestik dan pengasuhan anak.",
+  },
+  {
+    question: "Bisakah saya menyarankan topik untuk artikel selanjutnya?",
+    answer: "Tentu saja! Kami sangat menghargai masukan dari pembaca. Silakan kirimkan saran topik Anda melalui halaman kontak kami, dan tim redaksi kami akan mempertimbangkannya.",
+  },
+];
+
 export default async function ArtikelListPage() {
+  const faqSchema = generateSchema("faq", faqData);
   const supabase = await createClient();
   const { data: articles, error } = await supabase
     .from('artikel')
@@ -18,7 +32,9 @@ export default async function ArtikelListPage() {
   }
 
   return (
-    <main className="container mx-auto p-8 pt-24">
+    <main className="container mx-auto p-8 pt-24 pb-20">
+      <SchemaInjector schema={faqSchema} />
+
           <Breadcrumbs 
             crumbs={[
               { name: 'Beranda', path: '/' },
@@ -57,6 +73,25 @@ export default async function ArtikelListPage() {
       ) : (
         <p className="text-center text-slate-500 py-16">Belum ada artikel yang dipublikasikan.</p>
       )}
+
+      {/* FAQ Section */}
+      <section id="faq" className="max-w-4xl mx-auto mt-20">
+        <h2 className="text-3xl font-semibold text-gray-900 mb-8 text-center">
+          Pertanyaan Umum Seputar Artikel
+        </h2>
+        <div className="space-y-4">
+          {faqData.map((item, index) => (
+            <details key={index} className="group bg-white p-6 rounded-lg shadow-sm border">
+              <summary className="flex justify-between items-center font-semibold cursor-pointer text-gray-800">
+                {item.question}
+                <span className="ml-4 transition-transform duration-200 group-open:rotate-180">▼</span>
+              </summary>
+              <p className="mt-4 text-gray-600 leading-relaxed">{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
     </main>
   );
 }

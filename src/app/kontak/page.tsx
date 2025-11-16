@@ -4,7 +4,19 @@
 import { useState } from 'react';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react'; // Impor ikon Clock
 import Breadcrumbs from '@/components/Breadcrumbs';
+import SchemaInjector from '@/components/SchemaInjector';
+import { generateSchema, type FAQItem } from '@/app/lib/schemaGenerator';
 
+const faqData: FAQItem[] = [
+  {
+    question: "Bagaimana cara menghubungi PT Jasa Mandiri?",
+    answer: "Anda bisa menghubungi kami melalui WhatsApp di nomor 0821-2241-5552 atau 0813-2333-7872. Anda juga bisa datang langsung ke kantor kami sesuai alamat yang tertera.",
+  },
+  {
+    question: "Apa jam operasional kantor?",
+    answer: "Kantor kami buka setiap hari, Senin hingga Minggu, dari pukul 07:00 hingga 22:00 WIB.",
+  },
+];
 export default function KontakPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -26,8 +38,12 @@ export default function KontakPage() {
     alert('Fungsionalitas kirim email akan dibuat nanti.');
   };
 
+  const faqSchema = generateSchema("faq", faqData);
+
   return (
     <main>
+      <SchemaInjector schema={faqSchema} />
+
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           <Breadcrumbs 
@@ -117,6 +133,25 @@ export default function KontakPage() {
               ></iframe>
             </div>
           </div>
+
+          {/* FAQ Section */}
+          <section id="faq" className="max-w-4xl mx-auto mt-20">
+            <h2 className="text-3xl font-semibold text-gray-900 mb-8 text-center">
+              Pertanyaan Umum Seputar Kontak
+            </h2>
+            <div className="space-y-4">
+              {faqData.map((item, index) => (
+                <details key={index} className="group bg-white p-6 rounded-lg shadow-sm border">
+                  <summary className="flex justify-between items-center font-semibold cursor-pointer text-gray-800">
+                    {item.question}
+                    <span className="ml-4 transition-transform duration-200 group-open:rotate-180">▼</span>
+                  </summary>
+                  <p className="mt-4 text-gray-600 leading-relaxed">{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+
         </div>
       </div>
     </main>

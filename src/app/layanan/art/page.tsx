@@ -4,6 +4,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { CheckCircle, Users, Briefcase } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs"; // 1. Pastikan Anda memiliki komponen Breadcrumbs
+import { generateSchema, type FAQItem } from "@/app/lib/schemaGenerator";
+import SchemaInjector from "@/components/SchemaInjector";
 
 // ✅ Metadata untuk SEO
 export const metadata: Metadata = {
@@ -41,10 +43,57 @@ const subKategoriART = [
   },
 ];
 
+// ✅ Data untuk FAQ
+const faqData: FAQItem[] = [
+  {
+    question: "Apa saja tugas utama seorang ART dari PT Jasa Mandiri?",
+    answer: "Tugas utama ART meliputi kebersihan rumah secara umum (menyapu, mengepel, membersihkan debu), mencuci, dan menyetrika. Beberapa ART juga memiliki keahlian tambahan seperti memasak atau mengasuh anak, yang bisa disesuaikan dengan kebutuhan Anda.",
+  },
+  {
+    question: "Apakah saya bisa meminta ART yang bisa memasak?",
+    answer: "Tentu. Kami memiliki kategori 'ART Masak' yang memiliki keahlian dan pengalaman dalam memasak berbagai menu harian untuk keluarga. Anda bisa menyebutkan preferensi ini saat melakukan konsultasi.",
+  },
+  {
+    question: "Bagaimana jika saya tidak cocok dengan ART yang dikirim?",
+    answer: "Kami memberikan garansi penempatan. Jika Anda merasa tidak cocok, Anda berhak mendapatkan pengganti sesuai dengan syarat dan ketentuan dalam sistem garansi kami, yaitu hingga 3 kali penggantian dalam 3 bulan pertama.",
+  },
+  {
+    question: "Apakah semua ART sudah diverifikasi?",
+    answer: "Ya, setiap calon ART telah melalui proses verifikasi latar belakang yang ketat, termasuk pengecekan identitas dan rekam jejak, untuk memastikan keamanan dan kenyamanan keluarga Anda.",
+  }
+];
+
 // ✅ Komponen Halaman
 export default function LayananARTPage() {
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Penyalur Pekerja Rumah Tangga (ART) Profesional",
+    "serviceType": "Penyalur ART",
+    "description": "Temukan pekerja rumah tangga (ART) profesional, terlatih, dan terpercaya dari PT Jasa Mandiri untuk wilayah Jabodetabek dan luar kota.",
+    "url": "https://penyalurkerja.com/layanan/art",
+    "provider": {
+      "@type": "Organization",
+      "name": "PT Jasa Mandiri",
+      "@id": "https://penyalurkerja.com/#organization"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Indonesia"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "IDR",
+      "price": "2500000"
+    }
+  };
+
+  const faqSchema = generateSchema("faq", faqData);
+
   return (
     <main>
+      <SchemaInjector schema={serviceSchema} />
+      <SchemaInjector schema={faqSchema} />
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           {/* 3. Tambahkan kembali komponen Breadcrumbs visual */}
@@ -113,6 +162,24 @@ export default function LayananARTPage() {
                 Rp 2.500.000 - Rp 3.500.000 per bulan
               </strong>
             </p>
+          </section>
+
+          {/* FAQ Section */}
+          <section id="faq" className="max-w-4xl mx-auto mt-16">
+            <h2 className="text-3xl font-semibold text-gray-900 mb-8 text-center">
+              Pertanyaan yang Sering Diajukan (FAQ)
+            </h2>
+            <div className="space-y-4">
+              {faqData.map((item, index) => (
+                <details key={index} className="group bg-white p-6 rounded-lg shadow-sm">
+                  <summary className="flex justify-between items-center font-semibold cursor-pointer text-gray-800">
+                    {item.question}
+                    <span className="ml-4 transition-transform duration-200 group-open:rotate-180">▼</span>
+                  </summary>
+                  <p className="mt-4 text-gray-600 leading-relaxed">{item.answer}</p>
+                </details>
+              ))}
+            </div>
           </section>
 
           {/* Link ke layanan relevan */}

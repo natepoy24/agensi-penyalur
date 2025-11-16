@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { generateSchema, type FAQItem } from "@/app/lib/schemaGenerator";
+import SchemaInjector from "@/components/SchemaInjector";
 
 // ✅ Metadata untuk SEO
 export const metadata: Metadata = {
@@ -67,9 +69,53 @@ const services = [
   },
 ];
 
+// ✅ Data untuk FAQ
+const faqData: FAQItem[] = [
+  {
+    question: "Apa saja layanan utama yang disediakan PT Jasa Mandiri?",
+    answer: "Kami menyediakan tiga layanan utama: penyalur Pekerja Rumah Tangga (ART), Baby Sitter profesional untuk bayi dan balita, serta Perawat Lansia (Home Care) untuk pendampingan orang tua.",
+  },
+  {
+    question: "Bagaimana sistem garansi jika saya tidak cocok dengan pekerja?",
+    answer: "Kami memberikan garansi penempatan yang fleksibel. Untuk area Jabodetabek, Anda mendapatkan garansi 3 bulan dengan hak 3 kali penggantian. Untuk luar Jabodetabek, berlaku sistem kontrak 1 tahun dengan garansi 6 bulan dan hak 2 kali penggantian.",
+  },
+  {
+    question: "Apakah semua pekerja sudah terverifikasi?",
+    answer: "Ya, semua calon pekerja kami telah melalui proses verifikasi identitas, pengecekan latar belakang, dan pelatihan keterampilan dasar untuk memastikan mereka profesional dan dapat dipercaya.",
+  },
+];
+
 export default function LayananPage() {
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Layanan Penyalur Tenaga Kerja Profesional",
+    "serviceType": "Penyalur ART, Babysitter, dan Perawat Lansia",
+    "description": "PT Jasa Mandiri menyediakan layanan penyalur ART, baby sitter, dan perawat lansia profesional untuk wilayah Jabodetabek dan luar kota. Terlatih, terpercaya, dan bergaransi.",
+    "url": "https://penyalurkerja.com/layanan",
+    "provider": {
+      "@type": "Organization",
+      "name": "PT Jasa Mandiri",
+      "@id": "https://penyalurkerja.com/#organization"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Indonesia"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "IDR",
+      "price": "2500000"
+    }
+  };
+  const faqSchema = generateSchema("faq", faqData);
+
   return (
     <main>
+      {/* Inject Schema */}
+      <SchemaInjector schema={serviceSchema} />
+      <SchemaInjector schema={faqSchema} />
+
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           {/* Judul Halaman */}
@@ -204,6 +250,24 @@ export default function LayananPage() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Section */}
+          <section id="faq" className="max-w-4xl mx-auto mt-20">
+            <h2 className="text-3xl font-semibold text-gray-900 mb-8 text-center">
+              Pertanyaan Umum Seputar Layanan
+            </h2>
+            <div className="space-y-4">
+              {faqData.map((item, index) => (
+                <details key={index} className="group bg-white p-6 rounded-lg shadow-sm">
+                  <summary className="flex justify-between items-center font-semibold cursor-pointer text-gray-800">
+                    {item.question}
+                    <span className="ml-4 transition-transform duration-200 group-open:rotate-180">▼</span>
+                  </summary>
+                  <p className="mt-4 text-gray-600 leading-relaxed">{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
 
           {/* SEO Content */}
             <div className="mt-16 bg-white p-8 rounded-xl shadow-lg max-w-4xl mx-auto text-center">

@@ -145,6 +145,13 @@ export default function ImageCropModal({ upImg, onClose, onComplete }: ImageCrop
           <div className="max-h-[60vh] overflow-y-auto mb-4">
             <ReactCrop crop={crop} onChange={setCrop} onComplete={setCompletedCrop} aspect={1}>
               <img ref={imgRef} src={upImg} onLoad={onImageLoad} alt="Preview" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                ref={imgRef} 
+                src={upImg} 
+                onLoad={onImageLoad} 
+                alt="Preview" 
+              />
             </ReactCrop>
           </div>
 

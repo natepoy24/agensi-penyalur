@@ -31,6 +31,7 @@ export default function Header({ user }: { user: User | null }) {
             <Link href="/pekerja" className="hover:text-emerald-600">Pekerja</Link>
             <Link href="/kontak" className="hover:text-emerald-600">Kontak</Link>
             <Link href="/artikel" className="hover:text-emerald-600">Artikel</Link>
+            <Link href="/lowongan-kerja" className="hover:text-emerald-600">Lowongan Kerja</Link>
           </nav>
 
           <div className="hidden md:flex items-center gap-4">

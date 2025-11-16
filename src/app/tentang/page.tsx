@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { generateSchema, type FAQItem } from '@/app/lib/schemaGenerator';
+import SchemaInjector from '@/components/SchemaInjector';
 
 // Metadata SEO
 export const metadata: Metadata = {
@@ -35,10 +37,32 @@ const workflowSteps = [
   { step: "6", title: "Monitoring & Pelaporan", description: "Kami melakukan monitoring pasca-penempatan dan melaporkan status ke instansi terkait." },
 ];
 
+// ✅ Data untuk FAQ
+const faqData: FAQItem[] = [
+  {
+    question: "Apakah PT Jasa Mandiri adalah perusahaan resmi?",
+    answer: "Ya, PT Jasa Mandiri adalah lembaga penyalur pekerja rumah tangga resmi yang beroperasi di bawah naungan hukum yang jelas dan terdaftar serta diawasi oleh Disnaker dan Kementerian Ketenagakerjaan RI.",
+  },
+  {
+    question: "Apa itu APPSI dan apa perannya?",
+    answer: "APPSI adalah Asosiasi Pelatihan Penempatan Pekerja Rumah Tangga Seluruh Indonesia. Kami adalah anggota dan mematuhi kode etik APPSI, yang menjamin kami tidak mempekerjakan anak di bawah umur, memberikan pelatihan layak, dan memastikan adanya kontrak kerja yang adil.",
+  },
+  {
+    question: "Bagaimana alur kerja penempatan di PT Jasa Mandiri?",
+    answer: "Proses kami terstruktur mulai dari perekrutan, validasi data, pelatihan di mess, uji kompetensi (untuk baby sitter/perawat), orientasi, penempatan, hingga monitoring untuk memastikan kualitas dan keamanan.",
+  },
+];
+
 export default function TentangPage() {
+  const faqSchema = generateSchema("faq", faqData);
+
   return (
-    <main className="pt-20 pb-20 px-4">
-      <div className="container mx-auto">
+    <main>
+      {/* Inject Schema */}
+      <SchemaInjector schema={faqSchema} />
+
+      <div className="pt-20 pb-20 px-4">
+        <div className="container mx-auto">
           <Breadcrumbs 
             crumbs={[
               { name: 'Beranda', path: '/' },
@@ -143,6 +167,24 @@ export default function TentangPage() {
           </div>
         </section>
 
+        {/* FAQ Section */}
+        <section id="faq" className="max-w-4xl mx-auto mt-20">
+          <h2 className="text-3xl font-semibold text-gray-900 mb-8 text-center">
+            Pertanyaan Umum Tentang Kami
+          </h2>
+          <div className="space-y-4">
+            {faqData.map((item, index) => (
+              <details key={index} className="group bg-white p-6 rounded-lg shadow-sm border">
+                <summary className="flex justify-between items-center font-semibold cursor-pointer text-gray-800">
+                  {item.question}
+                  <span className="ml-4 transition-transform duration-200 group-open:rotate-180">▼</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="text-center mt-20">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
@@ -155,6 +197,7 @@ export default function TentangPage() {
             Hubungi Kami Sekarang
           </Link>
         </section>
+      </div>
       </div>
     </main>
   );

@@ -1,11 +1,13 @@
 // src/app/layanan/baby-sitter/page.tsx
 import Image from "next/image";
-import Link from "next/link";
+import Link from "next/link"; // Mengganti <a> dengan <Link> untuk internal link
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { CheckCircle, HeartHandshake, Stethoscope } from "lucide-react";
+import { HeartHandshake, Stethoscope, CheckCircle, Baby } from "lucide-react"; // Ikon baru untuk konten
+import { generateSchema, type FAQItem } from "@/app/lib/schemaGenerator";
+import SchemaInjector from "@/components/SchemaInjector";
 
-// ✅ Metadata untuk SEO (sudah bagus, kita pertahankan)
+// ✅ Metadata untuk SEO (Diperkaya)
 export const metadata: Metadata = {
   title: "Baby Sitter Profesional & Terpercaya | PT Jasa Mandiri",
   description:
@@ -40,10 +42,58 @@ const subKategoriBS = [
     },
 ];
 
+// ✅ Data untuk FAQ
+const faqData: FAQItem[] = [
+  {
+    question: "Apa bedanya baby sitter newborn dan balita?",
+    answer: "Baby sitter newborn fokus pada perawatan intensif bayi 0-12 bulan (mandi, susu, steril botol), sedangkan baby sitter balita lebih fokus pada pendampingan tumbuh kembang, bermain, dan belajar anak usia 1-5 tahun.",
+  },
+  {
+    question: "Apakah ada garansi jika tidak cocok dengan baby sitter?",
+    answer: "Ya, kami memberikan garansi penempatan selama 3 bulan dengan hak penggantian hingga 3 kali untuk memastikan Anda mendapatkan pengasuh yang paling sesuai dengan kebutuhan keluarga Anda.",
+  },
+  {
+    question: "Bagaimana proses seleksi baby sitter di PT Jasa Mandiri?",
+    answer: "Setiap calon baby sitter kami wajib lolos tes kesehatan, verifikasi latar belakang, dan mengikuti pelatihan khusus mengenai perawatan anak sesuai standar profesional kami.",
+  },
+  {
+    question: "Apakah baby sitter bisa melakukan pekerjaan rumah tangga?",
+    answer: "Fokus utama baby sitter adalah pengasuhan anak. Namun, kami memiliki kategori 'Baby Sitter Serabutan' yang dapat membantu pekerjaan rumah tangga ringan yang berkaitan langsung dengan anak, seperti mencuci baju anak atau membersihkan area bermainnya.",
+  }
+];
+
 // ✅ Komponen Halaman
 export default function BabySitterPage() {
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Penyalur Baby Sitter Profesional",
+    "serviceType": "Penyalur Baby Sitter",
+    "description": "PT Jasa Mandiri menyediakan tenaga baby sitter profesional yang memiliki pengalaman dalam mengasuh bayi dan balita, memastikan kenyamanan dan keamanan anak Anda.",
+    "url": "https://penyalurkerja.com/layanan/baby-sitter",
+    "provider": {
+      "@type": "Organization",
+      "name": "PT Jasa Mandiri",
+      "@id": "https://penyalurkerja.com/#organization"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Indonesia"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "IDR",
+      "price": "3000000"
+    }
+  };
+
+  const faqSchema = generateSchema("faq", faqData);
+
   return (
     <main>
+      <SchemaInjector schema={serviceSchema} />
+      <SchemaInjector schema={faqSchema} />
+
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           {/* Breadcrumbs */}
@@ -76,7 +126,7 @@ export default function BabySitterPage() {
             />
           </section>
 
-          {/* Grid Detail Layanan (Konten Baru) */}
+          {/* Grid Detail Layanan (Konten Baru Ditambahkan) */}
           <section className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
             <div className="bg-white rounded-xl shadow-lg p-6">
               <HeartHandshake className="w-10 h-10 text-blue-500 mb-3" />
@@ -84,7 +134,7 @@ export default function BabySitterPage() {
               <p className="mt-2 text-gray-600">Seorang baby sitter tidak hanya menjaga, tetapi juga berperan aktif dalam mendukung stimulasi motorik dan sensorik, memberikan nutrisi seimbang, serta memastikan keamanan dan kenyamanan anak setiap saat.</p>
             </div>
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <Stethoscope className="w-10 h-10 text-blue-500 mb-3" />
+              <Baby className="w-10 h-10 text-blue-500 mb-3" />
               <h2 className="text-xl font-semibold text-gray-800">Kualifikasi Tenaga Kerja</h2>
               <p className="mt-2 text-gray-600">Setiap calon baby sitter kami wajib lolos tes kesehatan, memiliki pengalaman yang relevan, dan mengikuti <Link href="/tentang#alur-kerja" className="text-blue-600 hover:underline">pelatihan khusus</Link> mengenai perawatan anak sesuai standar kami.</p>
             </div>
@@ -96,7 +146,7 @@ export default function BabySitterPage() {
           </section>
 
           {/* Subkategori & Gaji */}
-          <section className="bg-white rounded-xl shadow-lg p-8 md:p-12 max-w-5xl mx-auto mb-16">
+          <section id="subkategori" className="bg-white rounded-xl shadow-lg p-8 md:p-12 max-w-5xl mx-auto mb-16">
             <h2 className="text-3xl font-semibold text-gray-900 mb-6 text-center">
               Layanan Baby Sitter yang Tersedia
             </h2>
@@ -115,10 +165,28 @@ export default function BabySitterPage() {
             </p>
           </section>
 
+          {/* FAQ Section */}
+          <section id="faq" className="max-w-4xl mx-auto mt-16">
+            <h2 className="text-3xl font-semibold text-gray-900 mb-8 text-center">
+              Pertanyaan yang Sering Diajukan (FAQ)
+            </h2>
+            <div className="space-y-4">
+              {faqData.map((item, index) => (
+                <details key={index} className="group bg-white p-6 rounded-lg shadow-sm">
+                  <summary className="flex justify-between items-center font-semibold cursor-pointer text-gray-800">
+                    {item.question}
+                    <span className="ml-4 transition-transform duration-200 group-open:rotate-180">▼</span>
+                  </summary>
+                  <p className="mt-4 text-gray-600 leading-relaxed">{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+
           {/* Link Layanan Terkait */}
           <section className="mt-16 text-center">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              Jelajah Layanan Kami yang Lain
+              Butuh Bantuan Lainnya?
             </h3>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
               Selain pengasuh anak, kami juga merupakan <Link href="/layanan/art" className="text-blue-600 font-semibold hover:underline">penyalur ART terpercaya</Link> dan menyediakan <Link href="/layanan/perawat-lansia" className="text-blue-600 font-semibold hover:underline">jasa perawat lansia</Link> yang sabar dan berpengalaman.

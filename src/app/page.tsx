@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { ShieldCheck, UserRoundCheck, FileText, Award, LifeBuoy, Building, Search, Home } from 'lucide-react';
 import FeaturedWorkers from '@/components/FeaturedWorkers';
 import FaqAccordion from '@/components/FaqAccordion';
+import SchemaInjector from '@/components/SchemaInjector';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import { generateSchema, type FAQItem } from '@/app/lib/schemaGenerator';
 
 const features = [
   { icon: <ShieldCheck />, title: "Terverifikasi & Terpercaya", text: "Setiap pekerja telah melalui proses seleksi dan verifikasi latar belakang yang ketat." },
@@ -14,27 +17,32 @@ const features = [
   { icon: <Building />, title: "Legalitas Jelas", text: "Sebagai lembaga resmi, kami beroperasi di bawah naungan hukum yang jelas." },
 ];
 
+// Data untuk FAQ, dipindahkan ke sini untuk schema generation
+const faqData: FAQItem[] = [
+  { 
+    question: "Bagaimana proses seleksi pekerja di Jasa mandiri?", 
+    answer: "Setiap calon pekerja kami melalui proses seleksi yang sangat ketat, meliputi verifikasi identitas (KTP, KK), wawancara mendalam, uji kompetensi(kecuali ART), serta pengecekan latar belakang untuk memastikan mereka dapat dipercaya." 
+  },
+  { 
+    question: "Berapa lama waktu yang dibutuhkan untuk mendapatkan pekerja?", 
+    answer: "Jika anda memilih pekerja dengan kategori tersedia yang ada di list kami, anda dapat mendapatkan pekerja dalam waktu singkat, anda memesan hari ini, kami bisa antarkan langsung ke tempat anda. Namun jika tidak ada kandidat kami yang cocok, kami akan berusaha menyediakan calon yang cocok dalam waktu 1-7 hari kerja setelah kriteria kami terima secara lengkap, tergantung pada ketersediaan kandidat." 
+  },
+  { 
+    question: "Apa yang terjadi jika saya tidak cocok dengan pekerja?", 
+    answer: "Kami memberikan garansi penggantian pekerja. Tergantung sistem yang Anda pilih, Anda memiliki hak penggantian beberapa kali dalam periode garansi. Kami akan membantu mencarikan kandidat baru." 
+  },
+];
+
 export default function HomePage() {
+  const faqSchema = generateSchema("faq", faqData);
+
   return (
     <main className="container mx-auto px-6 py-8 md:py-12">
+      {/* Inject Schema FAQ */}
+      <SchemaInjector schema={faqSchema} />
 
-      {/* 🔗 Breadcrumbs (SEO-friendly + schema.org markup) */}
-      <nav
-        className="text-sm text-gray-500 mb-6"
-        aria-label="Breadcrumb"
-        itemScope
-        itemType="https://schema.org/BreadcrumbList"
-      >
-        <ol className="flex items-center space-x-2">
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <Link href="/" itemProp="item" className="flex items-center hover:underline">
-              <Home className="w-4 h-4 mr-1" />
-              <span itemProp="name">Beranda</span>
-            </Link>
-            <meta itemProp="position" content="1" />
-          </li>
-        </ol>
-      </nav>
+      {/* Breadcrumbs dengan Schema JSON-LD otomatis */}
+      <Breadcrumbs crumbs={[{ name: 'Beranda', path: '/' }]} />
 
       {/* Hero Section */}
       <section>
@@ -108,7 +116,7 @@ export default function HomePage() {
       {/* FAQ */}
       <section id="faq" className="mt-20">
         <h2 className="sr-only">Pertanyaan Umum tentang Penyalur Pekerja Rumah Tangga</h2>
-        <FaqAccordion />
+        <FaqAccordion faqData={faqData} />
         <p className="text-center mt-4">
           Untuk informasi lebih lanjut, Hubungi kami 
           <Link href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20PT%20Jasa%20Mandiri,%20saya%20ingin%20berkonsultasi." className="text-blue-600 hover:underline font-semibold"> Pertanyaan yang Sering Diajukan</Link>.

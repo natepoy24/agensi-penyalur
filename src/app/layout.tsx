@@ -10,6 +10,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import NotificationHandler from '@/components/NotificationHandler';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { Analytics } from "@vercel/analytics/next"
+import SchemaInjector from '@/components/SchemaInjector';
+import { generateSchema } from '@/app/lib/schemaGenerator';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -44,6 +46,73 @@ export const metadata: Metadata = {
   },
 };
 
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://penyalurkerja.com/#organization",
+      "name": "PT Jasa Mandiri",
+      "legalName": "PT Jasa Mandiri",
+      "url": "https://penyalurkerja.com",
+      "logo": "https://penyalurkerja.com/Image/logo-jm.png",
+      "image": "https://penyalurkerja.com/Image/banner.webp",
+      "description": "PT Jasa Mandiri adalah perusahaan resmi penyalur tenaga kerja babysitter, asisten rumah tangga, perawat lansia, dan office boy/office girl ke seluruh Indonesia.",
+      "foundingDate": "2015",
+      "address": {
+        "streetAddress": "Jl. Gunung balong no 78 RT11/04",
+        "addressLocality": "Jakarta Selatan",
+        "addressRegion": "DKI Jakarta",
+        "postalCode": "12440",
+        "addressCountry": "ID"
+      },
+      "telephone": "+6282122415552",
+      "email": "info@penyalurkerja.com",
+      "sameAs": [
+        "https://www.facebook.com/jasa.mandiri.penyalurkerja",
+        "https://www.instagram.com/cvjasamandiri/",
+        "https://wa.me/6282122415552"
+      ]
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://penyalurkerja.com/#local",
+      "name": "PT Jasa Mandiri Penyalur Tenaga Kerja",
+      "image": "https://penyalurkerja.com/Image/Logo-jm.png",
+      "priceRange": "IDR",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jl. Gunung balong no 78 RT11/04",
+        "addressLocality": "Jakarta Selatan",
+        "addressRegion": "DKI Jakarta",
+        "postalCode": "12440",
+        "addressCountry": "ID"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -6.3060224,
+        "longitude": 106.7835775
+      },
+      "telephone": "+6282122415552",
+      "openingHours": "Mo-Su 08:00-20:00",
+      "url": "https://penyalurkerja.com"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://penyalurkerja.com/#website",
+      "url": "https://penyalurkerja.com",
+      "name": "Penyalur Kerja Resmi | PT Jasa Mandiri",
+      "publisher": {
+        "@id": "https://penyalurkerja.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://penyalurkerja.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+  ]
+};
 
 export default async function RootLayout({
   children,
@@ -56,6 +125,7 @@ export default async function RootLayout({
   return (
     <html lang="id">
       <body className={inter.className}>
+        <SchemaInjector schema={orgSchema} />
         <GoogleAnalytics />
         <Analytics/>
         <Toaster position="top-center" />
