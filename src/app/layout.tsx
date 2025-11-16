@@ -10,8 +10,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import NotificationHandler from '@/components/NotificationHandler';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { Analytics } from "@vercel/analytics/next"
-import SchemaInjector from '@/components/SchemaInjector';
-import { generateSchema } from '@/app/lib/schemaGenerator';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -125,7 +123,10 @@ export default async function RootLayout({
   return (
     <html lang="id">
       <body className={inter.className}>
-        <SchemaInjector schema={orgSchema} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema, null, 2) }}
+        />
         <GoogleAnalytics />
         <Analytics/>
         <Toaster position="top-center" />

@@ -6,7 +6,7 @@ import FeaturedWorkers from '@/components/FeaturedWorkers';
 import FaqAccordion from '@/components/FaqAccordion';
 import SchemaInjector from '@/components/SchemaInjector';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { generateSchema, type FAQItem } from '@/app/lib/schemaGenerator';
+import { type FAQItem } from '@/app/lib/schemaGenerator';
 
 const features = [
   { icon: <ShieldCheck />, title: "Terverifikasi & Terpercaya", text: "Setiap pekerja telah melalui proses seleksi dan verifikasi latar belakang yang ketat." },

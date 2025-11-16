@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react'; // Impor ikon Clock
 import Breadcrumbs from '@/components/Breadcrumbs';
 import SchemaInjector from '@/components/SchemaInjector';
-import { generateSchema, type FAQItem } from '@/app/lib/schemaGenerator';
+import { type FAQItem } from '@/app/lib/schemaGenerator';
 
 const faqData: FAQItem[] = [
   {

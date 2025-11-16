@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { CheckCircle, Users, Briefcase } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs"; // 1. Pastikan Anda memiliki komponen Breadcrumbs
-import { generateSchema, type FAQItem } from "@/app/lib/schemaGenerator";
+import { type FAQItem } from "@/app/lib/schemaGenerator";
 import SchemaInjector from "@/components/SchemaInjector";
 
 // ✅ Metadata untuk SEO

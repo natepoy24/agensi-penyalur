@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { generateSchema, type FAQItem } from "@/app/lib/schemaGenerator";
+import { type FAQItem } from "@/app/lib/schemaGenerator";
 import SchemaInjector from "@/components/SchemaInjector";
 
 // ✅ Metadata untuk SEO

@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaInjector from "@/components/SchemaInjector";
-import { generateSchema, type FAQItem } from "@/app/lib/schemaGenerator";
+import { type FAQItem } from "@/app/lib/schemaGenerator";
 import { CheckCircle, User, Briefcase, BookOpen, Heart, Soup, Home, Phone, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {

@@ -4,7 +4,7 @@ import Link from "next/link"; // Mengganti <a> dengan <Link> untuk internal link
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { HeartHandshake, Stethoscope, CheckCircle, Baby } from "lucide-react"; // Ikon baru untuk konten
-import { generateSchema, type FAQItem } from "@/app/lib/schemaGenerator";
+import { type FAQItem } from "@/app/lib/schemaGenerator";
 import SchemaInjector from "@/components/SchemaInjector";
 
 // ✅ Metadata untuk SEO (Diperkaya)

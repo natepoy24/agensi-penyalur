@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import SchemaInjector from '@/components/SchemaInjector';
-import { generateSchema, type FAQItem } from '@/app/lib/schemaGenerator';
+import { type FAQItem } from '@/app/lib/schemaGenerator';
 
 export const revalidate = 3600; // Revalidate data setiap 1 jam
 

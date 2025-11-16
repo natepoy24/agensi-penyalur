@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import FilterControls from '@/components/FilterControls';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import SchemaInjector from '@/components/SchemaInjector';
-import { generateSchema, type FAQItem } from '@/app/lib/schemaGenerator';
+import { type FAQItem } from '@/app/lib/schemaGenerator';
 
 export const dynamic = 'force-dynamic';
 
