@@ -20,7 +20,6 @@ const faqData: FAQItem[] = [
 ];
 
 export default async function ArtikelListPage() {
-  const faqSchema = generateSchema("faq", faqData);
   const supabase = await createClient();
   const { data: articles, error } = await supabase
     .from('artikel')
@@ -33,7 +32,7 @@ export default async function ArtikelListPage() {
 
   return (
     <main className="container mx-auto p-8 pt-24 pb-20">
-      <SchemaInjector schema={faqSchema} />
+      <SchemaInjector type="faq" data={faqData} />
 
           <Breadcrumbs 
             crumbs={[

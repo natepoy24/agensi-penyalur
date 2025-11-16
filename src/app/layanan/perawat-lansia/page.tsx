@@ -60,35 +60,18 @@ const faqData: FAQItem[] = [
 
 // ✅ Komponen Halaman
 export default function PerawatLansiaPage() {
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Penyalur Perawat Lansia Profesional (Home Care)",
-    "serviceType": "Penyalur Perawat Lansia",
-    "description": "PT Jasa Mandiri menyediakan tenaga perawat lansia profesional yang terlatih untuk memberikan perawatan, perhatian, dan kenyamanan terbaik bagi orang tua Anda di rumah.",
-    "url": "https://penyalurkerja.com/layanan/perawat-lansia",
-    "provider": {
-      "@type": "Organization",
-      "name": "PT Jasa Mandiri",
-      "@id": "https://penyalurkerja.com/#organization"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "Indonesia"
-    },
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "IDR",
-      "price": "3500000"
-    }
+  const serviceData = {
+    name: "Penyalur Perawat Lansia Profesional",
+    serviceType: "Penyalur Perawat Lansia",
+    description: "PT Jasa Mandiri menyediakan tenaga perawat lansia profesional yang terlatih untuk memberikan perawatan, perhatian, dan kenyamanan terbaik bagi orang tua Anda di rumah.",
+    price: "3500000",
+    url: "/layanan/perawat-lansia",
   };
-
-  const faqSchema = generateSchema("faq", faqData);
 
   return (
     <main>
-      <SchemaInjector schema={serviceSchema} />
-      <SchemaInjector schema={faqSchema} />
+      <SchemaInjector type="service" data={serviceData} />
+      <SchemaInjector type="faq" data={faqData} />
 
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">

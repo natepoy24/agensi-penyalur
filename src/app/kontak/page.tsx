@@ -38,11 +38,9 @@ export default function KontakPage() {
     alert('Fungsionalitas kirim email akan dibuat nanti.');
   };
 
-  const faqSchema = generateSchema("faq", faqData);
-
   return (
     <main>
-      <SchemaInjector schema={faqSchema} />
+      <SchemaInjector type="faq" data={faqData} />
 
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">

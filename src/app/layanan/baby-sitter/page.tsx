@@ -64,35 +64,18 @@ const faqData: FAQItem[] = [
 
 // ✅ Komponen Halaman
 export default function BabySitterPage() {
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Penyalur Baby Sitter Profesional",
-    "serviceType": "Penyalur Baby Sitter",
-    "description": "PT Jasa Mandiri menyediakan tenaga baby sitter profesional yang memiliki pengalaman dalam mengasuh bayi dan balita, memastikan kenyamanan dan keamanan anak Anda.",
-    "url": "https://penyalurkerja.com/layanan/baby-sitter",
-    "provider": {
-      "@type": "Organization",
-      "name": "PT Jasa Mandiri",
-      "@id": "https://penyalurkerja.com/#organization"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "Indonesia"
-    },
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "IDR",
-      "price": "3000000"
-    }
+  const serviceData = {
+    name: "Baby Sitter Profesional",
+    serviceType: "Penyalur Baby Sitter Profesional",
+    description: "PT Jasa Mandiri menyediakan tenaga baby sitter profesional yang memiliki pengalaman dalam mengasuh bayi dan balita, memastikan kenyamanan dan keamanan anak Anda.",
+    price: "3000000",
+    url: "/layanan/baby-sitter",
   };
-
-  const faqSchema = generateSchema("faq", faqData);
 
   return (
     <main>
-      <SchemaInjector schema={serviceSchema} />
-      <SchemaInjector schema={faqSchema} />
+      <SchemaInjector type="service" data={serviceData} />
+      <SchemaInjector type="faq" data={faqData} />
 
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">

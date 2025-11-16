@@ -86,35 +86,19 @@ const faqData: FAQItem[] = [
 ];
 
 export default function LayananPage() {
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Layanan Penyalur Tenaga Kerja Profesional",
-    "serviceType": "Penyalur ART, Babysitter, dan Perawat Lansia",
-    "description": "PT Jasa Mandiri menyediakan layanan penyalur ART, baby sitter, dan perawat lansia profesional untuk wilayah Jabodetabek dan luar kota. Terlatih, terpercaya, dan bergaransi.",
-    "url": "https://penyalurkerja.com/layanan",
-    "provider": {
-      "@type": "Organization",
-      "name": "PT Jasa Mandiri",
-      "@id": "https://penyalurkerja.com/#organization"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "Indonesia"
-    },
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "IDR",
-      "price": "2500000"
-    }
+  const serviceData = {
+    name: "Layanan Penyalur Tenaga Kerja Profesional",
+    serviceType: "Penyalur ART, Babysitter, dan Perawat Lansia",
+    description: "PT Jasa Mandiri menyediakan layanan penyalur ART, baby sitter, dan perawat lansia profesional untuk wilayah Jabodetabek dan luar kota. Terlatih, terpercaya, dan bergaransi.",
+    price: "2500000",
+    url: "/layanan",
   };
-  const faqSchema = generateSchema("faq", faqData);
 
   return (
     <main>
       {/* Inject Schema */}
-      <SchemaInjector schema={serviceSchema} />
-      <SchemaInjector schema={faqSchema} />
+      <SchemaInjector type="service" data={serviceData} />
+      <SchemaInjector type="faq" data={faqData} />
 
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">

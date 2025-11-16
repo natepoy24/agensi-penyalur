@@ -63,12 +63,10 @@ const jobPostingSchema = {
 };
 
 export default function LowonganKerjaPage() {
-  const faqSchema = generateSchema("faq", faqData);
-
   return (
     <main>
-      <SchemaInjector schema={jobPostingSchema} />
-      <SchemaInjector schema={faqSchema} />
+      <SchemaInjector type="job" data={jobPostingSchema} />
+      <SchemaInjector type="faq" data={faqData} />
 
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">

@@ -65,35 +65,18 @@ const faqData: FAQItem[] = [
 
 // ✅ Komponen Halaman
 export default function LayananARTPage() {
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Penyalur Pekerja Rumah Tangga (ART) Profesional",
-    "serviceType": "Penyalur ART",
-    "description": "Temukan pekerja rumah tangga (ART) profesional, terlatih, dan terpercaya dari PT Jasa Mandiri untuk wilayah Jabodetabek dan luar kota.",
-    "url": "https://penyalurkerja.com/layanan/art",
-    "provider": {
-      "@type": "Organization",
-      "name": "PT Jasa Mandiri",
-      "@id": "https://penyalurkerja.com/#organization"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "Indonesia"
-    },
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "IDR",
-      "price": "2500000"
-    }
+  const serviceData = {
+    name: "Penyalur Pekerja Rumah Tangga (ART) Profesional",
+    serviceType: "Penyalur ART",
+    description: "Temukan pekerja rumah tangga (ART) profesional, terlatih, dan terpercaya dari PT Jasa Mandiri untuk wilayah Jabodetabek dan luar kota.",
+    price: "2500000",
+    url: "/layanan/art",
   };
-
-  const faqSchema = generateSchema("faq", faqData);
 
   return (
     <main>
-      <SchemaInjector schema={serviceSchema} />
-      <SchemaInjector schema={faqSchema} />
+      <SchemaInjector type="service" data={serviceData} />
+      <SchemaInjector type="faq" data={faqData} />
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           {/* 3. Tambahkan kembali komponen Breadcrumbs visual */}
