@@ -2,7 +2,7 @@
 import React from 'react';
 
 type SchemaInjectorProps = {
-  schema: object;
+  schema: object | null;
 };
 
 export default function SchemaInjector({ schema }: SchemaInjectorProps) {
