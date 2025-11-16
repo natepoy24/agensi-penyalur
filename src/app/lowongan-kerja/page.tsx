@@ -65,7 +65,10 @@ const jobPostingSchema = {
 export default function LowonganKerjaPage() {
   return (
     <main>
-      <SchemaInjector type="job" data={jobPostingSchema} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingSchema, null, 2) }}
+      />
       <SchemaInjector type="faq" data={faqData} />
 
       <div className="pt-20 pb-20 px-4">
