@@ -36,7 +36,7 @@ interface ArticleData {
   author?: string;
 }
 
-interface FAQItem {
+export interface FAQItem {
   question: string;
   answer: string;
 }
