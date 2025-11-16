@@ -1,38 +1,17 @@
 // src/components/SchemaInjector.tsx
 import React from 'react';
+import { generateSchema, type SchemaType, type SchemaInputData } from '@/app/lib/schemaGenerator';
 
-type SchemaInjectorProps = {
-  schema: object | null;
-};
-
-export default function SchemaInjector({ schema }: SchemaInjectorProps) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema, null, 2) }}
-    />
-  );
-}
-=======
-// src/components/SchemaInjector.tsx
-import React from 'react';
-
-type SchemaInjectorProps = {
-  schema: object | null;
-};
-
-export default function SchemaInjector({ schema }: SchemaInjectorProps) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema, null, 2) }}
-    />
-  );
+interface SchemaInjectorProps {
+  type: SchemaType;
+  data: SchemaInputData;
 }
 
-=======
-export default function SchemaInjector({ schema }: SchemaInjectorProps) {
->>>>>>> new-beta
+export default function SchemaInjector({ type, data }: SchemaInjectorProps) {
+  const schema = generateSchema(type, data);
+
+  if (!schema) return null;
+
   return (
     <script
       type="application/ld+json"

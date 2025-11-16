@@ -36,6 +36,8 @@ const faqData: FAQItem[] = [
 export default function HomePage() {
   return (
     <main className="container mx-auto px-6 py-8 md:py-12">
+      {/* Inject Schema FAQ */}
+      <SchemaInjector type="faq" data={faqData} />
       {/* Breadcrumbs dengan Schema JSON-LD otomatis */}
       <Breadcrumbs crumbs={[{ name: 'Beranda', path: '/' }]} />
 
