@@ -1,5 +1,5 @@
 import React from "react";
-import { generateSchema, SchemaType, SchemaInputData } from "@/lib/schemaGenerator";
+import { generateSchema, SchemaType, SchemaInputData } from "@/app/lib/schemaGenerator";
 
 interface SchemaInjectorProps {
   type: SchemaType;
