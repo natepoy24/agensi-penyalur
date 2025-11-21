@@ -3,10 +3,13 @@ import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import SchemaInjector from '@/components/SchemaInjector';
-import { type FAQItem } from '@/app/lib/schemaGenerator';
 
 export const revalidate = 3600; // Revalidate data setiap 1 jam
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 const faqData: FAQItem[] = [
   {
@@ -30,9 +33,26 @@ export default async function ArtikelListPage() {
     console.error('Error fetching articles:', error);
   }
 
+  // Buat skema FAQ secara manual
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <main className="container mx-auto p-8 pt-24 pb-20">
-      <SchemaInjector type="faq" data={faqData} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
           <Breadcrumbs 
             crumbs={[

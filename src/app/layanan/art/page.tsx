@@ -4,8 +4,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { CheckCircle, Users, Briefcase } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs"; // 1. Pastikan Anda memiliki komponen Breadcrumbs
-import { type FAQItem } from "@/app/lib/schemaGenerator";
-import SchemaInjector from "@/components/SchemaInjector";
 
 // ✅ Metadata untuk SEO
 export const metadata: Metadata = {
@@ -21,6 +19,11 @@ export const metadata: Metadata = {
     "yayasan jasa mandiri",
     "penyalur kerja domestik",
   ],
+};
+
+interface FAQItem {
+  question: string;
+  answer: string;
 };
 
 // Data untuk ditampilkan di halaman
@@ -65,18 +68,54 @@ const faqData: FAQItem[] = [
 
 // ✅ Komponen Halaman
 export default function LayananARTPage() {
-  const serviceData = {
+  // Buat skema Service secara manual
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
     name: "Penyalur Pekerja Rumah Tangga (ART) Profesional",
     serviceType: "Penyalur ART",
     description: "Temukan pekerja rumah tangga (ART) profesional, terlatih, dan terpercaya dari PT Jasa Mandiri untuk wilayah Jabodetabek dan luar kota.",
-    price: "2500000",
-    url: "/layanan/art",
+    provider: {
+      "@type": "Organization",
+      name: "PT Jasa Mandiri",
+      url: "https://penyalurkerja.com",
+    },
+    areaServed: {
+      "@type": "Place",
+      name: "Jabodetabek dan luar kota",
+    },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "IDR",
+      price: "2500000",
+      url: "https://penyalurkerja.com/layanan/art",
+    },
+  };
+
+  // Buat skema FAQ secara manual
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 
   return (
     <main>
-      <SchemaInjector type="service" data={serviceData} />
-      <SchemaInjector type="faq" data={faqData} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           {/* 3. Tambahkan kembali komponen Breadcrumbs visual */}

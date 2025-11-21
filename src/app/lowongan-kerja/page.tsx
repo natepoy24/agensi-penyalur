@@ -1,8 +1,6 @@
 // src/app/lowongan-kerja/page.tsx
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import SchemaInjector from "@/components/SchemaInjector";
-import { type FAQItem } from "@/app/lib/schemaGenerator";
 import { CheckCircle, User, Briefcase, BookOpen, Heart, Soup, Home, Phone, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -10,6 +8,11 @@ export const metadata: Metadata = {
   description: "Bergabunglah dengan PT Jasa Mandiri. Kami membuka lowongan untuk posisi Asisten Rumah Tangga (ART), Babysitter, dan Perawat Lansia dengan penempatan di seluruh Indonesia.",
   keywords: ["lowongan kerja art", "loker babysitter", "lowongan perawat lansia", "kerja prt", "lowongan kerja penyalur resmi"],
 };
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 const faqData: FAQItem[] = [
   {
@@ -63,13 +66,30 @@ const jobPostingSchema = {
 };
 
 export default function LowonganKerjaPage() {
+  // Buat skema FAQ secara manual
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingSchema, null, 2) }}
       />
-      <SchemaInjector type="faq" data={faqData} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">

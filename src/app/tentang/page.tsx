@@ -1,203 +1,89 @@
 // src/app/tentang/page.tsx
-import Image from 'next/image';
-import Link from 'next/link';
-import type { Metadata } from 'next';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import { generateSchema, type FAQItem } from '@/app/lib/schemaGenerator';
-import SchemaInjector from '@/components/SchemaInjector';
 
-// Metadata SEO
+import Image from 'next/image';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import { CheckCircle } from 'lucide-react';
+import type { Metadata } from 'next';
+
+// Metadata SEO untuk halaman Tentang Kami
 export const metadata: Metadata = {
-  title: 'Tentang PT Jasa Mandiri | Yayasan Penyalur ART Resmi di Jakarta',
+  title: 'Tentang PT Jasa Mandiri | Yayasan Penyalur ART Resmi',
   description:
-    'Pelajari visi, misi, dan proses kerja PT Jasa Mandiri — yayasan penyalur ART, baby sitter, dan perawat lansia resmi dengan legalitas dan etika kerja tinggi.',
+    'Pelajari visi, misi, dan komitmen PT Jasa Mandiri sebagai yayasan penyalur ART, baby sitter, dan perawat lansia resmi dan terpercaya di Jakarta.',
   keywords: [
     'tentang jasa mandiri',
     'yayasan penyalur art resmi',
     'profil perusahaan penyalur baby sitter',
     'penyalur perawat lansia jakarta',
-    'Jasa Mandiri',
-    'PT Jasa Mandiri'
+    'legalitas penyalur kerja',
   ],
   openGraph: {
-    title: 'Tentang PT Jasa Mandiri',
+    title: 'Tentang PT Jasa Mandiri: Visi, Misi, dan Legalitas',
     description:
-      'Kenali PT Jasa Mandiri, agensi penyalur ART dan baby sitter profesional dengan proses seleksi dan pelatihan resmi di bawah APPSI.',
+      'Kenali PT Jasa Mandiri, agensi penyalur ART dan baby sitter profesional dengan proses seleksi dan pelatihan resmi.',
     url: 'https://penyalurkerja.com/tentang',
     type: 'website',
   },
 };
 
-const workflowSteps = [
-  { step: "1", title: "Perekrutan & Validasi", description: "Proses dimulai dari Job Order, perekrutan, hingga validasi data calon pekerja secara ketat." },
-  { step: "2", title: "Penampungan & Pelatihan", description: "Pekerja ditampung di mess dan mendapatkan pelatihan sesuai kebutuhan spesifik pekerjaan." },
-  { step: "3", title: "Uji Kompentensi", description: "Untuk kategori pekerja highrisk seperti baby sitter dan perawat lansia, kami melakukan uji kompetensi sebelum penyaluran." },
-  { step: "4", title: "Orientasi & Kontrak", description: "Orientasi pra-penempatan dan penandatanganan kontrak kerja yang jelas dan transparan." },
-  { step: "5", title: "Penempatan", description: "Pekerja diantar dan ditempatkan di lokasi pengguna jasa sesuai dengan kesepakatan." },
-  { step: "6", title: "Monitoring & Pelaporan", description: "Kami melakukan monitoring pasca-penempatan dan melaporkan status ke instansi terkait." },
-];
-
-// ✅ Data untuk FAQ
-const faqData: FAQItem[] = [
-  {
-    question: "Apakah PT Jasa Mandiri adalah perusahaan resmi?",
-    answer: "Ya, PT Jasa Mandiri adalah lembaga penyalur pekerja rumah tangga resmi yang beroperasi di bawah naungan hukum yang jelas dan terdaftar serta diawasi oleh Disnaker dan Kementerian Ketenagakerjaan RI.",
-  },
-  {
-    question: "Apa itu APPSI dan apa perannya?",
-    answer: "APPSI adalah Asosiasi Pelatihan Penempatan Pekerja Rumah Tangga Seluruh Indonesia. Kami adalah anggota dan mematuhi kode etik APPSI, yang menjamin kami tidak mempekerjakan anak di bawah umur, memberikan pelatihan layak, dan memastikan adanya kontrak kerja yang adil.",
-  },
-  {
-    question: "Bagaimana alur kerja penempatan di PT Jasa Mandiri?",
-    answer: "Proses kami terstruktur mulai dari perekrutan, validasi data, pelatihan di mess, uji kompetensi (untuk baby sitter/perawat), orientasi, penempatan, hingga monitoring untuk memastikan kualitas dan keamanan.",
-  },
-];
-
 export default function TentangPage() {
-  const faqSchema = generateSchema("faq", faqData);
+  const crumbs = [
+    { name: 'Beranda', path: '/' },
+    { name: 'Tentang Kami', path: '/tentang' },
+  ];
 
   return (
     <main>
-      {/* Inject Schema */}
-      <SchemaInjector schema={faqSchema} />
-
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
-          <Breadcrumbs 
-            crumbs={[
-              { name: 'Beranda', path: '/' },
-              { name: 'Tentang Kami', path: '/tentang' },
-            ]}
-          />
-        {/* Judul Halaman */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900">Tentang PT Jasa Mandiri</h1>
-          <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-            Mengenal lebih dekat visi, misi, dan komitmen kami dalam memberdayakan pekerja domestik profesional di Indonesia.
-          </p>
-        </div>
-
-        {/* Kisah Kami */}
-        <section className="mb-20">
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div className="order-2 md:order-1">
-              <h2 className="text-3xl font-bold text-gray-800">Kisah Kami: Visi untuk Memberdayakan</h2>
-              <p className="mt-4 text-gray-600 leading-relaxed">
-                PT Jasa Mandiri lahir dari kepedulian terhadap dua hal penting: kebutuhan keluarga akan{' '}
-                <Link href="/layanan" className="text-blue-600 hover:underline font-semibold">
-                  bantuan domestik yang tepercaya
-                </Link>{' '}
-                dan potensi besar masyarakat untuk berkembang jika diberi kesempatan.
-              </p>
-              <p className="mt-4 text-gray-600 leading-relaxed">
-                Kami bukan sekadar agensi — kami mitra dalam peningkatan kesejahteraan sosial. Misi kami menciptakan peluang kerja yang layak dan berkelanjutan bagi masyarakat, dengan dukungan pelatihan dan pembinaan menyeluruh.
-              </p>
-              <p className="mt-4 text-gray-600 leading-relaxed">
-                Ingin tahu lebih lanjut tentang cara kami membantu keluarga menemukan pekerja ideal?{' '}
-                <Link href="/pekerja" className="text-blue-600 hover:underline font-semibold">
-                  Lihat daftar pekerja kami
-                </Link>.
-              </p>
-            </div>
-            <div className="order-1 md:order-2">
-              <Image
-                src="/Image/kisah-kami.jpg"
-                alt="Tim PT Jasa Mandiri sedang melakukan pelatihan pekerja rumah tangga"
-                width={600}
-                height={450}
-                className="rounded-xl shadow-2xl w-full"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Profil Perusahaan */}
-        <section className="bg-white p-8 md:p-12 rounded-xl shadow-lg max-w-4xl mx-auto mb-20">
-          <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Profil Perusahaan</h2>
-          <p className="text-gray-600 leading-relaxed text-center">
-            PT Jasa Mandiri adalah{' '}
-            <Link href="/layanan" className="text-blue-600 hover:underline font-semibold">
-              lembaga penyalur pekerja rumah tangga resmi
-            </Link>{' '}
-            yang berdedikasi untuk membantu keluarga Indonesia mendapatkan tenaga kerja profesional dan terpercaya.
-          </p>
-          <p className="mt-4 text-gray-600 leading-relaxed text-center">
-            Kami berkomitmen menjadi mitra terpercaya keluarga Indonesia dengan menyediakan{' '}
-            <Link href="/layanan" className="text-blue-600 hover:underline font-semibold">
-              solusi tenaga kerja domestik berkualitas
-            </Link>
-            , melalui seleksi ketat, pelatihan profesional, dan pemantauan berkelanjutan.
-          </p>
-        </section>
-
-        {/* Kode Etik */}
-        <section className="max-w-4xl mx-auto bg-blue-50 p-8 md:p-12 rounded-xl mb-20">
-          <h2 className="text-3xl font-bold text-gray-800 text-center">Kode Etik & Kemitraan APPSI</h2>
-          <p className="mt-6 text-gray-600 leading-relaxed text-center">
-            Kami beroperasi di bawah Asosiasi Pelatihan Penempatan Pekerja Rumah Tangga Seluruh Indonesia (APPSI), dan mematuhi kode etik resmi yang ditandatangani oleh Kementerian Ketenagakerjaan pada 18 Maret 2015.
-          </p>
-          <ol className="mt-6 list-decimal list-inside space-y-3 text-gray-700 md:w-4/5 mx-auto">
-            <li>Tidak merekrut pekerja di bawah usia 18 tahun.</li>
-            <li>Memberikan fasilitas penampungan dan pelatihan yang layak.</li>
-            <li>Menjamin adanya perjanjian kerja yang adil dan transparan.</li>
-            <li>Melakukan monitoring berkala pasca penempatan.</li>
-          </ol>
-        </section>
-
-        {/* Alur Kerja */}
-        <section id='alur-kerja' className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800">Alur Kerja Profesional Kami</h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Proses terstruktur kami menjamin keamanan dan kepuasan pengguna jasa.
+          <Breadcrumbs crumbs={crumbs} />
+          <div className="text-center mt-8">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+              Tentang PT Jasa Mandiri
+            </h1>
+            <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+              Yayasan Penyalur Pekerja Rumah Tangga (ART), Baby Sitter, dan Perawat Lansia Resmi di Jakarta.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {workflowSteps.map((item, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-lg flex items-start space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl">
-                  {item.step}
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">{item.title}</h3>
-                  <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
 
-        {/* FAQ Section */}
-        <section id="faq" className="max-w-4xl mx-auto mt-20">
-          <h2 className="text-3xl font-semibold text-gray-900 mb-8 text-center">
-            Pertanyaan Umum Tentang Kami
-          </h2>
-          <div className="space-y-4">
-            {faqData.map((item, index) => (
-              <details key={index} className="group bg-white p-6 rounded-lg shadow-sm border">
-                <summary className="flex justify-between items-center font-semibold cursor-pointer text-gray-800">
-                  {item.question}
-                  <span className="ml-4 transition-transform duration-200 group-open:rotate-180">▼</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">{item.answer}</p>
-              </details>
-            ))}
-          </div>
-        </section>
+          {/* Konten halaman tentang kami */}
+          <div className="mt-16 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <Image
+                src="/Image/team-photo.webp"
+                alt="Tim PT Jasa Mandiri"
+                width={600}
+                height={400}
+                className="rounded-lg shadow-xl"
+              />
+            </div>
 
-        {/* CTA */}
-        <section className="text-center mt-20">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Ingin tahu lebih lanjut tentang layanan kami?
-          </h2>
-          <Link
-            href="/kontak"
-            className="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-blue-700 transition"
-          >
-            Hubungi Kami Sekarang
-          </Link>
-        </section>
-      </div>
+            <div className="text-gray-700 space-y-4">
+              <h2 className="text-3xl font-bold text-gray-800">Misi Kami</h2>
+              <p>
+                Misi kami adalah menjembatani kebutuhan keluarga di Indonesia dengan tenaga kerja yang profesional, terampil, dan dapat dipercaya. Kami berkomitmen untuk memberikan ketenangan dan solusi terbaik bagi setiap klien.
+              </p>
+
+              <ul className="space-y-2 mt-4">
+                <li className="flex items-start">
+                  <CheckCircle className="h-6 w-6 text-blue-600 mr-2 flex-shrink-0 mt-1" />
+                  <span>Menyediakan tenaga kerja yang telah melalui proses verifikasi ketat.</span>
+                </li>
+
+                <li className="flex items-start">
+                  <CheckCircle className="h-6 w-6 text-blue-600 mr-2 flex-shrink-0 mt-1" />
+                  <span>Memberikan pelatihan dan pengembangan berkelanjutan bagi para pekerja.</span>
+                </li>
+
+                <li className="flex items-start">
+                  <CheckCircle className="h-6 w-6 text-blue-600 mr-2 flex-shrink-0 mt-1" />
+                  <span>Menawarkan proses yang transparan, cepat, dan didukung garansi.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
       </div>
     </main>
   );

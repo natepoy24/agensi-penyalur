@@ -1,8 +1,6 @@
 // src/components/Breadcrumbs.tsx
 "use client";
 
-import { generateSchema } from '@/app/lib/schemaGenerator';
-import SchemaInjector from './SchemaInjector';
 import Link from 'next/link';
 
 // Definisikan tipe untuk satu "remah roti" (crumb)
@@ -22,11 +20,28 @@ export default function Breadcrumbs({ crumbs }: BreadcrumbsProps) {
     return null;
   }
 
-  const breadcrumbsSchema = generateSchema("breadcrumbs", crumbs);
+  // Buat skema Breadcrumbs secara manual
+  const breadcrumbsSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: crumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      // Pastikan URL lengkap
+      item: `https://penyalurkerja.com${crumb.path}`,
+    })),
+  };
 
   return (
     <>
-      <SchemaInjector schema={breadcrumbsSchema} />
+      {/* Sisipkan skema Breadcrumbs JSON-LD secara langsung */}
+      {breadcrumbsSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsSchema) }}
+        />
+      )}
       <nav className="bg-blue-50 py-3 px-4 rounded-lg mb-8">
       <ol className="flex items-center gap-2 text-sm text-gray-600">
         {crumbs.map((crumb, index) => {
