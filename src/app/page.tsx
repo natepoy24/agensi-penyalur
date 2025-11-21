@@ -37,8 +37,26 @@ const faqData: FAQItem[] = [
 ];
 
 export default function HomePage() {
+  // Buat skema FAQ secara manual
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <main className="container mx-auto px-6 py-8 md:py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       {/* Breadcrumbs dengan Schema JSON-LD otomatis */}
       <Breadcrumbs crumbs={[{ name: 'Beranda', path: '/' }]} />
 
