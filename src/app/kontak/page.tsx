@@ -4,9 +4,11 @@
 import { useState } from 'react';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react'; // Impor ikon Clock
 import Breadcrumbs from '@/components/Breadcrumbs';
-import SchemaInjector from '@/components/SchemaInjector';
-import { type FAQItem } from '@/app/lib/schemaGenerator';
 
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 const faqData: FAQItem[] = [
   {
     question: "Bagaimana cara menghubungi PT Jasa Mandiri?",
@@ -38,9 +40,26 @@ export default function KontakPage() {
     alert('Fungsionalitas kirim email akan dibuat nanti.');
   };
 
+  // Buat skema FAQ secara manual
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <main>
-      <SchemaInjector type="faq" data={faqData} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
