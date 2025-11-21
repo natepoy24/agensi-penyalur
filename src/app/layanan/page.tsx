@@ -4,8 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { type FAQItem } from "@/app/lib/schemaGenerator";
-import SchemaInjector from "@/components/SchemaInjector";
 
 // ✅ Metadata untuk SEO
 export const metadata: Metadata = {
@@ -23,6 +21,11 @@ export const metadata: Metadata = {
     "layanan baby sitter jakarta",
   ],
 };
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 // ✅ Data layanan agar mudah dikelola + link halaman turunan
 const services = [
@@ -86,19 +89,54 @@ const faqData: FAQItem[] = [
 ];
 
 export default function LayananPage() {
-  const serviceData = {
+  // Buat skema Service secara manual
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
     name: "Layanan Penyalur Tenaga Kerja Profesional",
     serviceType: "Penyalur ART, Babysitter, dan Perawat Lansia",
     description: "PT Jasa Mandiri menyediakan layanan penyalur ART, baby sitter, dan perawat lansia profesional untuk wilayah Jabodetabek dan luar kota. Terlatih, terpercaya, dan bergaransi.",
-    price: "2500000",
-    url: "/layanan",
+    provider: {
+      "@type": "Organization",
+      name: "PT Jasa Mandiri",
+      url: "https://penyalurkerja.com",
+    },
+    areaServed: {
+      "@type": "Place",
+      name: "Jabodetabek dan luar kota",
+    },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "IDR",
+      price: "2500000", // Harga awal sebagai referensi
+      url: "https://penyalurkerja.com/layanan",
+    },
+  };
+
+  // Buat skema FAQ secara manual
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 
   return (
     <main>
-      {/* Inject Schema */}
-      <SchemaInjector type="service" data={serviceData} />
-      <SchemaInjector type="faq" data={faqData} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
