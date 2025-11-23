@@ -53,7 +53,7 @@ const orgSchema = {
       "name": "PT Jasa Mandiri",
       "legalName": "PT Jasa Mandiri",
       "url": "https://penyalurkerja.com",
-      "logo": "https://penyalurkerja.com/Image/logo-jm.png",
+      "logo": "https://penyalurkerja.com/Image/Logo-jm.png",
       "image": "https://penyalurkerja.com/Image/banner.webp",
       "description": "PT Jasa Mandiri adalah perusahaan resmi penyalur tenaga kerja babysitter, asisten rumah tangga, perawat lansia, dan office boy/office girl ke seluruh Indonesia.",
       "foundingDate": "2015",

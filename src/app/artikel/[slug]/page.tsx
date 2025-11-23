@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 
 export const revalidate = 3600; // Revalidate setiap 1 jam
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://penyalurkerja.com';
 type Props = {
   params: { slug: string };
 };
@@ -53,17 +54,46 @@ function generateDescriptionFromContent(content: string | object): string {
 }
 
 export default async function ArtikelDetailPage({ params }: Props) {
+  const { slug } = await params;
   const supabase = await createClient();
 
   const { data: article, error } = await supabase
     .from('artikel')
     .select('*')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single();
 
   if (error || !article) {
     notFound();
   }
+
+  // Skema JSON-LD untuk Artikel
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/artikel/${article.slug}`,
+    },
+    "headline": article.judul,
+    "image": [article.gambar_url],
+    "datePublished": new Date(article.published_at).toISOString(),
+    "dateModified": new Date(article.updated_at || article.published_at).toISOString(),
+    "author": {
+      "@type": "Organization",
+      "name": "PT Jasa Mandiri",
+      "url": siteUrl,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "PT Jasa Mandiri",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${siteUrl}/Image/Logo.png` // Ganti dengan path logo Anda yang sebenarnya
+      }
+    },
+    "description": generateDescriptionFromContent(article.konten),
+  };
 
   // Pastikan konten adalah string JSON yang valid
   const initialContent = typeof article.konten === 'object' 
@@ -72,6 +102,10 @@ export default async function ArtikelDetailPage({ params }: Props) {
 
   return (
     <main className="container mx-auto p-4 md:p-8 pt-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <Breadcrumbs
         crumbs={[
           { name: 'Beranda', path: '/' },
@@ -85,11 +119,12 @@ export default async function ArtikelDetailPage({ params }: Props) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
   const supabase = await createClient();
   const { data: article } = await supabase
     .from('artikel')
     .select('judul, konten, gambar_url')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single();
 
   if (!article) {
@@ -101,6 +136,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = generateDescriptionFromContent(article.konten);
 
   return {
+    metadataBase: new URL(siteUrl),
     title: `${article.judul} | PT Jasa Mandiri`,
     description: description,
     openGraph: {

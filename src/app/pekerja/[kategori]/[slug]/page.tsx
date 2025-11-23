@@ -30,6 +30,68 @@ export default async function PekerjaDetailPage({ params }: { params: { kategori
     redirect('/pekerja');
   }
 
+  // Buat slug untuk kategori (untuk link filter)
+  const kategoriSlug = slugify(pekerja.kategori, { lower: true, strict: true });
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=6282122415552&text=${encodeURIComponent(`Halo, apakah ${pekerja.kategori} dengan nama ${pekerja.nama} masih tersedia?`)}`;
+
+  // ================================
+  // 🔥 SCHEMA PERSON
+  // ================================
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": pekerja.nama,
+    "image": pekerja.fotoUrl,
+    "jobTitle": pekerja.kategori,
+    "gender":  "Female", // Default to Female if not specified
+    "age": pekerja.umur,
+    "nationality": pekerja.suku,
+    "description": pekerja.deskripsi,
+    "homeLocation": {
+      "@type": "Place",
+      "name": pekerja.lokasi
+    },
+    "skills": pekerja.keterampilan?.split(",").map(s => s.trim()),
+    "knowsLanguage": pekerja.bahasa_asing?.join(", "),
+    "worksFor": {
+      "@type": "Organization",
+      "name": "PT Jasa Mandiri",
+      "url": "https://penyalurkerja.com",
+      "logo": "https://penyalurkerja.com/Image/Logo-jm.png" // Pastikan path logo ini benar
+    }
+  };
+
+  // ================================
+  // 🔥 SCHEMA OFFER (BERDASARKAN KATEGORI)
+  // ================================
+  const kategoriDescription: { [key: string]: string } = {
+    "ART": "Asisten Rumah Tangga untuk pekerjaan rumah tangga harian.",
+    "Babysitter": "Babysitter berpengalaman untuk menjaga anak dengan baik.",
+    "Perawat Lansia": "Perawat lansia profesional yang sabar & terlatih."
+  };
+
+  const offerSchema = {
+    "@context": "https://schema.org",
+    "@type": "Offer",
+    "name": `${pekerja.kategori} - ${pekerja.nama}`,
+    "url": `https://penyalurkerja.com/pekerja/${kategoriSlug}/${pekerja.slug}`,
+    "availability": pekerja.status === "Tersedia"
+      ? "https://schema.org/InStock"
+      : "https://schema.org/OutOfStock",
+    "priceCurrency": "IDR",
+    "price": pekerja.gaji,
+    "description": kategoriDescription[pekerja.kategori] || `Jasa pekerja kategori ${pekerja.kategori}.`,
+    "itemOffered": {
+      "@type": "Service",
+      "name": pekerja.kategori,
+      "provider": {
+        "@type": "Organization",
+        "name": "PT Jasa Mandiri",
+        "url": "https://penyalurkerja.com"
+      }
+    }
+  };
+
   const formatRupiah = (angka: number | null | undefined) => {
     if (angka === null || typeof angka === 'undefined') return 'N/A';
     return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -37,14 +99,15 @@ export default async function PekerjaDetailPage({ params }: { params: { kategori
 
   const keterampilanList = pekerja.keterampilan?.split(',').map((skill: string) => skill.trim()).filter((skill: string) => skill);
   const kekuranganList = pekerja.kekurangan?.split(',').map((item: string) => item.trim()).filter((item: string) => item);
-  
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=6282122415552&text=${encodeURIComponent(`Halo, apakah ${pekerja.kategori} dengan nama ${pekerja.nama} masih tersedia?`)}`;
-  
-  // Buat slug untuk kategori (untuk link filter)
-  const kategoriSlug = slugify(pekerja.kategori, { lower: true, strict: true });
 
   return (
     <main>
+      {/* ================================ */}
+      {/* 🔥 SISIPKAN JSON-LD SCHEMA DI SINI */}
+      {/* ================================ */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(offerSchema) }} />
+
       <div className="bg-slate-50 pt-24 pb-20 px-4">
         <div className="container mx-auto">
           
