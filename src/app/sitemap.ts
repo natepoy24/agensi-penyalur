@@ -70,6 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/layanan/baby-sitter`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/layanan/perawat-lansia`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/lowongan-kerja`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+      { url: `${baseUrl}/syarat-ketentuan`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
   ];
 
   // 5. Gabungkan semua

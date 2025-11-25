@@ -59,6 +59,7 @@ export default function Footer() {
             <Link href="/layanan/perawat-lansia" className="hover:text-emerald-400 transition-colors">Perawat Lansia (Homecare)</Link>
             <Link href="/pekerja" className="hover:text-emerald-400 transition-colors">Stok Pekerja Ready</Link>
             <Link href="/lowongan-kerja" className="hover:text-emerald-400 transition-colors">Lowongan Kerja</Link>
+            <Link href="/syarat-ketentuan" className="hover:text-emerald-400 transition-colors">Syarat dan Ketentuan</Link>
           </nav>
         </div>
 
