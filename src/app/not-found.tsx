@@ -1,12 +1,18 @@
 import Link from 'next/link';
-import { Search } from 'lucide-react';
+import Image from 'next/image';
 
 export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
       <div className="text-center max-w-lg">
-        <div className="bg-blue-100 p-4 rounded-full inline-block mb-6">
-          <Search className="w-12 h-12 text-blue-600" />
+        <div className="bg-green-200 p-2 rounded-full inline-block mb-3 mt-8 md:mt-0">
+          <Image
+            src="/Image/Logo-jm.png"
+            alt="Logo PT Jasa Mandiri Agency"
+            width={125}
+            height={125}
+            className="w-[75px] h-[75px] md:w-[125px] md:h-[125px]"
+          />
         </div>
         <h1 className="text-3xl font-bold text-slate-900 mb-3">Halaman Tidak Ditemukan</h1>
         <p className="text-slate-600 mb-8">
@@ -37,7 +43,7 @@ export default function NotFound() {
           </div>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10 mb-8 md:mb-0">
           <Link href="/" className="text-blue-600 hover:underline font-semibold">
             &larr; Kembali ke Beranda
           </Link>

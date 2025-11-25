@@ -70,6 +70,7 @@ export default function Header({ user }: { user: User | null }) {
             <Link href="/pekerja" onClick={closeMenu}>Pekerja</Link>
             <Link href="/kontak" onClick={closeMenu}>Kontak</Link>
             <Link href="/artikel" onClick={closeMenu}>Artikel</Link>
+            <Link href="/lowongan-kerja" onClick={closeMenu}>Lowongan Kerja</Link>
             
             {/* --- PERUBAHAN DI SINI --- */}
             <div className="mt-8 border-t border-slate-200 pt-8 w-full flex flex-col items-center gap-6">
