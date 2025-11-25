@@ -3,18 +3,6 @@ import { MetadataRoute } from 'next'
 import slugify from 'slugify';
 import { createClient } from '@/utils/supabase/server';
 
-// Tipe data untuk item sitemap
-type Pekerja = {
-  kategori: string;
-  slug: string;
-  created_at: string;
-}
-
-type Artikel = {
-  slug: string;
-  created_at: string;
-}
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://penyalurkerja.com';
   const supabase = await createClient();

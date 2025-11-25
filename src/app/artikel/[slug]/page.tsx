@@ -34,7 +34,13 @@ const getArticle = cache(async (slug: string) => {
 /**
  * Helper untuk parse deskripsi
  */
-function generateDescriptionFromContent(content: string | any): string {
+interface LexicalNode {
+  type: string;
+  children?: LexicalNode[];
+  text?: string;
+}
+
+function generateDescriptionFromContent(content: string | { root: { children: LexicalNode[] } }): string {
   const defaultDescription = 'Baca artikel lengkap seputar tenaga kerja, baby sitter, dan ART terpercaya dari PT Jasa Mandiri Agency.';
   
   try {
@@ -42,12 +48,12 @@ function generateDescriptionFromContent(content: string | any): string {
     
     if (parsedContent?.root?.children) {
       const firstParagraph = parsedContent.root.children.find(
-        (node: any) => node.type === 'paragraph'
+        (node: LexicalNode) => node.type === 'paragraph'
       );
       if (firstParagraph?.children) {
         const textContent = firstParagraph.children
-          .filter((child: any) => child.type === 'text')
-          .map((child: any) => child.text)
+          .filter((child: LexicalNode) => child.type === 'text')
+          .map((child: LexicalNode) => child.text)
           .join(' ');
           
         if (textContent) {
@@ -57,7 +63,7 @@ function generateDescriptionFromContent(content: string | any): string {
         }
       }
     }
-  } catch (e) {
+  } catch (_e) {
     // Silent fail
   }
   return defaultDescription;

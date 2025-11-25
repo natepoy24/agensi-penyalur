@@ -25,8 +25,7 @@ async function getPekerja(slug: string) {
 }
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } },
-  parent: ResolvingMetadata
+  { params }: { params: { slug: string } }
 ): Promise<Metadata> {
   const pekerja = await getPekerja(params.slug);
 

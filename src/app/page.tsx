@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShieldCheck, UserRoundCheck, FileText, Award, LifeBuoy, Building, Search, Star, MapPin } from 'lucide-react';
+import { ShieldCheck, UserRoundCheck, FileText, Award, LifeBuoy, Building, Star, MapPin } from 'lucide-react';
 import FaqAccordion from '@/components/FaqAccordion';
 import FeaturedWorkers from '@/components/FeaturedWorkers';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -148,7 +148,7 @@ export default function HomePage() {
                {[1,2,3,4,5].map((i) => <Star key={i} fill="currentColor" size={16} />)}
             </div>
             <p className="text-slate-700 text-sm leading-relaxed mb-6 italic">
-              "Yu ambil jasa art di sini ya admin baik banget terimakasih jasa mandiri sudah bantu saya."
+              &quot;Yu ambil jasa art di sini ya admin baik banget terimakasih jasa mandiri sudah bantu saya.&quot;
             </p>
             <div className="flex items-center gap-3 border-t pt-4">
               <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-700 font-bold text-xs">MR</div>
@@ -165,7 +165,7 @@ export default function HomePage() {
                {[1,2,3,4,5].map((i) => <Star key={i} fill="currentColor" size={16} />)}
             </div>
             <p className="text-slate-700 text-sm leading-relaxed mb-6 italic">
-              "Baik baik banget pekerjanya, admin ramah banget... terimakasih jasa mandiri makin jaya makin sukses bisnisnya."
+              &quot;Baik baik banget pekerjanya, admin ramah banget... terimakasih jasa mandiri makin jaya makin sukses bisnisnya.&quot;
             </p>
             <div className="flex items-center gap-3 border-t pt-4">
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-xs">KN</div>
@@ -182,7 +182,7 @@ export default function HomePage() {
                {[1,2,3,4,5].map((i) => <Star key={i} fill="currentColor" size={16} />)}
             </div>
             <p className="text-slate-700 text-sm leading-relaxed mb-6 italic">
-              "Mudah di cari alamat nya, titik sesuai maps, orang nya ramah2.. Sukses selalu jasa mandiri... Pokok nya mantaaapppp."
+              &quot;Mudah di cari alamat nya, titik sesuai maps, orang nya ramah2.. Sukses selalu jasa mandiri... Pokok nya mantaaapppp.&quot;
             </p>
             <div className="flex items-center gap-3 border-t pt-4">
               <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-700 font-bold text-xs">OF</div>

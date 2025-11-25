@@ -31,7 +31,7 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
 
   // 1. Deklarasikan state yang dibutuhkan
   const [bisaMasakKhusus, setBisaMasakKhusus] = useState(!!pekerja.masakan_khusus);
-  const [bahasaLainValue, setBahasaLainValue] = useState(getBahasaLain(pekerja.bahasa_asing));
+  const [bahasaLainValue] = useState(getBahasaLain(pekerja.bahasa_asing));
   const [bahasaLain, setBahasaLain] = useState(!!bahasaLainValue);
 
   useEffect(() => {

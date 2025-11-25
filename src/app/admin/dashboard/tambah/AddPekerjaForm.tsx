@@ -181,6 +181,54 @@ export default function AddPekerjaForm() {
             </select>
           </div>
 
+          {/* Bisa Bawa Motor */}
+          <div>
+            <label className="block text-sm font-semibold text-slate-800">Bisa Bawa Motor?</label>
+            <div className="mt-2 flex gap-6">
+              <label><input type="radio" name="bisa_bawa_motor" value="true" className="mr-1"/> Ya</label>
+              <label><input type="radio" name="bisa_bawa_motor" value="false" defaultChecked className="mr-1"/> Tidak</label>
+            </div>
+          </div>
+
+          {/* Takut Anjing */}
+          <div>
+            <label className="block text-sm font-semibold text-slate-800">Takut Anjing?</label>
+            <div className="mt-2 flex gap-4">
+              <label><input type="radio" name="takut_anjing" value="true" className="mr-1"/> Ya</label>
+              <label><input type="radio" name="takut_anjing" value="false" defaultChecked className="mr-1"/> Tidak</label>
+            </div>
+          </div>
+
+          {/* Bisa Masak Babi */}
+          <div>
+            <label className="block text-sm font-semibold text-slate-800">Bisa Masak Babi?</label>
+            <div className="mt-2 flex gap-4">
+              <label><input type="radio" name="bisa_masak_babi" value="true" className="mr-1"/> Ya</label>
+              <label><input type="radio" name="bisa_masak_babi" value="false" defaultChecked className="mr-1"/> Tidak</label>
+            </div>
+          </div>
+
+          {/* Masakan Khusus */}
+          <div>
+            <label className="block text-sm font-semibold text-slate-800">Bisa Masak Makanan Khusus?</label>
+            <div className="mt-2 flex gap-4">
+              <label><input type="radio" name="masakan_khusus_radio" value="true" onChange={() => setBisaMasakKhusus(true)} checked={bisaMasakKhusus} className="mr-1"/> Ya</label>
+              <label><input type="radio" name="masakan_khusus_radio" value="false" onChange={() => setBisaMasakKhusus(false)} checked={!bisaMasakKhusus} className="mr-1"/> Tidak</label>
+            </div>
+            {bisaMasakKhusus && (
+              <input type="text" name="masakan_khusus_text" placeholder="Sebutkan masakan khusus" className="mt-2 block w-full border rounded-md text-slate-900 px-3 py-2"/>
+            )}
+          </div>
+
+          {/* Keahlian Khusus */}
+          <div className="md:col-span-2">
+            <label htmlFor="keahlian_khusus" className="block text-sm font-semibold text-slate-900">
+              Keahlian Khusus
+            </label>
+            <textarea id="keahlian_khusus" name="keahlian_khusus" rows={3} className="mt-1 block w-full border rounded-md text-slate-900 px-3 py-2"></textarea>
+          </div>
+
+
           {/* Bahasa Asing */}
           <div className="md:col-span-2">
             <label className="block text-sm font-semibold text-slate-800">Bisa Bahasa Asing</label>

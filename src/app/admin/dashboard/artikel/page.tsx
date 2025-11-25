@@ -5,7 +5,7 @@ import DeleteArtikelButton from './DeleteArtikelButton';
 
 export default async function ArtikelDashboardPage() {
   const supabase = await createClient();
-  const { data: artikel, error } = await supabase
+  const { data: artikel } = await supabase
     .from('artikel')
     .select('*')
     .order('created_at', { ascending: false });

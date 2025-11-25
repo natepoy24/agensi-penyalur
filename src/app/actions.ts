@@ -195,7 +195,7 @@ export async function updateArtikel(prevState: FormState, formData: FormData): P
   let konten;
   try {
     konten = JSON.parse(kontenString);
-  } catch (e) {
+  } catch (_e) {
     return { error: 'Format konten tidak valid.' };
   }
 
@@ -288,7 +288,7 @@ export async function addArtikel(prevState: FormState, formData: FormData): Prom
     let konten;
   try {
     konten = JSON.parse(kontenString);
-  } catch (e) {
+  } catch (_e) {
     return { error: 'Format konten tidak valid.' };
   }
 

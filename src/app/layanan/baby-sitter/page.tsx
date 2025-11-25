@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link"; // Mengganti <a> dengan <Link> untuk internal link
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { HeartHandshake, Stethoscope, CheckCircle, Baby } from "lucide-react"; // Ikon baru untuk konten
+import { HeartHandshake, CheckCircle, Baby } from "lucide-react"; // Ikon baru untuk konten
 
 // ✅ Metadata untuk SEO (Diperkaya)
 export const metadata: Metadata = {
