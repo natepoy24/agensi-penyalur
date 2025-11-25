@@ -2,7 +2,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { MapPin, ShieldCheck, Star, UserCheck, Phone, AlertTriangle, CheckCircle, Banknote, Clock } from 'lucide-react';
+import { ShieldCheck, Star, UserCheck, Phone, AlertTriangle, CheckCircle, Banknote, Clock } from 'lucide-react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
 // --- 1. DATABASE AREA TARGET (Lengkap) ---
@@ -50,14 +50,9 @@ const TARGET_AREAS: Record<string, string> = {
   'bintaro': 'Bintaro',
 };
 
-type Props = {
-  params: Promise<{ kota: string }>;
-};
-
 // --- 2. METADATA DINAMIS ---
 export async function generateMetadata(
-  props: { params: Promise<{ kota: string }> },
-  parent: ResolvingMetadata
+  props: { params: Promise<{ kota: string }> }
 ): Promise<Metadata> {
   const params = await props.params;
   const { kota } = params;
@@ -193,8 +188,8 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
                   <span>Drama pekerja yang sering minta pulang kampung atau berhenti mendadak tanpa kabar.</span>
                 </li>
               </ul>
-              <p className="font-medium text-slate-6    00">
-                Mencari tenaga kerja "cabutan" di sosial media seringkali berisiko tinggi karena identitas yang tidak jelas dan tanpa jaminan.
+              <p className="font-medium text-slate-600">
+                Mencari tenaga kerja &quot;cabutan&quot; di sosial media seringkali berisiko tinggi karena identitas yang tidak jelas dan tanpa jaminan.
               </p>
             </div>
             <div className="relative h-80 w-full rounded-xl overflow-hidden shadow-lg bg-slate-100">
@@ -275,7 +270,7 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
                 </div>
                 <div>
                    <h4 className="text-lg font-bold text-slate-800">Seleksi Berlapis</h4>
-                   <p className="text-slate-600 text-sm">Pekerja melalui tes wawancara, background check, dan pelatihan dasar sebelum statusnya menjadi "Ready" di website.</p>
+                   <p className="text-slate-600 text-sm">Pekerja melalui tes wawancara, background check, dan pelatihan dasar sebelum statusnya menjadi &quot;Ready&quot; di website.</p>
                 </div>
              </div>
              <div className="flex gap-4">
