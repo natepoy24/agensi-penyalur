@@ -1,4 +1,11 @@
 // src/app/pekerja/page.tsx
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Stok Pekerja Ready (ART, Baby Sitter, Lansia) | PT Jasa Mandiri',
+  description: 'Lihat daftar pekerja rumah tangga, baby sitter, dan perawat lansia yang siap kerja hari ini. Foto lengkap, identitas jelas, dan bergaransi.',
+};
+
 import PekerjaCard, { type PekerjaProps } from '@/components/PekerjaCard';
 import { createClient } from '@/utils/supabase/server';
 import FilterControls from '@/components/FilterControls';

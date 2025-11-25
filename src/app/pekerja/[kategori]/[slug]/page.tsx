@@ -39,13 +39,28 @@ export async function generateMetadata(
   // Deskripsi yang mengandung kata kunci
   const description = `Lihat profil lengkap ${pekerja.nama}, ${pekerja.kategori} berpengalaman ${pekerja.pengalaman} tahun asal ${pekerja.lokasi}. Gaji Rp ${pekerja.gaji?.toLocaleString('id-ID')}. Status: ${pekerja.status}.`;
 
+  const kategoriSlug = slugify(pekerja.kategori, { lower: true, strict: true });
+  const pageUrl = `https://penyalurkerja.com/pekerja/${kategoriSlug}/${pekerja.slug}`;
+
   return {
     title: title,
     description: description,
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       title: title,
       description: description,
-      images: [pekerja.fotoUrl], // Agar foto wajah muncul saat share WA
+      url: pageUrl,
+      images: [pekerja.fotoUrl],
+      type: 'profile',
+    },
+    // TAMBAHKAN INI:
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      images: [pekerja.fotoUrl], // Gunakan foto pekerja, bukan logo
     },
   };
 }
