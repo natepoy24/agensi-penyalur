@@ -7,15 +7,15 @@ import { HeartHandshake, Stethoscope, CheckCircle } from "lucide-react"; // Ikon
 
 // ✅ Metadata untuk SEO (Diperkaya)
 export const metadata: Metadata = {
-  title: "Penyalur Perawat Lansia Profesional & Terpercaya | PT Jasa Mandiri",
+  title: "Penyalur Perawat Lansia Profesional & Terpercaya | PT Jasa Mandiri Agency",
   description:
-    "Layanan penyalur perawat lansia (home care) profesional dari PT Jasa Mandiri. Memberikan perawatan penuh kasih, sabar, dan terpercaya untuk orang tua Anda di rumah.",
+    "Layanan penyalur perawat lansia (home care) profesional dari PT Jasa Mandiri Agency. Memberikan perawatan penuh kasih, sabar, dan terpercaya untuk orang tua Anda di rumah.",
   keywords: [
     "penyalur perawat lansia",
     "jasa perawat lansia jakarta",
     "yayasan perawat lansia",
     "home care jakarta",
-    "PT Jasa Mandiri",
+    "PT Jasa Mandiri Agency",
     "penyalur kerja domestik",
   ],
 };
@@ -69,10 +69,10 @@ export default function PerawatLansiaPage() {
     "@type": "Service",
     name: "Penyalur Perawat Lansia Profesional",
     serviceType: "Perawatan Lansia di Rumah",
-    description: "PT Jasa Mandiri menyediakan tenaga perawat lansia profesional yang terlatih untuk memberikan perawatan, perhatian, dan kenyamanan terbaik bagi orang tua Anda di rumah.",
+    description: "PT Jasa Mandiri Agency menyediakan tenaga perawat lansia profesional yang terlatih untuk memberikan perawatan, perhatian, dan kenyamanan terbaik bagi orang tua Anda di rumah.",
     provider: {
       "@type": "Organization",
-      name: "PT Jasa Mandiri",
+      name: "PT Jasa Mandiri Agency",
       url: "https://penyalurkerja.com",
     },
     areaServed: {
@@ -130,7 +130,7 @@ export default function PerawatLansiaPage() {
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
               Layanan <strong>perawat lansia berpengalaman</strong> dari{" "}
-              <Link href="/tentang" className="text-blue-600 hover:underline font-semibold">PT Jasa Mandiri</Link>, 
+              <Link href="/tentang" className="text-blue-600 hover:underline font-semibold">PT Jasa Mandiri Agency</Link>, 
               siap membantu keluarga Anda dalam memberikan perhatian dan perawatan terbaik untuk orang tua tercinta.
             </p>
           </section>
@@ -138,8 +138,8 @@ export default function PerawatLansiaPage() {
           {/* Gambar Utama */}
           <section className="relative w-full h-64 md:h-96 mb-16 rounded-xl overflow-hidden shadow-lg">
             <Image
-              src="/Image/perawat-lansia.svg" // Pastikan gambar ini ada
-              alt="Perawat lansia profesional dari PT Jasa Mandiri dengan sabar mendampingi klien"
+              src="/Image/perawat-lansia.svg" 
+              alt="Perawat lansia profesional dari PT Jasa Mandiri Agency dengan sabar mendampingi klien"
               fill
               style={{ objectFit: "cover" }}
               priority

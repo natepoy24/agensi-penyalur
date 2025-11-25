@@ -6,8 +6,10 @@ import { type PekerjaProps } from '@/components/PekerjaCard';
 import ImageLightbox from '@/components/ImageLightbox';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import slugify from 'slugify'; // Impor slugify
+import type { Metadata, ResolvingMetadata } from 'next';
 
-async function getPekerjaBySlug(slug: string) {
+// Fungsi untuk fetch data (bisa digunakan ulang)
+async function getPekerja(slug: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('pekerja')
@@ -22,9 +24,37 @@ async function getPekerjaBySlug(slug: string) {
   return data as PekerjaProps | null;
 }
 
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const pekerja = await getPekerja(params.slug);
+
+  if (!pekerja) {
+    return { title: 'Pekerja Tidak Ditemukan' };
+  }
+
+  // Judul yang Menjual & Unik
+  const title = `Profil ${pekerja.nama} - ${pekerja.kategori} Asal ${pekerja.lokasi} | PT Jasa Mandiri Agency`;
+  
+  // Deskripsi yang mengandung kata kunci
+  const description = `Lihat profil lengkap ${pekerja.nama}, ${pekerja.kategori} berpengalaman ${pekerja.pengalaman} tahun asal ${pekerja.lokasi}. Gaji Rp ${pekerja.gaji?.toLocaleString('id-ID')}. Status: ${pekerja.status}.`;
+
+  return {
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      images: [pekerja.fotoUrl], // Agar foto wajah muncul saat share WA
+    },
+  };
+}
+
+
 // Komponen sekarang menerima 'kategori' dan 'slug' dari params
 export default async function PekerjaDetailPage({ params }: { params: { kategori: string, slug: string } }) {
-  const pekerja = await getPekerjaBySlug(params.slug);
+  const pekerja = await getPekerja(params.slug);
 
   if (!pekerja) {
     redirect('/pekerja');
@@ -55,40 +85,32 @@ export default async function PekerjaDetailPage({ params }: { params: { kategori
     "knowsLanguage": pekerja.bahasa_asing?.join(", "),
     "worksFor": {
       "@type": "Organization",
-      "name": "PT Jasa Mandiri",
+      "name": "PT Jasa Mandiri Agency",
       "url": "https://penyalurkerja.com",
       "logo": "https://penyalurkerja.com/Image/Logo-jm.png" // Pastikan path logo ini benar
     }
   };
 
   // ================================
-  // 🔥 SCHEMA OFFER (BERDASARKAN KATEGORI)
+  // 🔥 SCHEMA PRODUCT
   // ================================
-  const kategoriDescription: { [key: string]: string } = {
-    "ART": "Asisten Rumah Tangga untuk pekerjaan rumah tangga harian.",
-    "Babysitter": "Babysitter berpengalaman untuk menjaga anak dengan baik.",
-    "Perawat Lansia": "Perawat lansia profesional yang sabar & terlatih."
-  };
-
-  const offerSchema = {
+  const productSchema = {
     "@context": "https://schema.org",
-    "@type": "Offer",
-    "name": `${pekerja.kategori} - ${pekerja.nama}`,
-    "url": `https://penyalurkerja.com/pekerja/${kategoriSlug}/${pekerja.slug}`,
-    "availability": pekerja.status === "Tersedia"
-      ? "https://schema.org/InStock"
-      : "https://schema.org/OutOfStock",
-    "priceCurrency": "IDR",
-    "price": pekerja.gaji,
-    "description": kategoriDescription[pekerja.kategori] || `Jasa pekerja kategori ${pekerja.kategori}.`,
-    "itemOffered": {
-      "@type": "Service",
-      "name": pekerja.kategori,
-      "provider": {
-        "@type": "Organization",
-        "name": "PT Jasa Mandiri",
-        "url": "https://penyalurkerja.com"
-      }
+    "@type": "Product", // Ganti dari Offer ke Product
+    "name": `Jasa ${pekerja.kategori} - ${pekerja.nama}`,
+    "image": pekerja.fotoUrl,
+    "description": `Layanan ${pekerja.kategori} profesional oleh ${pekerja.nama}, pengalaman ${pekerja.pengalaman} tahun.`,
+    "brand": {
+      "@type": "Brand",
+      "name": "PT Jasa Mandiri Agency"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://penyalurkerja.com/pekerja/${kategoriSlug}/${pekerja.slug}`,
+      "priceCurrency": "IDR",
+      "price": pekerja.gaji,
+      "availability": pekerja.status === "Tersedia" ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "itemCondition": "https://schema.org/NewCondition"
     }
   };
 
@@ -106,7 +128,7 @@ export default async function PekerjaDetailPage({ params }: { params: { kategori
       {/* 🔥 SISIPKAN JSON-LD SCHEMA DI SINI */}
       {/* ================================ */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(offerSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
       <div className="bg-slate-50 pt-24 pb-20 px-4">
         <div className="container mx-auto">

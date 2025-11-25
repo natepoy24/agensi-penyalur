@@ -16,8 +16,8 @@ export default function Header({ user }: { user: User | null }) {
       <header className="w-full bg-white shadow-md z-40">
         <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
           <div>
-            <Link href="/" className="text-xl font-bold text-emerald-500">
-              PT Jasa Mandiri
+            <Link href="/" className="text-xl font-bold text-emerald-500" aria-label="Beranda PT Jasa Mandiri Agency">
+              PT Jasa Mandiri Agency
             </Link>
             <p className="text-xs text-red-700 font-bold -mt-1">
               Perusahaan Penempatan Kerja

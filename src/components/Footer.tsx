@@ -11,7 +11,7 @@ export default function Footer() {
         
         {/* Kolom 1: Tentang Perusahaan (dibuat lebih lebar) */}
         <div className="lg:col-span-2">
-          <h3 className="text-lg font-bold">PT Jasa Mandiri</h3>
+          <h3 className="text-lg font-bold">PT Jasa Mandiri Agency</h3>
           <p className="mt-4 text-sm text-slate-300">
             Perusahaan penyalur pekerja rumah tangga terverifikasi dan profesional untuk ketenangan Anda.
           </p>
@@ -76,7 +76,7 @@ export default function Footer() {
       {/* Bagian Copyright */}
       <div className="border-t border-slate-700">
         <div className="container mx-auto px-6 py-6 text-center text-sm text-slate-400">
-          <p>&copy; {currentYear} PT Jasa Mandiri. All rights reserved.</p>
+          <p>&copy; {currentYear} PT Jasa Mandiri Agency. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -7,18 +7,18 @@ import type { Metadata } from 'next';
 
 // Metadata SEO untuk halaman Tentang Kami
 export const metadata: Metadata = {
-  title: 'Tentang PT Jasa Mandiri | Yayasan Penyalur ART Resmi',
+  title: 'Tentang PT Jasa Mandiri Agency | Yayasan Penyalur ART Resmi',
   description:
-    'Pelajari visi, misi, dan komitmen PT Jasa Mandiri sebagai yayasan penyalur ART, baby sitter, dan perawat lansia resmi dan terpercaya di Jakarta.',
+    'Pelajari visi, misi, dan komitmen PT Jasa Mandiri Agency sebagai yayasan penyalur ART, baby sitter, dan perawat lansia resmi dan terpercaya di Jakarta.',
   keywords: [
-    'tentang jasa mandiri',
+    'tentang jasa mandiri agency',
     'yayasan penyalur art resmi',
     'profil perusahaan penyalur baby sitter',
     'penyalur perawat lansia jakarta',
     'legalitas penyalur kerja',
   ],
   openGraph: {
-    title: 'Tentang PT Jasa Mandiri: Visi, Misi, dan Legalitas',
+    title: 'Tentang PT Jasa Mandiri Agency: Visi, Misi, dan Legalitas',
     description:
       'Kenali PT Jasa Mandiri, agensi penyalur ART dan baby sitter profesional dengan proses seleksi dan pelatihan resmi.',
     url: 'https://penyalurkerja.com/tentang',
@@ -39,7 +39,7 @@ export default function TentangPage() {
           <Breadcrumbs crumbs={crumbs} />
           <div className="text-center mt-8">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-              Tentang PT Jasa Mandiri
+              Tentang PT Jasa Mandiri Agency
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
               Yayasan Penyalur Pekerja Rumah Tangga (ART), Baby Sitter, dan Perawat Lansia Resmi di Jakarta.
@@ -50,8 +50,8 @@ export default function TentangPage() {
           <div className="mt-16 grid md:grid-cols-2 gap-12 items-center">
             <div>
               <Image
-                src="/Image/team-photo.webp"
-                alt="Tim PT Jasa Mandiri"
+                src="/Image/team-photo.webp" 
+                alt="Tim PT Jasa Mandiri Agency"
                 width={600}
                 height={400}
                 className="rounded-lg shadow-xl"
