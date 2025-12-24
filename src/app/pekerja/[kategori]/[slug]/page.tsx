@@ -5,17 +5,19 @@ import { redirect } from 'next/navigation';
 import { type PekerjaProps } from '@/components/PekerjaCard';
 import ImageLightbox from '@/components/ImageLightbox';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import slugify from 'slugify'; // Impor slugify
-import type { Metadata, ResolvingMetadata } from 'next';
+import slugify from 'slugify';
+import type { Metadata } from 'next';
 
-// Fungsi untuk fetch data (bisa digunakan ulang)
+// Fungsi untuk fetch data
 async function getPekerja(slug: string) {
   const supabase = await createClient();
+  // Menggunakan .maybeSingle() agar tidak error "Cannot coerce..." jika data ganda/kosong
+  // Tapi idealnya slug harus unik.
   const { data, error } = await supabase
     .from('pekerja')
     .select('*')
     .eq('slug', slug)
-    .single();
+    .single(); 
 
   if (error) {
     console.error('Error mengambil detail pekerja:', error.message);
@@ -24,19 +26,24 @@ async function getPekerja(slug: string) {
   return data as PekerjaProps | null;
 }
 
+// 🔥 PERBAIKAN 1: Tipe params sekarang adalah Promise
+type Props = {
+  params: Promise<{ kategori: string; slug: string }>;
+};
+
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: Props
 ): Promise<Metadata> {
-  const pekerja = await getPekerja(params.slug);
+  // 🔥 PERBAIKAN 2: Await params sebelum digunakan
+  const { slug, kategori } = await params;
+  
+  const pekerja = await getPekerja(slug);
 
   if (!pekerja) {
     return { title: 'Pekerja Tidak Ditemukan' };
   }
 
-  // Judul yang Menjual & Unik
   const title = `Profil ${pekerja.nama} - ${pekerja.kategori} Asal ${pekerja.lokasi} | PT Jasa Mandiri Agency`;
-  
-  // Deskripsi yang mengandung kata kunci
   const description = `Lihat profil lengkap ${pekerja.nama}, ${pekerja.kategori} berpengalaman ${pekerja.pengalaman} tahun asal ${pekerja.lokasi}. Gaji Rp ${pekerja.gaji?.toLocaleString('id-ID')}. Status: ${pekerja.status}.`;
 
   const kategoriSlug = slugify(pekerja.kategori, { lower: true, strict: true });
@@ -55,39 +62,36 @@ export async function generateMetadata(
       images: [pekerja.fotoUrl],
       type: 'profile',
     },
-    // TAMBAHKAN INI:
     twitter: {
       card: 'summary_large_image',
       title: title,
       description: description,
-      images: [pekerja.fotoUrl], // Gunakan foto pekerja, bukan logo
+      images: [pekerja.fotoUrl],
     },
   };
 }
 
+export default async function PekerjaDetailPage({ params }: Props) {
+  // 🔥 PERBAIKAN 3: Await params sebelum digunakan
+  const { slug, kategori } = await params;
 
-// Komponen sekarang menerima 'kategori' dan 'slug' dari params
-export default async function PekerjaDetailPage({ params }: { params: { kategori: string, slug: string } }) {
-  const pekerja = await getPekerja(params.slug);
+  const pekerja = await getPekerja(slug);
 
   if (!pekerja) {
     redirect('/pekerja');
   }
 
-  // Buat slug untuk kategori (untuk link filter)
   const kategoriSlug = slugify(pekerja.kategori, { lower: true, strict: true });
   const whatsappUrl = `https://api.whatsapp.com/send?phone=6282122415552&text=${encodeURIComponent(`Halo, apakah ${pekerja.kategori} dengan nama ${pekerja.nama} masih tersedia?`)}`;
 
-  // ================================
-  // 🔥 SCHEMA PERSON
-  // ================================
+  // Schema Person
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": pekerja.nama,
     "image": pekerja.fotoUrl,
     "jobTitle": pekerja.kategori,
-    "gender":  "Female", // Default to Female if not specified
+    "gender":  "Female",
     "age": pekerja.umur,
     "nationality": pekerja.suku,
     "description": pekerja.deskripsi,
@@ -101,16 +105,14 @@ export default async function PekerjaDetailPage({ params }: { params: { kategori
       "@type": "Organization",
       "name": "PT Jasa Mandiri Agency",
       "url": "https://penyalurkerja.com",
-      "logo": "https://penyalurkerja.com/Image/Logo-jm.png" // Pastikan path logo ini benar
+      "logo": "https://penyalurkerja.com/Image/Logo-jm.png"
     }
   };
 
-  // ================================
-  // 🔥 SCHEMA PRODUCT
-  // ================================
+  // Schema Product
   const productSchema = {
     "@context": "https://schema.org",
-    "@type": "Product", // Ganti dari Offer ke Product
+    "@type": "Product",
     "name": `Jasa ${pekerja.kategori} - ${pekerja.nama}`,
     "image": pekerja.fotoUrl,
     "description": `Layanan ${pekerja.kategori} profesional oleh ${pekerja.nama}, pengalaman ${pekerja.pengalaman} tahun.`,
@@ -138,32 +140,26 @@ export default async function PekerjaDetailPage({ params }: { params: { kategori
 
   return (
     <main>
-      {/* ================================ */}
-      {/* 🔥 SISIPKAN JSON-LD SCHEMA DI SINI */}
-      {/* ================================ */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
       <div className="bg-slate-50 pt-24 pb-20 px-4">
         <div className="container mx-auto">
           
-          {/* --- PERBAIKAN BREADCRUMBS DI SINI --- */}
           <Breadcrumbs 
             crumbs={[
               { name: 'Beranda', path: '/' },
               { name: 'Pekerja', path: '/pekerja' },
-              { name: pekerja.kategori, path: `/pekerja?kategori=${pekerja.kategori}` }, // Link ke halaman filter
+              { name: pekerja.kategori, path: `/pekerja?kategori=${pekerja.kategori}` },
               { name: pekerja.nama, path: `/pekerja/${kategoriSlug}/${pekerja.slug}` }
             ]}
           />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">   
-            {/* Kolom Kiri: Foto dengan Lightbox */}
             <div className="md:col-span-1">
               <ImageLightbox src={pekerja.fotoUrl} alt={`Foto ${pekerja.nama}`} />
             </div>
 
-            {/* Kolom Kanan: Detail Informasi */}
             <div className="md:col-span-2 bg-white p-8 rounded-lg shadow-lg">
               <span className={`inline-block rounded-full px-3 py-1 text-sm font-semibold ${pekerja.status === 'Tersedia' ? 'bg-emerald-100 text-emerald-800' : 'bg-yellow-100 text-yellow-800'}`}>
                 {pekerja.status}
@@ -171,7 +167,6 @@ export default async function PekerjaDetailPage({ params }: { params: { kategori
               <h1 className="mt-4 text-4xl font-serif font-bold text-slate-800">{pekerja.nama}</h1>
               <h2 className="mt-2 text-xl font-semibold text-emerald-700">{pekerja.kategori}</h2>
               
-              {/* --- 2. PERBAIKAN STRUKTUR DIV DI SINI --- */}
               <div className="mt-6 border-t pt-6 text-slate-600 space-y-4">
                 <div className="flex items-center gap-3"><User /><span>Usia: <strong>{pekerja.umur} tahun</strong></span></div>
                 <div className="flex items-center gap-3"><Users /><span>Suku: <strong>{pekerja.suku}</strong></span></div>
@@ -182,7 +177,6 @@ export default async function PekerjaDetailPage({ params }: { params: { kategori
                 {pekerja.agama && <div className="flex items-center gap-3"><BookOpen /><span>Agama: <strong>{pekerja.agama}</strong></span></div>}
               </div>
 
-              {/* --- Fieldset Kemampuan Khusus BARU --- */}
               <fieldset className="mt-6 border-t pt-2">
                 <legend className="text-lg font-bold text-slate-800 mb-3">Kemampuan & Informasi Tambahan</legend>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm text-slate-600">

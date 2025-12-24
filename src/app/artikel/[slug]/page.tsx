@@ -1,22 +1,23 @@
 // src/app/artikel/[slug]/page.tsx
-// src/app/artikel/[slug]/page.tsx
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import ArticleRenderer from './ArticleRenderer';
 import Breadcrumbs from '@/components/Breadcrumbs'; 
 import type { Metadata, ResolvingMetadata } from 'next';
-import { cache } from 'react'; // IMPORT PENTING
+import { cache } from 'react'; 
 
 export const revalidate = 3600; // Revalidate setiap 1 jam
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://penyalurkerja.com';
 
+// 🔥 PERBAIKAN 1: Update Tipe Props untuk Next.js 15
+// params sekarang adalah Promise, bukan objek langsung
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 /**
- * --- 1. OPTIMASI CACHING (DEDUPING) ---
+ * --- OPTIMASI CACHING (DEDUPING) ---
  * Kita bungkus fungsi fetch dengan React cache.
  * Ini menjamin Supabase hanya dipanggil 1x meskipun dipanggil di metadata & page komponen.
  */
@@ -32,7 +33,7 @@ const getArticle = cache(async (slug: string) => {
 });
 
 /**
- * Helper untuk parse deskripsi
+ * Helper untuk parse deskripsi dari konten Lexical atau string
  */
 interface LexicalNode {
   type: string;
@@ -64,18 +65,20 @@ function generateDescriptionFromContent(content: string | { root: { children: Le
       }
     }
   } catch (_e) {
-    // Silent fail
+    // Silent fail, gunakan default
   }
   return defaultDescription;
 }
 
-// --- 2. GENERATE METADATA YANG LEBIH LENGKAP ---
+// --- GENERATE METADATA ---
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { slug } = params;
-  const article = await getArticle(slug); // Panggil fungsi cache
+  // 🔥 PERBAIKAN 2: Await params sebelum mengambil propertinya
+  const { slug } = await params;
+  
+  const article = await getArticle(slug);
 
   if (!article) {
     return { title: 'Artikel Tidak Ditemukan' };
@@ -90,19 +93,17 @@ export async function generateMetadata(
 
   return {
     metadataBase: new URL(siteUrl),
-    title: article.judul, // Template title biasanya sudah diatur di layout.tsx root
+    title: article.judul, 
     description: description,
     keywords: ['penyalur kerja', 'baby sitter', 'ART', 'lowongan kerja', article.judul],
     authors: [{ name: 'PT Jasa Mandiri Agency' }],
     creator: 'PT Jasa Mandiri Agency',
     publisher: 'PT Jasa Mandiri Agency',
     
-    // PENTING: Canonical URL untuk mencegah duplikat konten
     alternates: {
       canonical: pageUrl,
     },
 
-    // Open Graph Lengkap
     openGraph: {
       title: article.judul,
       description: description,
@@ -116,7 +117,6 @@ export async function generateMetadata(
       images: [...articleImage, ...previousImages],
     },
 
-    // Twitter Card (Penting agar saat share link gambarnya besar)
     twitter: {
       card: 'summary_large_image',
       title: article.judul,
@@ -124,7 +124,6 @@ export async function generateMetadata(
       images: articleImage,
     },
 
-    // Kontrol Robot
     robots: {
       index: true,
       follow: true,
@@ -139,10 +138,12 @@ export async function generateMetadata(
   };
 }
 
-// --- 3. HALAMAN UTAMA ---
+// --- HALAMAN UTAMA ---
 export default async function ArtikelDetailPage({ params }: Props) {
-  const { slug } = params;
-  const article = await getArticle(slug); // Panggil fungsi cache (tidak akan hit DB lagi)
+  // 🔥 PERBAIKAN 3: Await params sebelum mengambil propertinya
+  const { slug } = await params;
+
+  const article = await getArticle(slug);
 
   if (!article) {
     notFound();
@@ -150,8 +151,7 @@ export default async function ArtikelDetailPage({ params }: Props) {
 
   const description = generateDescriptionFromContent(article.konten);
 
-  // --- 4. SCHEMA JSON-LD YANG DIPERTAJAM (BlogPosting) ---
-  // Gunakan BlogPosting karena lebih spesifik daripada Article
+  // Schema JSON-LD (BlogPosting)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting", 
@@ -174,7 +174,7 @@ export default async function ArtikelDetailPage({ params }: Props) {
       "name": "PT Jasa Mandiri Agency",
       "logo": {
         "@type": "ImageObject",
-        "url": `${siteUrl}/Image/Logo-jm.png` // Pastikan path logo benar
+        "url": `${siteUrl}/Image/Logo-jm.png`
       }
     }
   };

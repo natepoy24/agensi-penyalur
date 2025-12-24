@@ -45,6 +45,15 @@ const formatRupiah = (angka: number | null | undefined) => {
 export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
   const router = useRouter();
 
+  // 🔥 GUARD CLAUSE (PERBAIKAN UTAMA)
+  // Jika slug atau kategori hilang/null, jangan render card ini sama sekali.
+  // Ini mencegah link menjadi /pekerja/undefined/undefined
+  if (!pekerja.slug || !pekerja.kategori) {
+    console.warn(`Data pekerja korup (ID: ${pekerja.id}): Missing slug or kategori`);
+    return null;
+  }
+
+  // Generate slug kategori dengan aman
   const kategoriSlug = slugify(pekerja.kategori, {
     lower: true,
     strict: true,
@@ -66,6 +75,8 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
     // Jangan navigasi kalau klik tombol atau link
     const target = e.target as HTMLElement;
     if (target.closest("a, button")) return;
+    
+    // Pastikan navigasi menggunakan slug yang sudah valid
     router.push(`/pekerja/${kategoriSlug}/${pekerja.slug}`);
   };
 

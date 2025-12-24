@@ -9,6 +9,10 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import NotificationHandler from '@/components/NotificationHandler';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { Analytics } from "@vercel/analytics/next"
+import dynamic from 'next/dynamic';
+
+// OPTIMASI PERFORMA: Load Floating Button hanya di client side (Lazy Load)
+const FloatingWhatsApp = dynamic(() => import('@/components/FloatingWhatsApp'));
 
 // Optimasi Font: Swap agar teks muncul duluan sebelum font load
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
@@ -161,7 +165,8 @@ export default async function RootLayout({
 
   return (
     <html lang="id">
-      <body className={inter.className}>
+      {/* Tambahkan padding-bottom (pb-24) agar konten paling bawah tidak tertutup floating button di mobile */}
+      <body className={`${inter.className} pb-24 md:pb-0`}>
         {/* Schema JSON-LD Global */}
         <script
           type="application/ld+json"
@@ -179,6 +184,7 @@ export default async function RootLayout({
             {children}
         </main>
         
+        <FloatingWhatsApp phoneNumber="6282122415552" />
         <Footer />
         <SpeedInsights />
       </body>
