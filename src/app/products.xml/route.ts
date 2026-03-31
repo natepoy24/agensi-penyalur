@@ -3,11 +3,9 @@ import { createClient } from '@/utils/supabase/server';
 import slugify from 'slugify';
 
 /**
-
  * Helper untuk membersihkan teks agar aman untuk XML.
  * Mengubah '&' menjadi '&amp;', '<' menjadi '&lt;', dll
  */
-
 function escapeXml(unsafe: string | null | undefined): string {
   if (!unsafe) return '';
   return unsafe.replace(/[<>&'"]/g, (c) => {
@@ -24,32 +22,20 @@ function escapeXml(unsafe: string | null | undefined): string {
 
 /**
  * Helper untuk memetakan Kategori Pekerja ke Google Product Taxonomy.
- * PERBAIKAN: Semua karakter '&' diganti '&amp;' dan '>' diganti '&gt;'
  */
 function getGoogleCategory(kategori: string): string {
   switch (kategori) {
     case 'Baby Sitter':
-      // ID: 536 (Baby Care)
       return 'Baby &gt; Baby Care'; 
-    
     case 'Perawat Lansia':
-      // ID: 5235 (Health & Beauty > Health Care > Patient Care)
       return 'Health &amp; Beauty &gt; Health Care &gt; Patient Care';
-    
     case 'Asisten Rumah Tangga':
-      // ID: 630 (Home & Garden > ...)
       return 'Home &amp; Garden &gt; Household Supplies &gt; Household Cleaning Supplies';
-    
     case 'Tukang Kebun':
-      // ID: 657 (Home & Garden > Lawn & Garden)
       return 'Home &amp; Garden &gt; Lawn &amp; Garden';
-    
     case 'Supir':
-      // ID: 888 (Vehicles & Parts > ...)
       return 'Vehicles &amp; Parts &gt; Vehicle Parts &amp; Accessories';
-      
     default:
-      // Fallback
       return 'Home &amp; Garden';
   }
 }
@@ -57,7 +43,7 @@ function getGoogleCategory(kategori: string): string {
 export async function GET() {
   const supabase = await createClient();
   
-  // Ambil data pekerja yang statusnya 'Tersedia'
+  // LOGIKA STATUS: Ambil HANYA data pekerja yang statusnya 'Tersedia'
   const { data: workers } = await supabase
     .from('pekerja')
     .select('*')
@@ -81,13 +67,13 @@ export async function GET() {
     // 3. Tentukan Kategori Google yang pas (Sudah di-escape)
     const googleCategory = getGoogleCategory(worker.kategori);
 
-    // 4. Deskripsi Produk (Dipotong max 150 karakter & di-escape)
-    let cleanDescription = worker.deskripsi 
-      ? worker.deskripsi.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...' 
-      : `Jasa ${worker.kategori} profesional dan terpercaya.`;
+    // 4. Custom Deskripsi sesuai form AddPekerjaForm.tsx
+    // Menggabungkan data: nama, kategori, umur, lokasi, agama, status_perkawinan, pengalaman, dan keterampilan
+    const rawDescription = `${worker.nama} adalah seorang ${worker.kategori} yang berusia ${worker.umur} tahun dan berasal dari ${worker.lokasi}, beragama ${worker.agama} dengan status perkawinan ${worker.status_perkawinan}. Memiliki pengalaman kerja ${worker.pengalaman} tahun dengan ekspetasi gaji sebesar ${worker.gaji}, memiliki keahlian dan keterampilan antara lain ${worker.keterampilan || 'tidak ada'}. informasi lebih lanjut silahkan cek ${url}`;
     
-    // Escape semua field text
-    cleanDescription = escapeXml(cleanDescription);
+    // Escape deskripsi agar aman masuk ke tag XML
+    const cleanDescription = escapeXml(rawDescription);
+    
     const title = escapeXml(`Jasa ${worker.kategori} - ${worker.nama} (${worker.lokasi})`);
     const location = escapeXml(worker.lokasi);
     const category = escapeXml(worker.kategori);
