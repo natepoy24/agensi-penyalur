@@ -69,7 +69,7 @@ export async function GET() {
 
     // 4. Custom Deskripsi sesuai form AddPekerjaForm.tsx
     // Menggabungkan data: nama, kategori, umur, lokasi, agama, status_perkawinan, pengalaman, dan keterampilan
-    const rawDescription = `${worker.nama} adalah seorang ${worker.kategori} yang berusia ${worker.umur} tahun dan berasal dari ${worker.lokasi}, beragama ${worker.agama} dengan status perkawinan ${worker.status_perkawinan}. Memiliki pengalaman kerja ${worker.pengalaman} tahun dengan ekspetasi gaji sebesar ${worker.gaji}, memiliki keahlian dan keterampilan antara lain ${worker.keterampilan || 'tidak ada'}. informasi lebih lanjut silahkan cek ${url}`;
+    const rawDescription = `${worker.nama} adalah seorang ${worker.kategori} yang berusia ${worker.umur} tahun dan berasal dari ${worker.lokasi}, beragama ${worker.agama} dengan status perkawinan ${worker.status_perkawinan}. Memiliki pengalaman kerja ${worker.pengalaman} tahun dengan ekspetasi gaji sebesar ${worker.gaji}, memiliki keahlian dan keterampilan antara lain ${worker.keterampilan || 'tidak ada'}. informasi lebih lanjut silahkan cek link dibawah ini`;
     
     // Escape deskripsi agar aman masuk ke tag XML
     const cleanDescription = escapeXml(rawDescription);
