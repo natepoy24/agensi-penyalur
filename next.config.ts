@@ -1,14 +1,20 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  reactStrictMode: false, // Mempertahankan pengaturan ini
+  reactStrictMode: false, 
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '5mb', // Menjaga agar upload foto artikel tidak error
+    },
+  },
   images: {
+    unoptimized: true, // SOLUSI VERCEL 100%: Mematikan optimasi gambar
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'qhuayxqevvznebdrowax.supabase.co', // Hostname dari pesan error Anda
+        hostname: 'qhuayxqevvznebdrowax.supabase.co', 
         port: '',
-        pathname: '/storage/v1/object/public/avatars/**', // Path ke bucket avatars Anda
+        pathname: '/storage/v1/object/public/avatars/**', 
       },
     ],
   },
