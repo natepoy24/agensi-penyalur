@@ -94,7 +94,28 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
           alt={`Foto ${pekerja.nama}`}
           fill
           style={{ objectFit: "cover" }}
+          className={pekerja.status === "Akan Tersedia" ? "grayscale opacity-80" : ""}
         />
+
+        {/* Logika Kondisional untuk Watermark */}
+        {pekerja.status === "Akan Tersedia" && (
+          <div
+            className="absolute top-0 left-0 w-full h-full flex items-center justify-center p-2 text-center pointer-events-none"
+            style={{
+              backgroundColor: "rgba(128, 128, 128, 0.5)",
+            }}
+          >
+            <span
+              className="font-bold text-white text-xl uppercase tracking-wider drop-shadow-md"
+              style={{
+                display: "block",
+                lineHeight: "tight",
+              }}
+            >
+              Akan Tersedia
+            </span>
+          </div>
+        )}
 
         {/* Badge Status di kanan atas */}
         <span

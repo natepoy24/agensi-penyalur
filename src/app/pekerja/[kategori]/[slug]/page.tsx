@@ -17,7 +17,7 @@ async function getPekerja(slug: string) {
     .from('pekerja')
     .select('*')
     .eq('slug', slug)
-    .single(); 
+    .single();
 
   if (error) {
     console.error('Error mengambil detail pekerja:', error.message);
@@ -36,7 +36,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // 🔥 PERBAIKAN 2: Await params sebelum digunakan
   const { slug, kategori } = await params;
-  
+
   const pekerja = await getPekerja(slug);
 
   if (!pekerja) {
@@ -91,7 +91,7 @@ export default async function PekerjaDetailPage({ params }: Props) {
     "name": pekerja.nama,
     "image": pekerja.fotoUrl,
     "jobTitle": pekerja.kategori,
-    "gender":  "Female",
+    "gender": "Female",
     "age": pekerja.umur,
     "nationality": pekerja.suku,
     "description": pekerja.deskripsi,
@@ -145,8 +145,8 @@ export default async function PekerjaDetailPage({ params }: Props) {
 
       <div className="bg-slate-50 pt-24 pb-20 px-4">
         <div className="container mx-auto">
-          
-          <Breadcrumbs 
+
+          <Breadcrumbs
             crumbs={[
               { name: 'Beranda', path: '/' },
               { name: 'Pekerja', path: '/pekerja' },
@@ -154,10 +154,34 @@ export default async function PekerjaDetailPage({ params }: Props) {
               { name: pekerja.nama, path: `/pekerja/${kategoriSlug}/${pekerja.slug}` }
             ]}
           />
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">   
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             <div className="md:col-span-1">
-              <ImageLightbox src={pekerja.fotoUrl} alt={`Foto ${pekerja.nama}`} />
+              <div className="relative w-full rounded-lg overflow-hidden group">
+                <div className={pekerja.status === "Akan Tersedia" ? "grayscale opacity-80" : ""}>
+                  <ImageLightbox src={pekerja.fotoUrl} alt={`Foto ${pekerja.nama}`} />
+                </div>
+
+                {/* Logika Kondisional untuk Watermark */}
+                {pekerja.status === "Akan Tersedia" && (
+                  <div
+                    className="absolute top-0 left-0 w-full h-full flex items-center justify-center p-4 text-center pointer-events-none"
+                    style={{
+                      backgroundColor: "rgba(128, 128, 128, 0.5)",
+                    }}
+                  >
+                    <span
+                      className="font-bold text-white text-3xl md:text-4xl uppercase tracking-wider drop-shadow-md lg:-rotate-12"
+                      style={{
+                        display: "block",
+                        lineHeight: "1.1",
+                      }}
+                    >
+                      Akan Tersedia
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="md:col-span-2 bg-white p-8 rounded-lg shadow-lg">
@@ -166,7 +190,7 @@ export default async function PekerjaDetailPage({ params }: Props) {
               </span>
               <h1 className="mt-4 text-4xl font-serif font-bold text-slate-800">{pekerja.nama}</h1>
               <h2 className="mt-2 text-xl font-semibold text-emerald-700">{pekerja.kategori}</h2>
-              
+
               <div className="mt-6 border-t pt-6 text-slate-600 space-y-4">
                 <div className="flex items-center gap-3"><User /><span>Usia: <strong>{pekerja.umur} tahun</strong></span></div>
                 <div className="flex items-center gap-3"><Users /><span>Suku: <strong>{pekerja.suku}</strong></span></div>
@@ -175,34 +199,40 @@ export default async function PekerjaDetailPage({ params }: Props) {
                 <div className="flex items-center gap-3"><Wallet /><span>Gaji: <strong>Rp {formatRupiah(pekerja.gaji)} / bulan</strong></span></div>
                 {pekerja.status_perkawinan && <div className="flex items-center gap-3"><Heart /><span>Status Perkawinan: <strong>{pekerja.status_perkawinan}</strong></span></div>}
                 {pekerja.agama && <div className="flex items-center gap-3"><BookOpen /><span>Agama: <strong>{pekerja.agama}</strong></span></div>}
-              </div>
-
-              <div className="mt-6 border-t pt-4">
-                <div className="flex justify-between border-b py-2">
-                  <span className="text-slate-500">Pendidikan</span>
-                  <span className="font-medium text-slate-800">{pekerja.pendidikan_terakhir || '-'}</span>
+                {/* Pendidikan */}
+                <div className="flex items-start gap-4">
+                  <span className="material-symbols-outlined text-slate-600 text-[28px]">menu_book</span>
+                  <p className="text-slate-600 text-lg">
+                    Pendidikan: <span className="font-bold text-slate-800">{pekerja.pendidikan_terakhir || '-'}</span>
+                  </p>
                 </div>
 
-                <div className="flex justify-between border-b py-2">
-                  <span className="text-slate-500">Tinggi Badan</span>
-                  <span className="font-medium text-slate-800">{pekerja.tinggi_badan ? `${pekerja.tinggi_badan} cm` : '-'}</span>
+                {/* Tinggi Badan */}
+                <div className="flex items-start gap-4">
+                  <span className="material-symbols-outlined text-slate-600 text-[28px]">height</span>
+                  <p className="text-slate-600 text-lg">
+                    Tinggi Badan: <span className="font-bold text-slate-800">{pekerja.tinggi_badan ? `${pekerja.tinggi_badan} cm` : '-'}</span>
+                  </p>
                 </div>
 
-                <div className="flex justify-between border-b py-2">
-                  <span className="text-slate-500">Berat Badan</span>
-                  <span className="font-medium text-slate-800">{pekerja.berat_badan ? `${pekerja.berat_badan} kg` : '-'}</span>
+                {/* Berat Badan */}
+                <div className="flex items-start gap-4">
+                  <span className="material-symbols-outlined text-slate-600 text-[28px]">weight</span>
+                  <p className="text-slate-600 text-lg">
+                    Berat Badan: <span className="font-bold text-slate-800">{pekerja.berat_badan ? `${pekerja.berat_badan} kg` : '-'}</span>
+                  </p>
                 </div>
               </div>
 
               <fieldset className="mt-6 border-t pt-2">
                 <legend className="text-lg font-bold text-slate-800 mb-3">Kemampuan & Informasi Tambahan</legend>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm text-slate-600">
-                  {pekerja.keahlian_khusus && <div className="flex items-start gap-2"><Sparkles className="w-4 h-4 mt-1 shrink-0 text-emerald-600"/><div><strong>Keahlian Khusus:</strong> {pekerja.keahlian_khusus}</div></div>}
-                  {pekerja.bahasa_asing && pekerja.bahasa_asing.length > 0 && <div className="flex items-start gap-2"><Languages className="w-4 h-4 mt-1 shrink-0 text-emerald-600"/><div><strong>Bahasa Asing:</strong> {pekerja.bahasa_asing.join(', ')}</div></div>}
-                  {pekerja.masakan_khusus && <div className="flex items-start gap-2"><Utensils className="w-4 h-4 mt-1 shrink-0 text-emerald-600"/><div><strong>Masakan Khusus:</strong> {pekerja.masakan_khusus}</div></div>}
-                  <div className="flex items-start gap-2"><Bike className="w-4 h-4 mt-1 shrink-0 text-emerald-600"/><div><strong>Bisa Bawa Motor:</strong> {pekerja.bisa_bawa_motor ? 'Ya' : 'Tidak'}</div></div>
-                  <div className="flex items-start gap-2"><Dog className="w-4 h-4 mt-1 shrink-0 text-emerald-600"/><div><strong>Takut Anjing:</strong> {pekerja.takut_anjing ? 'Ya' : 'Tidak'}</div></div>
-                  <div className="flex items-start gap-2"><Utensils className="w-4 h-4 mt-1 shrink-0 text-emerald-600"/><div><strong>Bisa Masak Babi:</strong> {pekerja.bisa_masak_babi ? 'Ya' : 'Tidak'}</div></div>
+                  {pekerja.keahlian_khusus && <div className="flex items-start gap-2"><Sparkles className="w-4 h-4 mt-1 shrink-0 text-emerald-600" /><div><strong>Keahlian Khusus:</strong> {pekerja.keahlian_khusus}</div></div>}
+                  {pekerja.bahasa_asing && pekerja.bahasa_asing.length > 0 && <div className="flex items-start gap-2"><Languages className="w-4 h-4 mt-1 shrink-0 text-emerald-600" /><div><strong>Bahasa Asing:</strong> {pekerja.bahasa_asing.join(', ')}</div></div>}
+                  {pekerja.masakan_khusus && <div className="flex items-start gap-2"><Utensils className="w-4 h-4 mt-1 shrink-0 text-emerald-600" /><div><strong>Masakan Khusus:</strong> {pekerja.masakan_khusus}</div></div>}
+                  <div className="flex items-start gap-2"><Bike className="w-4 h-4 mt-1 shrink-0 text-emerald-600" /><div><strong>Bisa Bawa Motor:</strong> {pekerja.bisa_bawa_motor ? 'Ya' : 'Tidak'}</div></div>
+                  <div className="flex items-start gap-2"><Dog className="w-4 h-4 mt-1 shrink-0 text-emerald-600" /><div><strong>Takut Anjing:</strong> {pekerja.takut_anjing ? 'Ya' : 'Tidak'}</div></div>
+                  <div className="flex items-start gap-2"><Utensils className="w-4 h-4 mt-1 shrink-0 text-emerald-600" /><div><strong>Bisa Masak Babi:</strong> {pekerja.bisa_masak_babi ? 'Ya' : 'Tidak'}</div></div>
                 </div>
               </fieldset>
 
