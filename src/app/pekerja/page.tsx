@@ -10,6 +10,7 @@ import PekerjaCard, { type PekerjaProps } from '@/components/PekerjaCard';
 import { createClient } from '@/utils/supabase/server';
 import FilterControls from '@/components/FilterControls';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import Pagination from '@/components/Pagination';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,11 +40,15 @@ export default async function PekerjaPage(
   const kategori = searchParams.kategori;
   const status = searchParams.status;
   const search = searchParams.search;
+  const page = searchParams.page ? parseInt(searchParams.page) : 1;
+  const limit = 8;
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
 
   const supabase = await createClient();
   let daftarPekerja: PekerjaProps[] = [];
 
-  let query = supabase.from('pekerja').select('*');
+  let query = supabase.from('pekerja').select('*', { count: 'exact' });
 
   // Gunakan variabel yang sudah diekstrak
   if (kategori) {
@@ -56,13 +61,15 @@ export default async function PekerjaPage(
     query = query.ilike('nama', `%${search}%`);
   }
 
-  const { data, error } = await query.order('created_at', { ascending: false });
+  const { data, error, count } = await query.order('created_at', { ascending: false }).range(from, to);
 
   if (error) {
     console.error('Error fetching pekerja:', error);
   } else if (data) {
     daftarPekerja = data as PekerjaProps[];
   }
+
+  const totalPages = count ? Math.ceil(count / limit) : 0;
 
   // Buat skema FAQ secara manual
   const faqSchema = {
@@ -88,12 +95,12 @@ export default async function PekerjaPage(
       <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-          <Breadcrumbs 
-            crumbs={[
-              { name: 'Beranda', path: '/' },
-              { name: 'Pekerja', path: '/pekerja' },
-            ]}
-          />
+            <Breadcrumbs
+              crumbs={[
+                { name: 'Beranda', path: '/' },
+                { name: 'Pekerja', path: '/pekerja' },
+              ]}
+            />
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-slate-800">Tenaga Kerja Profesional Kami Yang Siap Kerja</h1>
             <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
               Temukan partner terpercaya untuk membantu kebutuhan keluarga Anda.
@@ -111,6 +118,10 @@ export default async function PekerjaPage(
               </p>
             )}
           </div>
+
+          {totalPages > 1 && (
+            <Pagination currentPage={page} totalPages={totalPages} />
+          )}
 
           {/* FAQ Section */}
           <section id="faq" className="max-w-4xl mx-auto mt-20">

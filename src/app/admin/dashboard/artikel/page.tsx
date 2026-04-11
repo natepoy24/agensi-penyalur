@@ -194,7 +194,7 @@ export default async function ArtikelDashboardPage() {
                       </td>
 
                       <td className="px-8 py-5">
-                        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex justify-end gap-2">
                           {/* Tombol Lihat Publik (Hanya jika Publish) */}
                           {article.kategori && (
                             <Link href={`/artikel/${article.slug}`} target="_blank" className="w-9 h-9 flex items-center justify-center rounded-full text-blue-600 hover:bg-blue-50 transition-colors" title="Lihat di Web">

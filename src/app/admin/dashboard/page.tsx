@@ -141,10 +141,10 @@ export default async function DashboardOverview() {
                     <p className="text-sm font-bold text-slate-800">{worker.pengalaman} Tahun</p>
                   </div>
                   {/* Action Buttons: Edit & Delete */}
-                  <Link href={`/admin/dashboard/edit/${worker.id}`} className="bg-slate-100 text-emerald-600 p-2.5 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-emerald-600 hover:text-white" title="Edit Pekerja">
+                  <Link href={`/admin/dashboard/edit/${worker.id}`} className="bg-slate-100 text-emerald-600 p-2.5 rounded-xl transition-all hover:bg-emerald-600 hover:text-white" title="Edit Pekerja">
                     <span className="material-symbols-outlined text-[20px]">edit</span>
                   </Link>
-                  <div className="opacity-0 group-hover:opacity-100 transition-all">
+                  <div className="transition-all">
                     <DeleteButton id={worker.id} fotoUrl={worker.fotoUrl} />
                   </div>
                 </div>
