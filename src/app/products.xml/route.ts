@@ -26,7 +26,7 @@ function escapeXml(unsafe: string | null | undefined): string {
 function getGoogleCategory(kategori: string): string {
   switch (kategori) {
     case 'Baby Sitter':
-      return 'Baby &gt; Baby Care'; 
+      return 'Baby &gt; Baby Care';
     case 'Perawat Lansia':
       return 'Health &amp; Beauty &gt; Health Care &gt; Patient Care';
     case 'Asisten Rumah Tangga':
@@ -42,7 +42,7 @@ function getGoogleCategory(kategori: string): string {
 
 export async function GET() {
   const supabase = await createClient();
-  
+
   // LOGIKA STATUS: Ambil HANYA data pekerja yang statusnya 'Tersedia'
   const { data: workers } = await supabase
     .from('pekerja')
@@ -60,20 +60,24 @@ export async function GET() {
   const xmlItems = workers?.map((worker) => {
     // 1. Buat Slug Kategori yang aman
     const categorySlug = slugify(worker.kategori, { lower: true, strict: true });
-    
+
     // 2. URL Produk Final
     const url = `https://penyalurkerja.com/pekerja/${categorySlug}/${worker.slug}`;
-    
+
     // 3. Tentukan Kategori Google yang pas (Sudah di-escape)
     const googleCategory = getGoogleCategory(worker.kategori);
 
-    // 4. Custom Deskripsi sesuai form AddPekerjaForm.tsx
-    // Menggabungkan data: nama, kategori, umur, lokasi, agama, status_perkawinan, pengalaman, dan keterampilan
-    const rawDescription = `${worker.nama} adalah seorang ${worker.kategori} yang berusia ${worker.umur} tahun dan berasal dari ${worker.lokasi}, beragama ${worker.agama} dengan status perkawinan ${worker.status_perkawinan}. Memiliki pengalaman kerja ${worker.pengalaman} tahun dengan ekspetasi gaji sebesar ${worker.gaji}, memiliki keahlian dan keterampilan antara lain ${worker.keterampilan || 'tidak ada'}. informasi lebih lanjut silahkan cek link dibawah ini`;
-    
+    // 4. Custom Deskripsi sesuai update terbaru (Penambahan Fisik & Pendidikan)
+    const pendidikan = worker.pendidikan_terakhir ? worker.pendidikan_terakhir : '-';
+    const tinggi = worker.tinggi_badan ? `${worker.tinggi_badan} cm` : '-';
+    const berat = worker.berat_badan ? `${worker.berat_badan} kg` : '-';
+
+    // Menggabungkan semua data profil
+    const rawDescription = `${worker.nama} adalah seorang ${worker.kategori} yang berusia ${worker.umur} tahun dan berasal dari ${worker.lokasi}, beragama ${worker.agama} dengan status perkawinan ${worker.status_perkawinan}. Pendidikan terakhir ${pendidikan}, tinggi badan ${tinggi}, dan berat badan ${berat}. Memiliki pengalaman kerja ${worker.pengalaman} tahun dengan ekspetasi gaji sebesar ${worker.gaji}, memiliki keahlian dan keterampilan antara lain ${worker.keterampilan || 'tidak ada'}. informasi lebih lanjut silahkan cek link dibawah ini`;
+
     // Escape deskripsi agar aman masuk ke tag XML
     const cleanDescription = escapeXml(rawDescription);
-    
+
     const title = escapeXml(`Jasa ${worker.kategori} - ${worker.nama} (${worker.lokasi})`);
     const location = escapeXml(worker.lokasi);
     const category = escapeXml(worker.kategori);

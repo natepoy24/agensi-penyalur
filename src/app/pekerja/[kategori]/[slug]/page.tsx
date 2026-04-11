@@ -177,6 +177,23 @@ export default async function PekerjaDetailPage({ params }: Props) {
                 {pekerja.agama && <div className="flex items-center gap-3"><BookOpen /><span>Agama: <strong>{pekerja.agama}</strong></span></div>}
               </div>
 
+              <div className="mt-6 border-t pt-4">
+                <div className="flex justify-between border-b py-2">
+                  <span className="text-slate-500">Pendidikan</span>
+                  <span className="font-medium text-slate-800">{pekerja.pendidikan_terakhir || '-'}</span>
+                </div>
+
+                <div className="flex justify-between border-b py-2">
+                  <span className="text-slate-500">Tinggi Badan</span>
+                  <span className="font-medium text-slate-800">{pekerja.tinggi_badan ? `${pekerja.tinggi_badan} cm` : '-'}</span>
+                </div>
+
+                <div className="flex justify-between border-b py-2">
+                  <span className="text-slate-500">Berat Badan</span>
+                  <span className="font-medium text-slate-800">{pekerja.berat_badan ? `${pekerja.berat_badan} kg` : '-'}</span>
+                </div>
+              </div>
+
               <fieldset className="mt-6 border-t pt-2">
                 <legend className="text-lg font-bold text-slate-800 mb-3">Kemampuan & Informasi Tambahan</legend>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm text-slate-600">

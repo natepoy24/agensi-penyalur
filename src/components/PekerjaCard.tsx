@@ -35,6 +35,9 @@ export type PekerjaProps = {
   bahasa_asing?: string[];
   bisa_masak_babi?: boolean;
   masakan_khusus?: string;
+  pendidikan_terakhir?: string;
+  tinggi_badan?: number;
+  berat_badan?: number;
 };
 
 const formatRupiah = (angka: number | null | undefined) => {

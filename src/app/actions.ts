@@ -23,8 +23,8 @@ export async function addPekerja(prevState: FormState, formData: FormData): Prom
     : null;
 
   const fotoFile = formData.get('fotoUrl') as File;
-  const nama =formData.get('nama') as string;
-  const slug = slugify(nama, {lower: true, strict: true, remove: /[*+~.()'"!:@]/g});
+  const nama = formData.get('nama') as string;
+  const slug = slugify(nama, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g });
   const dataToInsert = {
     nama: formData.get('nama') as string,
     slug: slug,
@@ -35,9 +35,12 @@ export async function addPekerja(prevState: FormState, formData: FormData): Prom
     deskripsi: formData.get('deskripsi') as string,
     gaji: parseInt(formData.get('gaji') as string, 10),
     keterampilan: formData.get('keterampilan') as string,
-    umur: parseInt(formData.get('umur') as string, 10), 
+    umur: parseInt(formData.get('umur') as string, 10),
     suku: formData.get('suku') as string,
     kekurangan: formData.get('kekurangan') as string,
+    pendidikan_terakhir: formData.get('pendidikan_terakhir') as string,
+    tinggi_badan: parseInt(formData.get('tinggi_badan') as string, 10) || null,
+    berat_badan: parseInt(formData.get('berat_badan') as string, 10) || null,
     bisa_bawa_motor: formData.get('bisa_bawa_motor') === 'true',
     takut_anjing: formData.get('takut_anjing') === 'true',
     status_perkawinan: formData.get('status_perkawinan') as string,
@@ -46,7 +49,7 @@ export async function addPekerja(prevState: FormState, formData: FormData): Prom
     bisa_masak_babi: formData.get('bisa_masak_babi') === 'true',
     masakan_khusus: masakanKhusus,
     keahlian_khusus: formData.get('keahlian_khusus') as string,
-    
+
   };
 
   if (!fotoFile || fotoFile.size === 0) {
@@ -62,9 +65,9 @@ export async function addPekerja(prevState: FormState, formData: FormData): Prom
 
   const { error: insertError } = await supabase.from('pekerja').insert([{ ...dataToInsert, fotoUrl }]);
   if (insertError) { return { error: `Gagal menyimpan data: ${insertError.message}` }; }
-  
-  revalidatePath('/admin/dashboard'); 
-  redirect('/admin/dashboard?message=Data pekerja berhasil ditambahkan!'); 
+
+  revalidatePath('/admin/dashboard');
+  redirect('/admin/dashboard?message=Data pekerja berhasil ditambahkan!');
 
 }
 
@@ -86,10 +89,10 @@ export async function updatePekerja(prevState: FormState, formData: FormData): P
   const id = formData.get('id') as string;
   const fotoFile = formData.get('fotoUrl') as File;
   let fotoUrl = formData.get('currentFotoUrl') as string;
-  const nama= formData.get('nama') as string;
+  const nama = formData.get('nama') as string;
   const slug = slugify(nama, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g });
 
-  if (fotoFile && fotoFile.size > 0) {
+  if (fotoFile && fotoFile.size > 0 && fotoFile.name && fotoFile.name !== 'undefined') {
     const filePath = `public/${Date.now()}_${fotoFile.name}`;
     const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, fotoFile);
     if (uploadError) { return { error: `Gagal mengunggah foto baru: ${uploadError.message}` }; }
@@ -107,9 +110,12 @@ export async function updatePekerja(prevState: FormState, formData: FormData): P
     gaji: parseInt(formData.get('gaji') as string, 10),
     keterampilan: formData.get('keterampilan') as string,
     fotoUrl: fotoUrl,
-    umur: parseInt(formData.get('umur') as string, 10), 
-    suku: formData.get('suku') as string, 
+    umur: parseInt(formData.get('umur') as string, 10),
+    suku: formData.get('suku') as string,
     kekurangan: formData.get('kekurangan') as string,
+    pendidikan_terakhir: formData.get('pendidikan_terakhir') as string,
+    tinggi_badan: parseInt(formData.get('tinggi_badan') as string, 10) || null,
+    berat_badan: parseInt(formData.get('berat_badan') as string, 10) || null,
     bisa_bawa_motor: formData.get('bisa_bawa_motor') === 'true',
     takut_anjing: formData.get('takut_anjing') === 'true',
     status_perkawinan: formData.get('status_perkawinan') as string,
@@ -148,7 +154,7 @@ export async function deletePekerjaById(id: number, fotoUrl: string | null) {
     const filePath = fotoUrl.split('/avatars/')[1];
     if (filePath) {
       const { error: storageError } = await supabase.storage.from('avatars').remove([filePath]);
-      
+
       // JIKA GAGAL HAPUS FILE, LEMPAR ERROR
       if (storageError) {
         console.error("Storage Delete Error:", storageError.message);
@@ -161,6 +167,8 @@ export async function deletePekerjaById(id: number, fotoUrl: string | null) {
   redirect('/admin/dashboard?message=Data pekerja berhasil dihapus!');
 }
 
+
+
 export async function updateArtikel(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
 
@@ -168,7 +176,10 @@ export async function updateArtikel(prevState: FormState, formData: FormData): P
   const judul = formData.get('judul') as string;
   const kontenString = formData.get('konten') as string;
   const imageFile = formData.get('gambar_utama') as File;
-  let gambar_url = formData.get('current_gambar_url') as string;
+  let gambar_url = formData.get('gambar_url_lama') as string;
+  const tags = formData.get('tags') as string;
+  const isPublishStr = formData.get('kategori') as string;
+  const isPublish = isPublishStr === 'true';
 
   if (!id) {
     return { error: 'ID Artikel tidak ditemukan.' };
@@ -180,7 +191,7 @@ export async function updateArtikel(prevState: FormState, formData: FormData): P
   const slug = slugify(judul, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g });
 
   // Jika ada file gambar baru yang diunggah
-  if (imageFile && imageFile.size > 0) {
+  if (imageFile && imageFile.size > 0 && imageFile.name && imageFile.name !== 'undefined') {
     const filePath = `public/artikel/${Date.now()}_${imageFile.name}`;
     const { error: uploadError } = await supabase.storage
       .from('avatars')
@@ -204,6 +215,9 @@ export async function updateArtikel(prevState: FormState, formData: FormData): P
     slug,
     konten,
     gambar_url,
+    tags,
+    kategori: isPublish,
+    published_at: isPublish ? new Date().toISOString() : null,
   };
 
   const { error: updateError } = await supabase.from('artikel').update(dataToUpdate).eq('id', id);
@@ -249,7 +263,7 @@ export async function deleteArtikel(id: number, gambar_url: string | null) {
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  
+
   // Redirect ke halaman utama setelah logout
   redirect('/?message=Logout berhasil!');
 }
@@ -262,6 +276,7 @@ export async function addArtikel(prevState: FormState, formData: FormData): Prom
   const judul = formData.get('judul') as string;
   const kontenString = formData.get('konten') as string; // Ini adalah string JSON
   const imageFile = formData.get('gambar_utama') as File;
+  const tags = formData.get('tags') as string;
 
   // Validasi dasar
   if (!judul || !kontenString) {
@@ -285,7 +300,7 @@ export async function addArtikel(prevState: FormState, formData: FormData): Prom
     return { error: `Gagal mengunggah gambar: ${uploadError.message}` };
   }
 
-    let konten;
+  let konten;
   try {
     konten = JSON.parse(kontenString);
   } catch (_e) {
@@ -296,7 +311,7 @@ export async function addArtikel(prevState: FormState, formData: FormData): Prom
   const { data: publicUrlData } = supabase.storage
     .from('avatars')
     .getPublicUrl(filePath);
-  
+
   const gambar_url = publicUrlData.publicUrl;
 
   // 4. Siapkan data untuk dimasukkan ke database
@@ -306,6 +321,8 @@ export async function addArtikel(prevState: FormState, formData: FormData): Prom
     konten, // Simpan objek JSON, bukan string
     gambar_url,
     published_at: new Date().toISOString(),
+    views: 0,
+    tags,
   };
 
   // 5. Masukkan data ke tabel 'artikel'
@@ -317,6 +334,27 @@ export async function addArtikel(prevState: FormState, formData: FormData): Prom
   }
 
   // 6. Jika berhasil
-  revalidatePath('/admin/dashboard/artikel'); 
-  redirect('/admin/dashboard/artikel?message=Artikel berhasil ditambahkan!'); 
+  revalidatePath('/admin/dashboard/artikel');
+  redirect('/admin/dashboard/artikel?message=Artikel berhasil ditambahkan!');
+}
+
+export async function incrementViews(slug: string) {
+  const supabase = await createClient();
+
+  // Ambil data view saat ini
+  const { data: article } = await supabase
+    .from('artikel')
+    .select('views')
+    .eq('slug', slug)
+    .single();
+
+  if (article) {
+    const currentViews = Number(article.views) || 0;
+    
+    // Update data view
+    await supabase
+      .from('artikel')
+      .update({ views: currentViews + 1 })
+      .eq('slug', slug);
+  }
 }

@@ -1,181 +1,146 @@
+// src/components/ToolbarPlugin.tsx
 "use client";
 
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useCallback, useEffect, useState } from "react";
-import {
-  SELECTION_CHANGE_COMMAND,
-  FORMAT_TEXT_COMMAND,
-  $getSelection,
-  $isRangeSelection,
-} from "lexical";
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link"; // Pastikan ini diimpor
-import { mergeRegister } from "@lexical/utils";
-import {
-  Bold,
-  Italic,
-  Underline,
-  Heading1,
-  List,
-  Link, // 1. Impor ikon Link
-} from "lucide-react";
-import {
-  $isHeadingNode,
-  $createHeadingNode,
-} from "@lexical/rich-text";
-import {
-  $isListItemNode,
-  INSERT_UNORDERED_LIST_COMMAND,
-  $isListNode,
-} from "@lexical/list";
+import { FORMAT_TEXT_COMMAND, FORMAT_ELEMENT_COMMAND, $getSelection, $isRangeSelection, COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand } from "lexical";
+import { $setBlocksType } from "@lexical/selection";
+import { $createHeadingNode, $createQuoteNode, HeadingTagType } from "@lexical/rich-text";
+import { INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND } from "@lexical/list";
+import { TOGGLE_LINK_COMMAND } from "@lexical/link";
+import { useRef, useEffect } from "react";
+import { $createImageNode } from "./LexicalImageNode";
+import toast from "react-hot-toast";
 
-const LowPriority = 1;
+export const INSERT_IMAGE_COMMAND: LexicalCommand<string> = createCommand();
 
 export default function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
-  const [activeEditor, setActiveEditor] = useState(editor);
-  const [isBold, setIsBold] = useState(false);
-  const [isItalic, setIsItalic] = useState(false);
-  const [isUnderline, setIsUnderline] = useState(false);
-  const [blockType, setBlockType] = useState("paragraph");
-  const [isLink, setIsLink] = useState(false); // 2. State untuk melacak link
-
-  const updateToolbar = useCallback(() => {
-    const selection = $getSelection();
-    if ($isRangeSelection(selection)) {
-      // Update text format
-      setIsBold(selection.hasFormat("bold"));
-      setIsItalic(selection.hasFormat("italic"));
-      setIsUnderline(selection.hasFormat("underline"));
-
-      // Cek apakah seleksi adalah link
-      const node = selection.anchor.getNode();
-      const parent = node.getParent();
-      if ($isLinkNode(parent) || $isLinkNode(node)) {
-        setIsLink(true);
-      } else {
-        setIsLink(false);
-      }
-
-      // Update block format
-      const anchorNode = selection.anchor.getNode();
-      const element =
-        anchorNode.getKey() === "root"
-          ? anchorNode
-          : anchorNode.getTopLevelElementOrThrow();
-      const elementKey = element.getKey();
-      const elementDOM = activeEditor.getElementByKey(elementKey);
-
-      if (elementDOM !== null) {
-        if ($isListItemNode(element)) {
-          const parentList = element.getParent();
-          if ($isListNode(parentList)) {
-            setBlockType(parentList.getTag());
-          }
-        } else {
-          const type = $isHeadingNode(element)
-            ? element.getTag()
-            : element.getType();
-          setBlockType(type);
-        }
-      }
-    }
-  }, [activeEditor]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    return mergeRegister(
-      editor.registerUpdateListener(({ editorState }) => {
-        editorState.read(() => {
-          updateToolbar();
+    return editor.registerCommand(
+      INSERT_IMAGE_COMMAND,
+      (payload: string) => {
+        editor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            const imageNode = $createImageNode(payload, "Gambar Artikel");
+            selection.insertNodes([imageNode]);
+          }
         });
-      }),
-      editor.registerCommand(
-        SELECTION_CHANGE_COMMAND,
-        (_payload, newEditor) => {
-          updateToolbar();
-          setActiveEditor(newEditor);
-          return false;
-        },
-        LowPriority
-      )
+        return true;
+      },
+      COMMAND_PRIORITY_EDITOR
     );
-  }, [editor, updateToolbar]);
+  }, [editor]);
 
-  const formatHeading = (headingSize: "h1" | "h2" | "h3") => {
-    if (blockType !== headingSize) {
-      editor.update(() => {
-        const selection = $getSelection();
-        if ($isRangeSelection(selection)) {
-          selection.getNodes().forEach((node) => {
-            const parent = node.getParent();
-            if (parent) {
-              const heading = $createHeadingNode(headingSize);
-              parent.replace(heading);
-              heading.append(node);
-            }
-          });
-        }
-      });
+  const formatHeading = (headingSize: HeadingTagType) => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $setBlocksType(selection, () => $createHeadingNode(headingSize));
+      }
+    });
+  };
+
+  const formatQuote = () => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $setBlocksType(selection, () => $createQuoteNode());
+      }
+    });
+  };
+
+  // Fungsi untuk memasukkan Tautan (Link)
+  const insertLink = () => {
+    const url = window.prompt("Masukkan URL tautan (contoh: https://google.com):");
+    if (url !== null) {
+      // Jika url kosong, link akan dihapus
+      editor.dispatchCommand(TOGGLE_LINK_COMMAND, url === "" ? null : url);
     }
   };
 
-  const insertLink = useCallback(() => {
-    if (!isLink) {
-      const url = prompt("Masukkan URL:");
-      if (url) {
-        editor.dispatchCommand(TOGGLE_LINK_COMMAND, url);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("Ukuran foto maksimal 2MB untuk disisipkan ke dalam artikel.");
+        return;
       }
-    } else {
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64String = event.target?.result as string;
+        editor.dispatchCommand(INSERT_IMAGE_COMMAND, base64String);
+      };
+      reader.readAsDataURL(file);
     }
-  }, [editor, isLink]);
-
-  const buttonCn = (active: boolean) =>
-    `p-2 rounded-md hover:bg-slate-200 ${
-      active ? "bg-slate-300" : "bg-transparent"
-    }`;
+  };
 
   return (
-    <div className="p-2 border-b border-slate-300 flex items-center gap-1">
-      <button
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}
-        className={buttonCn(isBold)}
-        aria-label="Format Bold"
-      >
-        <Bold className="h-4 w-4" />
+    <div className="sticky top-20 z-20 bg-white/90 backdrop-blur border border-slate-200 rounded-xl shadow-sm mb-6 p-1.5 flex flex-wrap items-center gap-1 w-fit">
+
+      {/* Teks Formatting */}
+      <button type="button" onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 transition-colors" title="Tebal (Bold)">
+        <span className="material-symbols-outlined text-[20px]">format_bold</span>
       </button>
-      <button
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")}
-        className={buttonCn(isItalic)}
-        aria-label="Format Italic"
-      >
-        <Italic className="h-4 w-4" />
+      <button type="button" onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 transition-colors" title="Miring (Italic)">
+        <span className="material-symbols-outlined text-[20px]">format_italic</span>
       </button>
-      <button
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")}
-        className={buttonCn(isUnderline)}
-        aria-label="Format Underline"
-      >
-        <Underline className="h-4 w-4" />
+
+      <div className="w-px h-6 bg-slate-200 mx-1"></div>
+
+      {/* Headings */}
+      <button type="button" onClick={() => formatHeading("h2")} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 text-sm font-bold transition-colors" title="Heading 2">
+        H2
       </button>
-      {/* 3. Tambahkan tombol Link */}
-      <button
-        onClick={insertLink}
-        className={buttonCn(isLink)}
-        aria-label="Insert Link">
-        <Link className="h-4 w-4" />
+      <button type="button" onClick={() => formatHeading("h3")} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 text-sm font-bold transition-colors" title="Heading 3">
+        H3
       </button>
-      <button
-        onClick={() => formatHeading("h1")}
-        className={buttonCn(blockType === "h1")}
-      >
-        <Heading1 className="h-4 w-4" />
+
+      <div className="w-px h-6 bg-slate-200 mx-1"></div>
+
+      {/* Perataan Teks (Alignments) */}
+      <button type="button" onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left")} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 transition-colors" title="Rata Kiri">
+        <span className="material-symbols-outlined text-[20px]">format_align_left</span>
       </button>
-      <button
-        onClick={() => editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined)}
-        className={buttonCn(blockType === "ul")}
-      >
-        <List className="h-4 w-4" />
+      <button type="button" onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center")} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 transition-colors" title="Rata Tengah">
+        <span className="material-symbols-outlined text-[20px]">format_align_center</span>
       </button>
+      <button type="button" onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify")} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 transition-colors" title="Rata Kanan Kiri">
+        <span className="material-symbols-outlined text-[20px]">format_align_justify</span>
+      </button>
+
+      <div className="w-px h-6 bg-slate-200 mx-1"></div>
+
+      {/* Lists & Quotes */}
+      <button type="button" onClick={() => editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined)} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 transition-colors" title="Bullet List">
+        <span className="material-symbols-outlined text-[20px]">format_list_bulleted</span>
+      </button>
+      <button type="button" onClick={() => editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 transition-colors" title="Number List">
+        <span className="material-symbols-outlined text-[20px]">format_list_numbered</span>
+      </button>
+      <button type="button" onClick={formatQuote} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 transition-colors" title="Kutipan (Quote)">
+        <span className="material-symbols-outlined text-[20px]">format_quote</span>
+      </button>
+
+      <div className="w-px h-6 bg-slate-200 mx-1"></div>
+
+      {/* Tautan (Link) & Media Upload */}
+      <button type="button" onClick={insertLink} className="p-2 hover:bg-blue-50 hover:text-blue-600 rounded-lg text-slate-600 transition-colors" title="Sisipkan Tautan (Link)">
+        <span className="material-symbols-outlined text-[20px]">link</span>
+      </button>
+      <button type="button" onClick={() => fileInputRef.current?.click()} className="p-2 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg text-slate-600 transition-colors" title="Sisipkan Foto/Gambar">
+        <span className="material-symbols-outlined text-[20px]">image</span>
+      </button>
+
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        accept="image/png, image/jpeg, image/jpg, image/webp"
+        onChange={handleImageUpload}
+      />
     </div>
   );
 }

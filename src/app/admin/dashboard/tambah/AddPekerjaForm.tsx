@@ -5,7 +5,9 @@ import { useFormStatus } from "react-dom";
 import { addPekerja } from "@/app/actions";
 import toast from "react-hot-toast";
 import SukuInput from "@/components/SukuInput";
+import KeterampilanSelector from "@/components/KeterampilanSelector";
 import ImageCropModal from "@/components/ImageCropModal";
+import Link from "next/link";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -13,9 +15,9 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="px-6 py-2 bg-emerald-600 text-white font-semibold rounded-md hover:bg-emerald-700 disabled:bg-slate-400"
+      className="px-8 py-3 rounded-full bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-bold shadow-lg shadow-emerald-500/30 hover:-translate-y-0.5 active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
     >
-      {pending ? "Menyimpan..." : "Simpan Pekerja"}
+      {pending ? "Menyimpan Profil..." : "Terbitkan Profil"}
     </button>
   );
 }
@@ -55,225 +57,299 @@ export default function AddPekerjaForm() {
   };
 
   return (
-    <>
+    <div className="max-w-5xl mx-auto font-['Inter']">
       {imageToCrop && (
-        <ImageCropModal
-          upImg={imageToCrop}
-          onClose={() => setImageToCrop(null)}
-          onComplete={handleCropComplete}
-        />
+        <ImageCropModal upImg={imageToCrop} onClose={() => setImageToCrop(null)} onComplete={handleCropComplete} />
       )}
 
-      <form
-        action={handleFormSubmit}
-        className="space-y-6 bg-white p-8 rounded-lg shadow-md"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Nama */}
+      {/* Header Breadcrumbs */}
+      <div className="mb-10">
+        <div className="flex items-center gap-2 text-sm text-slate-400 mb-4">
+          <Link href="/admin/dashboard" className="hover:text-emerald-600">Pekerja</Link>
+          <span className="material-symbols-outlined text-sm">chevron_right</span>
+          <span className="text-emerald-600 font-medium">Tambah Pekerja Baru</span>
+        </div>
+        <div className="flex items-center justify-between">
           <div>
-            <label htmlFor="nama" className="block text-sm font-semibold text-slate-800">
-              Nama Lengkap
-            </label>
-            <input type="text" id="nama" name="nama" required className="mt-1 block w-full px-3 py-2 border rounded-md text-slate-900" />
-          </div>
-
-          {/* Umur */}
-          <div>
-            <label htmlFor="umur" className="block text-sm font-semibold text-slate-800">
-              Umur
-            </label>
-            <input type="number" id="umur" name="umur" defaultValue={18} required className="mt-1 block w-full px-3 py-2 border rounded-md text-slate-900" />
-          </div>
-
-          {/* Kategori */}
-          <div>
-            <label htmlFor="kategori" className="block text-sm font-semibold text-slate-800">
-              Kategori
-            </label>
-            <select id="kategori" name="kategori" required className="mt-1 block w-full px-3 py-2 border rounded-md text-slate-900">
-              <option value="Baby Sitter">Baby Sitter</option>
-              <option value="Perawat Lansia">Perawat Lansia</option>
-              <option value="Asisten Rumah Tangga">Asisten Rumah Tangga</option>
-              <option value="Supir">Supir</option>
-              <option value="Tukang Kebun">Tukang Kebun</option>
-            </select>
-          </div>
-
-          {/* Status */}
-          <div>
-            <label htmlFor="status" className="block text-sm font-semibold text-slate-800">
-              Status
-            </label>
-            <select id="status" name="status" required className="mt-1 block w-full px-3 py-2 border rounded-md text-slate-900">
-              <option value="Tersedia">Tersedia</option>
-              <option value="Akan Tersedia">Akan Tersedia</option>
-            </select>
-          </div>
-
-          {/* Pengalaman */}
-          <div>
-            <label htmlFor="pengalaman" className="block text-sm font-semibold text-slate-800">
-              Pengalaman (Tahun)
-            </label>
-            <input type="number" id="pengalaman" name="pengalaman" required defaultValue={0} className="mt-1 block w-full px-3 py-2 border rounded-md text-slate-900" />
-          </div>
-
-          {/* Gaji */}
-          <div>
-            <label htmlFor="gaji" className="block text-sm font-semibold text-slate-800">
-              Gaji (per bulan)
-            </label>
-            <input type="number" id="gaji" name="gaji" required defaultValue={0} className="mt-1 block w-full px-3 py-2 border rounded-md text-slate-900" />
-          </div>
-
-          <SukuInput />
-
-          {/* Kota Asal */}
-          <div className="md:col-span-2">
-            <label htmlFor="lokasi" className="block text-sm font-semibold text-slate-800">
-              Kota Asal
-            </label>
-            <input type="text" id="lokasi" name="lokasi" required className="mt-1 block w-full px-3 py-2 border rounded-md text-slate-900" />
-          </div>
-
-          {/* Foto */}
-          <div className="md:col-span-2">
-            <label htmlFor="fotoUrl" className="block text-sm font-semibold text-slate-800">
-              Foto Pekerja
-            </label>
-            <input
-              ref={fileInputRef}
-              type="file"
-              id="fotoUrl"
-              name="fotoUrl"
-              required={!croppedImageFile}
-              accept="image/png, image/jpeg, image/jpg"
-              onChange={handleFileChange}
-              className="mt-1 block w-full cursor-pointer rounded-lg border border-slate-300 text-sm text-slate-500 file:mr-4 file:border-0 file:bg-emerald-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700"
-            />
-            {croppedImageFile && <p className="text-xs text-green-600 mt-2">✓ Gambar sudah dipotong. Siap diunggah.</p>}
-          </div>
-
-          {/* Status Perkawinan & Agama */}
-          <div>
-            <label htmlFor="status_perkawinan" className="block text-sm font-semibold text-slate-800">
-              Status Perkawinan
-            </label>
-            <select id="status_perkawinan" name="status_perkawinan" required className="mt-1 block w-full border rounded-md text-slate-900">
-              <option value="Belum Menikah">Belum Menikah</option>
-              <option value="Nikah">Nikah</option>
-              <option value="Janda">Janda</option>
-              <option value="Duda">Duda</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="agama" className="block text-sm font-semibold text-slate-800">
-              Agama
-            </label>
-            <select id="agama" name="agama" required className="mt-1 block w-full border rounded-md text-slate-900">
-              <option value="Islam">Islam</option>
-              <option value="Protestan">Protestan</option>
-              <option value="Katolik">Katolik</option>
-              <option value="Hindu">Hindu</option>
-              <option value="Buddha">Buddha</option>
-              <option value="Konghucu">Konghucu</option>
-            </select>
-          </div>
-
-          {/* Bisa Bawa Motor */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-800">Bisa Bawa Motor?</label>
-            <div className="mt-2 flex gap-6">
-              <label><input type="radio" name="bisa_bawa_motor" value="true" className="mr-1"/> Ya</label>
-              <label><input type="radio" name="bisa_bawa_motor" value="false" defaultChecked className="mr-1"/> Tidak</label>
-            </div>
-          </div>
-
-          {/* Takut Anjing */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-800">Takut Anjing?</label>
-            <div className="mt-2 flex gap-4">
-              <label><input type="radio" name="takut_anjing" value="true" className="mr-1"/> Ya</label>
-              <label><input type="radio" name="takut_anjing" value="false" defaultChecked className="mr-1"/> Tidak</label>
-            </div>
-          </div>
-
-          {/* Bisa Masak Babi */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-800">Bisa Masak Babi?</label>
-            <div className="mt-2 flex gap-4">
-              <label><input type="radio" name="bisa_masak_babi" value="true" className="mr-1"/> Ya</label>
-              <label><input type="radio" name="bisa_masak_babi" value="false" defaultChecked className="mr-1"/> Tidak</label>
-            </div>
-          </div>
-
-          {/* Masakan Khusus */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-800">Bisa Masak Makanan Khusus?</label>
-            <div className="mt-2 flex gap-4">
-              <label><input type="radio" name="masakan_khusus_radio" value="true" onChange={() => setBisaMasakKhusus(true)} checked={bisaMasakKhusus} className="mr-1"/> Ya</label>
-              <label><input type="radio" name="masakan_khusus_radio" value="false" onChange={() => setBisaMasakKhusus(false)} checked={!bisaMasakKhusus} className="mr-1"/> Tidak</label>
-            </div>
-            {bisaMasakKhusus && (
-              <input type="text" name="masakan_khusus_text" placeholder="Sebutkan masakan khusus" className="mt-2 block w-full border rounded-md text-slate-900 px-3 py-2"/>
-            )}
-          </div>
-
-          {/* Keahlian Khusus */}
-          <div className="md:col-span-2">
-            <label htmlFor="keahlian_khusus" className="block text-sm font-semibold text-slate-900">
-              Keahlian Khusus
-            </label>
-            <textarea id="keahlian_khusus" name="keahlian_khusus" rows={3} className="mt-1 block w-full border rounded-md text-slate-900 px-3 py-2"></textarea>
-          </div>
-
-
-          {/* Bahasa Asing */}
-          <div className="md:col-span-2">
-            <label className="block text-sm font-semibold text-slate-800">Bisa Bahasa Asing</label>
-            <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2">
-              <label><input type="checkbox" name="bahasa_asing" value="Inggris" className="mr-1" /> Inggris</label>
-              <label><input type="checkbox" name="bahasa_asing" value="Kanton" className="mr-1" /> Kanton</label>
-              <label><input type="checkbox" name="bahasa_asing" value="Mandarin" className="mr-1" /> Mandarin</label>
-              <label><input type="checkbox" name="bahasa_asing" value="Arab" className="mr-1" /> Arab</label>
-              <label><input type="checkbox" name="bahasa_asing" value="Korea" className="mr-1" /> Korea</label>
-              <label><input type="checkbox" name="bahasa_lain_checkbox" onChange={(e) => setBahasaLain(e.target.checked)} className="mr-1" /> Lainnya...</label>
-            </div>
-            {bahasaLain && (
-              <input type="text" name="bahasa_lain_text" placeholder="Sebutkan bahasa lain" className="mt-2 block w-full border rounded-md text-slate-900" />
-            )}
-          </div>
-
-          {/* Keterampilan */}
-          <div className="md:col-span-2">
-            <label htmlFor="keterampilan" className="block text-sm font-semibold text-slate-800">
-              Keterampilan
-            </label>
-            <p className="text-xs text-slate-500 mb-1">Pisahkan dengan koma</p>
-            <textarea id="keterampilan" name="keterampilan" rows={3} className="mt-1 block w-full px-3 py-2 border rounded-md text-slate-900"></textarea>
-          </div>
-
-          {/* Kekurangan */}
-          <div className="md:col-span-2">
-            <label htmlFor="kekurangan" className="block text-sm font-semibold text-slate-800">Kekurangan</label>
-            <p className="text-xs text-slate-500 mb-1">Pisahkan dengan koma</p>
-            <textarea id="kekurangan" name="kekurangan" rows={3} className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900"></textarea>
-          </div>
-
-          {/* Deskripsi */}
-          <div className="md:col-span-2">
-            <label htmlFor="deskripsi" className="block text-sm font-semibold text-slate-800">
-              Deskripsi
-            </label>
-            <textarea id="deskripsi" name="deskripsi" rows={4} required className="mt-1 block w-full px-3 py-2 border rounded-md text-slate-900"></textarea>
+            <h2 className="text-3xl font-extrabold font-['Plus_Jakarta_Sans'] text-slate-800 tracking-tight">Tambah Pekerja Baru</h2>
+            <p className="text-slate-500 mt-1">Lengkapi informasi profil pekerja untuk dipublikasikan ke portal agen.</p>
           </div>
         </div>
+      </div>
 
-        <div className="flex items-center justify-end gap-4 pt-4 border-t">
-          <SubmitButton />
+      <form action={handleFormSubmit} className="space-y-10">
+        
+        {/* SECTION 1: PROFIL DASAR */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+              <span className="material-symbols-outlined">person</span>
+            </div>
+            <h3 className="text-xl font-bold font-['Plus_Jakarta_Sans'] text-slate-800">Profil Dasar</h3>
+          </div>
+          
+          <div className="grid grid-cols-12 gap-6">
+            <div className="col-span-12 md:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+              <label className="block text-sm font-semibold text-slate-600 mb-2">Nama Lengkap Pekerja</label>
+              <input type="text" name="nama" required className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800" placeholder="Masukkan nama lengkap sesuai KTP" />
+            </div>
+
+            <div className="col-span-12 md:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+              <label className="block text-sm font-semibold text-slate-600 mb-2">Umur</label>
+              <div className="relative">
+                <input type="number" name="umur" required defaultValue={18} className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800" placeholder="00" />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Tahun</span>
+              </div>
+            </div>
+
+            <div className="col-span-12 md:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+              <label className="block text-sm font-semibold text-slate-600 mb-2">Kategori Pekerjaan</label>
+              <select name="kategori" required className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800 font-medium">
+                <option value="Baby Sitter">Baby Sitter</option>
+                <option value="Perawat Lansia">Perawat Lansia</option>
+                <option value="Asisten Rumah Tangga">Asisten Rumah Tangga</option>
+                <option value="Supir">Supir Pribadi</option>
+                <option value="Tukang Kebun">Tukang Kebun</option>
+              </select>
+            </div>
+
+            <div className="col-span-12 md:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+              <label className="block text-sm font-semibold text-slate-600 mb-2">Status Pekerja</label>
+              <select name="status" required className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800">
+                <option value="Tersedia">Tersedia</option>
+                <option value="Akan Tersedia">Akan Tersedia</option>
+              </select>
+            </div>
+
+            <div className="col-span-12 md:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+              <label className="block text-sm font-semibold text-slate-600 mb-2">Ekspektasi Gaji (Bulanan)</label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600 font-bold">Rp</span>
+                <input type="number" name="gaji" required defaultValue={0} className="w-full bg-slate-50 border-none rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-emerald-500/20 font-medium text-slate-800" placeholder="2500000" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 2: FISIK & LATAR BELAKANG */}
+        <section>
+          <div className="grid grid-cols-12 gap-6 bg-slate-100 p-8 rounded-3xl border border-slate-200">
+             <div className="col-span-12">
+               <h3 className="text-lg font-bold font-['Plus_Jakarta_Sans'] text-slate-800 mb-4 border-b border-slate-200 pb-2">Data Fisik & Latar Belakang</h3>
+             </div>
+             
+             {/* Suku Input Component Wrapper */}
+             <div className="col-span-12 md:col-span-6">
+                <SukuInput /> 
+             </div>
+
+             <div className="col-span-12 md:col-span-6">
+               <label className="block text-sm font-semibold text-slate-600 mb-2">Kota Asal / Domisili</label>
+               <input type="text" name="lokasi" required className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20" placeholder="Contoh: Jakarta Selatan" />
+             </div>
+
+             <div className="col-span-12 md:col-span-4">
+               <label className="block text-sm font-semibold text-slate-600 mb-2">Pendidikan Terakhir</label>
+               <select name="pendidikan_terakhir" required className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800">
+                 <option value="SD">SD</option>
+                 <option value="SMP">SMP</option>
+                 <option value="SMA">SMA</option>
+                 <option value="SMK">SMK</option>
+                 <option value="D3">D3</option>
+                 <option value="S1">S1</option>
+               </select>
+             </div>
+
+             <div className="col-span-12 md:col-span-4">
+                <label className="block text-sm font-semibold text-slate-600 mb-2">Tinggi Badan</label>
+                <div className="relative">
+                  <input type="number" name="tinggi_badan" className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800" placeholder="160" />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">cm</span>
+                </div>
+             </div>
+
+             <div className="col-span-12 md:col-span-4">
+                <label className="block text-sm font-semibold text-slate-600 mb-2">Berat Badan</label>
+                <div className="relative">
+                  <input type="number" name="berat_badan" className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800" placeholder="55" />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">kg</span>
+                </div>
+             </div>
+
+             <div className="col-span-12 md:col-span-6">
+                <label className="block text-sm font-semibold text-slate-600 mb-2">Status Perkawinan</label>
+                <select name="status_perkawinan" required className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800">
+                  <option value="Belum Menikah">Belum Menikah</option>
+                  <option value="Nikah">Nikah</option>
+                  <option value="Janda">Janda</option>
+                  <option value="Duda">Duda</option>
+                </select>
+             </div>
+
+             <div className="col-span-12 md:col-span-6">
+                <label className="block text-sm font-semibold text-slate-600 mb-2">Agama</label>
+                <select name="agama" required className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800">
+                  <option value="Islam">Islam</option>
+                  <option value="Protestan">Protestan</option>
+                  <option value="Katolik">Katolik</option>
+                  <option value="Hindu">Hindu</option>
+                  <option value="Buddha">Buddha</option>
+                  <option value="Konghucu">Konghucu</option>
+                </select>
+             </div>
+          </div>
+        </section>
+
+        {/* SECTION 3: KEAHLIAN SPESIFIK */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-600">
+              <span className="material-symbols-outlined">workspace_premium</span>
+            </div>
+            <h3 className="text-xl font-bold font-['Plus_Jakarta_Sans'] text-slate-800">Keahlian & Kemampuan</h3>
+          </div>
+          
+          <div className="grid grid-cols-12 gap-6">
+             <div className="col-span-12 md:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <label className="block text-sm font-semibold text-slate-600 mb-2">Pengalaman Kerja</label>
+                <div className="relative">
+                  <input type="number" name="pengalaman" required defaultValue={0} className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800" />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Tahun</span>
+                </div>
+             </div>
+
+             <div className="col-span-12 md:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <label className="block text-sm font-semibold text-slate-600 mb-3">Kemampuan Khusus</label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div>
+                    <span className="text-xs text-slate-400 block mb-1">Bawa Motor?</span>
+                    <label className="inline-flex items-center bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 cursor-pointer">
+                      <input type="checkbox" name="bisa_bawa_motor" value="true" className="text-emerald-500 focus:ring-emerald-500 rounded border-slate-300" />
+                      <span className="ml-2 text-sm text-slate-700">Ya, Bisa</span>
+                    </label>
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-400 block mb-1">Takut Anjing?</span>
+                    <label className="inline-flex items-center bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 cursor-pointer">
+                      <input type="checkbox" name="takut_anjing" value="true" className="text-red-500 focus:ring-red-500 rounded border-slate-300" />
+                      <span className="ml-2 text-sm text-slate-700">Ya, Takut</span>
+                    </label>
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-400 block mb-1">Masak Babi?</span>
+                    <label className="inline-flex items-center bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 cursor-pointer">
+                      <input type="checkbox" name="bisa_masak_babi" value="true" className="text-emerald-500 focus:ring-emerald-500 rounded border-slate-300" />
+                      <span className="ml-2 text-sm text-slate-700">Ya, Bisa</span>
+                    </label>
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-400 block mb-1">Masakan Khusus?</span>
+                    <label className="inline-flex items-center bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 cursor-pointer">
+                      <input type="checkbox" name="masakan_khusus_radio" value="true" onChange={(e) => setBisaMasakKhusus(e.target.checked)} className="text-emerald-500 focus:ring-emerald-500 rounded border-slate-300" />
+                      <span className="ml-2 text-sm text-slate-700">Ya, Ada</span>
+                    </label>
+                  </div>
+                </div>
+                {bisaMasakKhusus && (
+                  <input type="text" name="masakan_khusus_text" placeholder="Sebutkan, misal: Diet Khusus, Vegetarian..." className="mt-3 w-full bg-slate-50 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-emerald-500/20 text-slate-800" />
+                )}
+             </div>
+
+             <div className="col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <label className="block text-sm font-semibold text-slate-600 mb-3">Kemampuan Bahasa Asing</label>
+                <div className="flex flex-wrap gap-3">
+                  {["Inggris", "Kanton", "Mandarin", "Arab", "Korea"].map((lang) => (
+                    <label key={lang} className="inline-flex items-center bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 cursor-pointer hover:bg-emerald-50 transition-colors">
+                      <input type="checkbox" name="bahasa_asing" value={lang} className="text-emerald-500 focus:ring-emerald-500 rounded border-slate-300 w-4 h-4" />
+                      <span className="ml-2 text-sm font-medium text-slate-700">{lang}</span>
+                    </label>
+                  ))}
+                  <label className="inline-flex items-center bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 cursor-pointer">
+                    <input type="checkbox" onChange={(e) => setBahasaLain(e.target.checked)} className="text-emerald-500 focus:ring-emerald-500 rounded border-slate-300 w-4 h-4" />
+                    <span className="ml-2 text-sm font-medium text-slate-700">Lainnya...</span>
+                  </label>
+                </div>
+                {bahasaLain && (
+                  <input type="text" name="bahasa_lain_text" placeholder="Sebutkan bahasa asing lainnya" className="mt-3 w-1/3 bg-slate-50 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-emerald-500/20" />
+                )}
+             </div>
+
+             {/* Komponen Keterampilan Modal Baru */}
+             <div className="col-span-12 md:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+               <label className="block text-sm font-semibold text-slate-600 mb-2">Daftar Keterampilan</label>
+               <KeterampilanSelector defaultValue="" />
+             </div>
+
+             <div className="col-span-12 md:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+               <label className="block text-sm font-semibold text-slate-600 mb-2">Kelebihan / Keahlian Khusus</label>
+               <textarea name="keahlian_khusus" rows={3} className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 resize-none flex-1" placeholder="Ceritakan keahlian unik pekerja..."></textarea>
+             </div>
+
+             <div className="col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+               <label className="block text-sm font-semibold text-slate-600 mb-2">Kekurangan Pekerja</label>
+               <p className="text-xs text-slate-400 mb-2">Kejujuran penting bagi majikan. Sebutkan jika ada (contoh: mabuk darat, lambat belajar).</p>
+               <textarea name="kekurangan" rows={2} className="w-full bg-red-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500/20 resize-none" placeholder="Pisahkan dengan koma..."></textarea>
+             </div>
+
+             <div className="col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+               <label className="block text-sm font-semibold text-slate-600 mb-2">Deskripsi Lengkap / Promosi</label>
+               <textarea name="deskripsi" required rows={4} className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 resize-none" placeholder="Tuliskan biografi singkat dan alasan mengapa majikan harus memilih pekerja ini..."></textarea>
+             </div>
+          </div>
+        </section>
+
+        {/* SECTION 4: MEDIA UPLOAD */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+              <span className="material-symbols-outlined">cloud_upload</span>
+            </div>
+            <h3 className="text-xl font-bold font-['Plus_Jakarta_Sans'] text-slate-800">Media & Foto</h3>
+          </div>
+          
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-8 items-center">
+             <div className="w-full md:w-1/3">
+                <div className="relative group aspect-[3/4] w-full max-w-xs mx-auto rounded-3xl overflow-hidden bg-slate-50 flex flex-col items-center justify-center border-2 border-dashed border-emerald-300 hover:border-emerald-500 hover:bg-emerald-50 transition-all cursor-pointer">
+                  {croppedImageFile ? (
+                     <div className="absolute inset-0 bg-emerald-100 flex flex-col items-center justify-center">
+                       <span className="material-symbols-outlined text-5xl text-emerald-500 mb-2">check_circle</span>
+                       <p className="font-bold text-emerald-700 text-sm">Foto Siap!</p>
+                     </div>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-5xl text-slate-400 group-hover:text-emerald-500 mb-4 transition-colors">add_a_photo</span>
+                      <div className="text-center px-6">
+                        <p className="text-sm font-bold text-slate-700 mb-1">Unggah Foto Utama</p>
+                        <p className="text-xs text-slate-400">Pilih foto, lalu *crop* wajah pekerja. (JPG/PNG)</p>
+                      </div>
+                    </>
+                  )}
+                  <input ref={fileInputRef} type="file" name="fotoUrl" required={!croppedImageFile} accept="image/png, image/jpeg, image/jpg" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+                </div>
+             </div>
+             
+             <div className="w-full md:w-2/3 bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+                    <span className="material-symbols-outlined">verified_user</span>
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-bold text-slate-800">Standar Foto Profesional</h5>
+                    <p className="text-xs text-slate-600 leading-relaxed mt-2">
+                      Foto berkualitas tinggi meningkatkan peluang pekerja dipilih klien hingga 80%. Pastikan latar belakang bersih, pencahayaan terang, dan pekerja tersenyum ramah tanpa aksesoris berlebihan di wajah.
+                    </p>
+                  </div>
+                </div>
+             </div>
+          </div>
+        </section>
+
+        {/* BOTTOM STICKY ACTION BAR */}
+        <div className="sticky bottom-4 z-40 bg-white/90 backdrop-blur-md p-4 rounded-3xl border border-slate-200 shadow-xl flex justify-end items-center gap-6 mt-12">
+           <Link href="/admin/dashboard" className="text-slate-500 font-medium hover:text-red-500 transition-colors text-sm">Batal</Link>
+           <SubmitButton />
         </div>
       </form>
-    </>
+    </div>
   );
 }

@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import ArticleRenderer from './ArticleRenderer';
 import Breadcrumbs from '@/components/Breadcrumbs'; 
+import Link from 'next/link';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { cache } from 'react'; 
 
@@ -183,26 +184,75 @@ export default async function ArtikelDetailPage({ params }: Props) {
     ? JSON.stringify(article.konten) 
     : article.konten;
 
+  const tagsArray = article.tags 
+    ? article.tags.split(',').map((t: string) => t.trim()).filter(Boolean) 
+    : [];
+
   return (
-    <main className="container mx-auto p-4 md:p-8 pt-24">
+    <main className="max-w-4xl mx-auto py-24 px-6 font-['Inter']">
       {/* Inject JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       
-      <Breadcrumbs
-        crumbs={[
-          { name: 'Beranda', path: '/' },
-          { name: 'Artikel', path: '/artikel' },
-          { name: article.judul, path: `/artikel/${article.slug}` },
-        ]}
-      />
+      {/* Breadcrumb Navigasi */}
+      <nav className="flex gap-2 text-sm font-medium text-slate-500 mb-8">
+        <Link href="/" className="hover:text-emerald-600 transition-colors">Beranda</Link>
+        <span>/</span>
+        <Link href="/artikel" className="hover:text-emerald-600 transition-colors">Artikel</Link>
+        <span>/</span>
+        <span className="text-slate-800 line-clamp-1">{article.judul}</span>
+      </nav>
+
+      {/* Meta Info (Tanggal & Views) */}
+      <div className="flex items-center gap-4 text-slate-500 mb-5">
+        <div className="flex items-center gap-1.5">
+          <span className="material-symbols-outlined text-[18px]">calendar_today</span>
+          <span className="text-sm font-medium">
+            {new Date(article.published_at || article.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+          </span>
+        </div>
+        <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+        <div className="flex items-center gap-1.5">
+          <span className="material-symbols-outlined text-[18px]">visibility</span>
+          <span className="text-sm font-medium">{article.views || 0} kali dibaca</span>
+        </div>
+      </div>
       
-      <article>
-        {/* Render Artikel */}
-        <ArticleRenderer article={{ ...article, konten: initialContent }} />
-      </article>
+      {/* Judul Artikel */}
+      <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 mb-6 font-['Plus_Jakarta_Sans'] leading-tight">
+        {article.judul}
+      </h1>
+
+      {/* TAMPILAN TAGS (CHIPS) */}
+      {tagsArray.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-10">
+          {tagsArray.map((tag: string) => (
+            <span 
+              key={tag} 
+              className="px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-lg border border-emerald-100 uppercase tracking-wider"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+      
+      {/* Gambar Cover Utama */}
+      <div className="w-full rounded-3xl overflow-hidden mb-12 border border-slate-100 shadow-sm bg-slate-50 flex justify-center items-center">
+        <img 
+          src={article.gambar_url || "/Image/placeholder.png"} 
+          alt={article.judul} 
+          className="w-full h-auto max-h-[750px] object-contain" 
+        />
+      </div>
+      
+      {/* Konten Area (Memanggil ArticleRenderer yang berisi fungsi incrementViews) */}
+      <div className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-100">
+        <ArticleRenderer content={initialContent} slug={slug} />
+      </div>
+
     </main>
   );
 }

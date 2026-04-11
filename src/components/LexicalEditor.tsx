@@ -1,7 +1,7 @@
+// src/components/LexicalEditor.tsx
 "use client";
 
 import { EditorState } from "lexical";
-
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
@@ -16,7 +16,9 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { TRANSFORMERS } from "@lexical/markdown";
+
 import ToolbarPlugin from "./ToolbarPlugin";
+import { ImageNode } from "./LexicalImageNode";
 
 interface LexicalEditorProps {
   onChange?: (value: string) => void;
@@ -24,30 +26,29 @@ interface LexicalEditorProps {
   editable?: boolean;
 }
 
+// Konfigurasi Styling (Tema) Editor
 const theme = {
-  // Your theme styles here. For brevity, we'll use a basic setup.
-  // Find more examples at https://lexical.dev/docs/themes/creating-a-theme
   ltr: "text-left",
   rtl: "text-right",
-  paragraph: "mb-2",
+  paragraph: "mb-4 leading-relaxed text-slate-700 text-lg",
   heading: {
-    h1: "text-4xl font-bold mb-4",
-    h2: "text-3xl font-bold mb-3",
-    h3: "text-2xl font-bold mb-2",
+    h1: "text-4xl font-extrabold mb-6 text-slate-800 font-['Plus_Jakarta_Sans']",
+    h2: "text-3xl font-bold mt-8 mb-4 text-slate-800 font-['Plus_Jakarta_Sans']",
+    h3: "text-2xl font-bold mt-6 mb-3 text-slate-800 font-['Plus_Jakarta_Sans']",
   },
   list: {
-    ul: "list-disc list-inside",
-    ol: "list-decimal list-inside",
+    ul: "list-disc list-inside mb-4 pl-4 text-slate-700 text-lg space-y-2",
+    ol: "list-decimal list-inside mb-4 pl-4 text-slate-700 text-lg space-y-2",
+    listitem: "ml-2",
   },
-  quote: "border-l-4 border-gray-300 pl-4 italic",
-  code: "bg-gray-100 text-sm font-mono p-1 rounded",
+  quote: "border-l-4 border-emerald-500 bg-emerald-50 p-4 my-6 text-emerald-900 italic rounded-r-lg text-lg",
+  code: "bg-slate-100 text-sm font-mono p-1 px-2 rounded-md",
+  image: "editor-image",
+  link: "text-emerald-600 underline font-medium cursor-pointer hover:text-emerald-800",
 };
 
-// Catch any errors that occur during Lexical updates and log them
-// or throw them as needed. If you don't throw them, Lexical will
-// try to recover gracefully without losing user data.
 function onError(error: Error) {
-  console.error(error);
+  console.error("Lexical Error:", error);
 }
 
 export default function LexicalEditor({
@@ -55,11 +56,12 @@ export default function LexicalEditor({
   initialContent,
   editable = true,
 }: LexicalEditorProps) {
+
   const initialConfig = {
     namespace: "MyEditor",
     theme,
     onError,
-    // Any custom nodes go here
+    // DAFTARKAN SEMUA NODE DI SINI, TERMASUK IMAGENODE
     nodes: [
       HeadingNode,
       ListNode,
@@ -69,8 +71,9 @@ export default function LexicalEditor({
       CodeHighlightNode,
       AutoLinkNode,
       LinkNode,
+      ImageNode, // Node baru kita
     ],
-    editorState: initialContent,
+    editorState: initialContent || undefined, // Gunakan initialContent jika ada
     editable: editable,
   };
 
@@ -82,22 +85,26 @@ export default function LexicalEditor({
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className="relative bg-white border border-slate-300 rounded-md">
+      <div className="relative">
+
+        {/* Toolbar hanya muncul jika mode editable (saat membuat/edit artikel) */}
         {editable && <ToolbarPlugin />}
+
         <RichTextPlugin
           contentEditable={
             <ContentEditable
-              className={`min-h-56 p-4 outline-none ${!editable ? "bg-slate-50" : ""
+              className={`min-h-[500px] outline-none ${!editable ? "bg-transparent" : ""
                 }`}
             />
           }
           placeholder={
-            <div className={`absolute left-4 text-gray-400 pointer-events-none ${editable ? 'top-14' : 'top-4'}`}>
-              Mulai menulis...
+            <div className={`absolute left-0 text-slate-300 text-lg pointer-events-none ${editable ? 'top-20' : 'top-0'}`}>
+              Mulailah mengetik cerita Anda di sini...
             </div>
           }
           ErrorBoundary={LexicalErrorBoundary}
         />
+
         <HistoryPlugin />
         {onChange && <OnChangePlugin onChange={handleOnChange} />}
         <ListPlugin />

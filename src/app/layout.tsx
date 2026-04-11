@@ -167,6 +167,7 @@ export default async function RootLayout({
     <html lang="id">
       {/* Tambahkan padding-bottom (pb-24) agar konten paling bawah tidak tertutup floating button di mobile */}
       <body className={`${inter.className} pb-24 md:pb-0`}>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
         {/* Schema JSON-LD Global */}
         <script
           type="application/ld+json"
