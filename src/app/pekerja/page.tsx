@@ -142,8 +142,7 @@ export default async function PekerjaPage(
           </section>
 
         </div>
-      )}
-
+      </div>
     </main>
   );
 }
