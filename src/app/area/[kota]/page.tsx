@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ShieldCheck, Star, UserCheck, Phone, AlertTriangle, CheckCircle, Banknote, Clock } from 'lucide-react';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import FeaturedWorkers from '@/components/FeaturedWorkers';
 
 // --- 1. DATABASE AREA TARGET (Lengkap) ---
 const TARGET_AREAS: Record<string, string> = {
@@ -81,6 +82,8 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
   const params = await props.params;
   const { kota } = params;
   const areaName = TARGET_AREAS[kota];
+  // Logika klaster area untuk spintax konten dinamis SEO
+  const isJakarta = kota.includes('jakarta') || ['menteng', 'kemang', 'kebayoran', 'pondok-indah', 'fatmawati', 'tb-simatupang', 'cilandak', 'lebak-bulus', 'kuningan', 'pik', 'kelapa-gading', 'pik-1', 'pik-2', 'pik-avenue', 'kembangan', 'cinere'].includes(kota);
 
   if (!areaName) {
     notFound();
@@ -168,9 +171,15 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
           
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
-              <p>
-                Tinggal di kawasan strategis seperti <strong>{areaName}</strong> memang menawarkan kenyamanan, namun seringkali kita dihadapkan pada tantangan besar dalam mengelola urusan domestik. Kesibukan karir yang tinggi membuat waktu untuk mengurus rumah menjadi sangat terbatas.
-              </p>
+              {isJakarta ? (
+                <p>
+                  Membagi waktu antara karier di tengah padatnya mobilitas Ibukota dan urusan rumah tangga di <strong>{areaName}</strong> bukanlah hal mudah. Tingkat stres yang tinggi akibat kemacetan seringkali membuat Anda kehabisan energi saat tiba di rumah, sehingga kehadiran asisten terpercaya sangat krusial.
+                </p>
+              ) : (
+                <p>
+                  Sebagai kawasan strategis yang terus berkembang, <strong>{areaName}</strong> menjadi pilihan hunian favorit bagi keluarga modern. Namun, tingginya mobilitas harian tentu membuat urusan domestik, mulai dari kebersihan rumah hingga pengasuhan anak, cukup menyita jadwal sibuk Anda.
+                </p>
+              )}
               <p>
                 Mungkin Anda pernah mengalami masalah ini:
               </p>
@@ -335,6 +344,11 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
         </div>
       </section>
 
+      {/* --- FEATURED WORKERS (DINAMIS & REAL-TIME DARI SUPABASE, PENAWAR THIN CONTENT) --- */}
+      <div className="bg-white">
+        <FeaturedWorkers />
+      </div>
+
       {/* --- TABEL GAJI & LAYANAN 2025 (SEO POWERHOUSE) --- */}
       <section className="py-16 bg-slate-50">
         <div className="container mx-auto px-4 max-w-5xl">
@@ -393,6 +407,24 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
             </div>
           </div>
           <p className="text-center text-xs text-slate-500 mt-6">*Gaji dapat bervariasi tergantung pengalaman pekerja dan beban kerja.</p>
+        </div>
+      </section>
+
+      {/* --- INTERNAL LINKING HUB (PROGRAMMATIC SEO SPOKE: DISTRIBUSI CRAWL BUDGET) --- */}
+      <section className="py-12 bg-white border-t border-slate-100">
+        <div className="container mx-auto px-4 max-w-5xl text-center">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Area Layanan Terdekat Lainnya</h2>
+          <div className="flex flex-wrap justify-center gap-3">
+            {Object.keys(TARGET_AREAS)
+              .filter(k => k !== kota)
+              .sort(() => 0.5 - Math.random()) // Acak internal link di mode server-side SSR
+              .slice(0, 8)
+              .map(k => (
+                <Link key={k} href={`/area/${k}`} className="px-4 py-2 bg-slate-50 text-slate-700 rounded-full border hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition text-sm font-medium shadow-sm">
+                  {TARGET_AREAS[k]}
+                </Link>
+            ))}
+          </div>
         </div>
       </section>
 

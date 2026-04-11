@@ -87,7 +87,7 @@ const orgSchema = {
       "foundingDate": "2015",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Jl. Gunung balong no 78 RT11/04",
+        "streetAddress": "Jl. Gunung Balong III No. 78, RT.11/RW.04, Lebak Bulus, Cilandak",
         "addressLocality": "Jakarta Selatan",
         "addressRegion": "DKI Jakarta",
         "postalCode": "12440",
@@ -99,22 +99,21 @@ const orgSchema = {
         "https://www.facebook.com/jasa.mandiri.penyalurkerja",
         "https://www.instagram.com/cvjasamandiri/",
         "https://wa.me/6282122415552",
-        // PENTING: Masukkan Link Google Maps Anda disini!
-        // Contoh: "https://maps.app.goo.gl/xxxxxx" 
+        "https://share.google/SNQ9FyR6mSwDb2cYr"
       ]
     },
     {
-      "@type": "LocalBusiness",
+      "@type": "EmploymentAgency",
       "@id": "https://penyalurkerja.com/#local",
       "parentOrganization": {
          "@id": "https://penyalurkerja.com/#organization"
       },
-      "name": "PT Jasa Mandiri Agency Penyalur Tenaga Kerja",
+      "name": "PT Jasa Mandiri Agency",
       "image": "https://penyalurkerja.com/Image/Logo-jm.png",
-      "priceRange": "IDR",
+      "priceRange": "Rp 2.200.000 - Rp 5.500.000",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Jl. Gunung balong no 78 RT11/04",
+        "streetAddress": "Jl. Gunung Balong III No. 78, RT.11/RW.04, Lebak Bulus, Cilandak",
         "addressLocality": "Jakarta Selatan",
         "addressRegion": "DKI Jakarta",
         "postalCode": "12440",
@@ -128,9 +127,9 @@ const orgSchema = {
       "telephone": "+6282122415552",
       "openingHours": "Mo-Su 08:00-20:00",
       "url": "https://penyalurkerja.com",
-      // INGAT: Jangan pasang aggregateRating disini agar tidak kena penalti
+      "hasMap": "https://share.google/SNQ9FyR6mSwDb2cYr",
       "sameAs": [
-         // Link Maps juga boleh ditaruh disini
+         "https://share.google/SNQ9FyR6mSwDb2cYr"
       ]
     },
     {

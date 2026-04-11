@@ -88,11 +88,13 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
       onClick={handleCardClick}
       className="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
     >
-      <div className="relative w-full aspect-square">
+      <div className="relative w-full aspect-square bg-slate-100">
         <Image
           src={pekerja.fotoUrl}
           alt={`Foto ${pekerja.nama}`}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          loading="lazy"
           style={{ objectFit: "cover" }}
           className={pekerja.status === "Akan Tersedia" ? "grayscale opacity-80" : ""}
         />

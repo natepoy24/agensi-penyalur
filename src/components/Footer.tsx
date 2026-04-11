@@ -67,11 +67,11 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-bold text-white mb-6">Kantor Pusat</h3>
           <div className="space-y-4 text-sm text-slate-400">
-            <p className="leading-relaxed">
-              Jl. Gunung Balong III No. 78<br/>
+            <address className="leading-relaxed not-italic">
+              Jl. Gunung Balong III No. 78, RT.11/RW.04<br/>
               Lebak Bulus, Cilandak<br/>
               Jakarta Selatan, 12440
-            </p>
+            </address>
             <div className="space-y-2">
               <a href="mailto:info@penyalurkerja.com" className="block hover:text-emerald-400 transition-colors">
                 info@penyalurkerja.com

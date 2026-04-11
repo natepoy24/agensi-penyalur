@@ -21,17 +21,17 @@ const features = [
 ];
 
 const faqData: FAQItem[] = [
-  { 
-    question: "Bagaimana proses seleksi pekerja di Jasa mandiri?", 
-    answer: "Setiap calon pekerja kami melalui proses seleksi yang sangat ketat, meliputi verifikasi identitas (KTP, KK), wawancara mendalam, uji kompetensi (kecuali ART), serta pengecekan latar belakang untuk memastikan mereka dapat dipercaya." 
+  {
+    question: "Bagaimana proses seleksi pekerja di Jasa mandiri?",
+    answer: "Setiap calon pekerja kami melalui proses seleksi yang sangat ketat, meliputi verifikasi identitas (KTP, KK), wawancara mendalam, uji kompetensi (kecuali ART), serta pengecekan latar belakang untuk memastikan mereka dapat dipercaya."
   },
-  { 
-    question: "Berapa lama waktu yang dibutuhkan untuk mendapatkan pekerja?", 
-    answer: "Jika anda memilih pekerja dengan kategori 'Tersedia', kami bisa antarkan langsung hari ini. Jika butuh kriteria khusus, estimasi 1-7 hari kerja tergantung ketersediaan kandidat." 
+  {
+    question: "Berapa lama waktu yang dibutuhkan untuk mendapatkan pekerja?",
+    answer: "Jika anda memilih pekerja dengan kategori 'Tersedia', kami bisa antarkan langsung hari ini. Jika butuh kriteria khusus, estimasi 1-7 hari kerja tergantung ketersediaan kandidat."
   },
-  { 
-    question: "Apa yang terjadi jika saya tidak cocok dengan pekerja?", 
-    answer: "Kami memberikan garansi penggantian pekerja. Anda memiliki hak penggantian (jumlah tergantung kontrak) dalam periode garansi tanpa biaya admin tambahan." 
+  {
+    question: "Apa yang terjadi jika saya tidak cocok dengan pekerja?",
+    answer: "Kami memberikan garansi penggantian pekerja. Anda memiliki hak penggantian (jumlah tergantung kontrak) dalam periode garansi tanpa biaya admin tambahan."
   },
 ];
 
@@ -81,8 +81,10 @@ export default function HomePage() {
               alt="Seorang baby sitter profesional dari PT Jasa Mandiri sedang mendampingi anak-anak"
               width={1035}
               height={690}
+              sizes="(min-width: 768px) 50vw, 100vw"
               className="rounded-xl shadow-2xl object-cover h-full w-full max-h-[500px]"
               priority
+              fetchPriority="high"
             />
           </div>
         </div>
@@ -95,11 +97,11 @@ export default function HomePage() {
         </h2>
         <p className="mt-4 text-gray-600 leading-relaxed">
           Selamat datang di <strong>PT Jasa Mandiri</strong>, sebuah
-          <Link href="/tentang" className="text-blue-600 hover:underline font-semibold"> yayasan penyalur pekerja rumah tangga (ART)</Link> 
-          terkemuka. Kami juga berperan sebagai 
-          <Link href="/layanan" className="text-blue-600 hover:underline font-semibold"> agensi baby sitter profesional </Link> 
-          dan penyedia 
-          <Link href="/layanan/perawat-lansia" className="text-blue-600 hover:underline font-semibold"> jasa perawat lansia (home care)</Link> 
+          <Link href="/tentang" className="text-blue-600 hover:underline font-semibold"> yayasan penyalur pekerja rumah tangga (ART)</Link>
+          terkemuka. Kami juga berperan sebagai
+          <Link href="/layanan" className="text-blue-600 hover:underline font-semibold"> agensi baby sitter profesional </Link>
+          dan penyedia
+          <Link href="/layanan/perawat-lansia" className="text-blue-600 hover:underline font-semibold"> jasa perawat lansia (home care)</Link>
           yang andal dan berpengalaman.
         </p>
       </section>
@@ -126,6 +128,42 @@ export default function HomePage() {
       {/* Kandidat Unggulan */}
       <FeaturedWorkers />
 
+      {/* --- KEAMANAN & LEGALITAS (E-E-A-T SEO) --- */}
+      <section className="mt-20 max-w-5xl mx-auto bg-emerald-50 rounded-2xl p-8 md:p-12 border border-emerald-100">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-bold text-emerald-900 mb-6">Legalitas Resmi & Screening Pekerja yang Ketat</h2>
+            <p className="text-slate-700 leading-relaxed mb-4">
+              Sebagai lembaga penyalur tenaga kerja berbadan hukum yang terdaftar di kemenkum, PT Jasa Mandiri menaruh prioritas tertinggi pada aspek keamanan dan legalitas. Kami diawasi langsung oleh <strong>Kementerian Ketenagakerjaan RI</strong> dan <strong>Disnaker Provinsi DKI Jakarta</strong>. Kepercayaan Anda adalah pilar kami.
+            </p>
+            <p className="text-slate-700 leading-relaxed mb-4">
+              Setiap asisten rumah tangga (ART), baby sitter, maupun perawat lansia yang kami salurkan harus melewati prosedur <em>screening</em> hingga 4 tahap wajib. Prosedur ini meliputi pengecekan validitas identitas KTP (Dukcapil), interview psikologis perilaku, verifikasi izin keluarga, hingga serangkaian uji kompetensi bersertifikasi untuk memastikan <em>Hard-Skill</em> yang dapat diandalkan oleh keluarga Anda.
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-emerald-50">
+            <h3 className="text-xl font-bold text-emerald-800 mb-4 border-b pb-3">4 Lapis Verifikasi Keamanan</h3>
+            <ul className="space-y-4">
+              <li className="flex gap-3">
+                <span className="text-emerald-600 bg-emerald-100 w-6 h-6 rounded-full flex items-center justify-center font-bold shrink-0">1</span>
+                <span className="text-slate-600 text-sm">Verifikasi Dokumen Kependudukan (KTP & KK) Asli</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-emerald-600 bg-emerald-100 w-6 h-6 rounded-full flex items-center justify-center font-bold shrink-0">2</span>
+                <span className="text-slate-600 text-sm">Pengecekan Izin Keluarga</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-emerald-600 bg-emerald-100 w-6 h-6 rounded-full flex items-center justify-center font-bold shrink-0">3</span>
+                <span className="text-slate-600 text-sm">Wawancara Psikologis dan Kesiapan Mental Kerja</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-emerald-600 bg-emerald-100 w-6 h-6 rounded-full flex items-center justify-center font-bold shrink-0">4</span>
+                <span className="text-slate-600 text-sm">Validasi Sertifikat Kompetensi</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* --- TESTIMONI (BAGIAN BARU DITAMBAHKAN) --- */}
       <section className="mt-24 bg-gradient-to-b from-slate-50 to-white p-8 md:p-12 rounded-3xl border border-slate-200">
         <div className="text-center max-w-3xl mx-auto mb-12">
@@ -134,7 +172,7 @@ export default function HomePage() {
             <span className="text-4xl font-bold text-emerald-600">4.9</span>
             <div className="flex flex-col items-start">
               <div className="flex text-yellow-400">
-                {[1,2,3,4,5].map((i) => <Star key={i} fill="currentColor" size={18} />)}
+                {[1, 2, 3, 4, 5].map((i) => <Star key={i} fill="currentColor" size={18} />)}
               </div>
               <p className="text-xs text-slate-500 font-medium">Rating di Google Maps</p>
             </div>
@@ -145,7 +183,7 @@ export default function HomePage() {
           {/* Review 1 - Admin */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 relative hover:-translate-y-1 transition duration-300">
             <div className="flex text-yellow-400 mb-4">
-               {[1,2,3,4,5].map((i) => <Star key={i} fill="currentColor" size={16} />)}
+              {[1, 2, 3, 4, 5].map((i) => <Star key={i} fill="currentColor" size={16} />)}
             </div>
             <p className="text-slate-700 text-sm leading-relaxed mb-6 italic">
               &quot;Yu ambil jasa art di sini ya admin baik banget terimakasih jasa mandiri sudah bantu saya.&quot;
@@ -162,7 +200,7 @@ export default function HomePage() {
           {/* Review 2 - Pekerja */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 relative hover:-translate-y-1 transition duration-300">
             <div className="flex text-yellow-400 mb-4">
-               {[1,2,3,4,5].map((i) => <Star key={i} fill="currentColor" size={16} />)}
+              {[1, 2, 3, 4, 5].map((i) => <Star key={i} fill="currentColor" size={16} />)}
             </div>
             <p className="text-slate-700 text-sm leading-relaxed mb-6 italic">
               &quot;Baik baik banget pekerjanya, admin ramah banget... terimakasih jasa mandiri makin jaya makin sukses bisnisnya.&quot;
@@ -179,7 +217,7 @@ export default function HomePage() {
           {/* Review 3 - Lokasi */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 relative hover:-translate-y-1 transition duration-300">
             <div className="flex text-yellow-400 mb-4">
-               {[1,2,3,4,5].map((i) => <Star key={i} fill="currentColor" size={16} />)}
+              {[1, 2, 3, 4, 5].map((i) => <Star key={i} fill="currentColor" size={16} />)}
             </div>
             <p className="text-slate-700 text-sm leading-relaxed mb-6 italic">
               &quot;Mudah di cari alamat nya, titik sesuai maps, orang nya ramah2.. Sukses selalu jasa mandiri... Pokok nya mantaaapppp.&quot;
@@ -195,13 +233,13 @@ export default function HomePage() {
         </div>
 
         <div className="text-center mt-10">
-          <a 
+          <a
             href="https://share.google/tXEcTqe8e30449VY0" // Ganti dengan link maps asli Anda jika ada
-            target="_blank" 
+            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:underline hover:text-emerald-800 transition"
           >
-            <MapPin size={18} /> Lihat Lokasi & Review Asli di Google Maps
+            <MapPin size={18} /> Kunjungi Kantor Yayasan ART PT Jasa Mandiri di Maps
           </a>
         </div>
       </section>
@@ -211,14 +249,14 @@ export default function HomePage() {
         <h2 className="sr-only">Pertanyaan Umum tentang Penyalur Pekerja Rumah Tangga</h2>
         <FaqAccordion faqData={faqData} />
         <p className="text-center mt-6 text-slate-600">
-          Masih punya pertanyaan? 
-          <a 
-            href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20PT%20Jasa%20Mandiri,%20saya%20ingin%20bertanya." 
+          Masih punya pertanyaan?
+          <a
+            href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20PT%20Jasa%20Mandiri,%20saya%20ingin%20bertanya."
             className="text-emerald-600 hover:underline font-semibold ml-1"
             target="_blank"
             rel="noreferrer"
           >
-             Chat WhatsApp Kami
+            Chat WhatsApp Kami
           </a>
         </p>
       </section>
@@ -226,7 +264,7 @@ export default function HomePage() {
       {/* Call to Action */}
       <section className="mt-20 bg-emerald-900 rounded-2xl shadow-2xl p-8 md:p-12 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 opacity-10">
-           <Image src="/Image/Logo-jm.png" width={300} height={300} alt="bg" />
+          <Image src="/Image/Logo-jm.png" width={300} height={300} alt="bg latar" loading="lazy" />
         </div>
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="text-center md:text-left">

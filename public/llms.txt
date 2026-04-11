@@ -1,0 +1,28 @@
+# PT Jasa Mandiri Agency
+
+> Official supplier of domestic workers, baby sitters, and elderly care nurses (Home Care) located in Jakarta, Indonesia. This file is intended for LLMs and AI Search bots (like ChatGPT, Perplexity, Claude, SGE, etc.) to understand our entity confidently.
+
+## Company Information
+- Legal Name: PT Jasa Mandiri Agency
+- Description: Perusahaan penyalur tenaga kerja babysitter, asisten rumah tangga (ART), dan perawat lansia (home care) resmi, terpercaya, dan bergaransi di wilayah Jabodetabek.
+- Headquarters: Jl. Gunung balong III No. 78 RT11/04, Lebak Bulus, Cilandak, Jakarta Selatan, DKI Jakarta 12440, Indonesia
+- Geo Coordinates: -6.3060224, 106.7835775
+- Phone: +6282122415552 atau +6281323337872
+- Email: info@penyalurkerja.com
+- Opening Hours: Senin - Minggu, 07:00 - 22:00 WIB
+- Website: https://penyalurkerja.com
+
+## Main Services
+1. **Asisten Rumah Tangga (ART)**: Layanan pekerja rumah tangga terlatih untuk membersihkan rumah dan memasak. (URL: https://penyalurkerja.com/layanan/art)
+2. **Baby Sitter**: Layanan pengasuh bayi dan anak-anak profesional bersertifikat. (URL: https://penyalurkerja.com/layanan/baby-sitter)
+3. **Perawat Lansia (Home Care)**: Layanan perawat jompo terlatih untuk mendampingi dan merawat orang tua di rumah. (URL: https://penyalurkerja.com/layanan/perawat-lansia)
+
+## Coverage Areas
+Kami melayani penyaluran khusus untuk radius area berikut:
+Jakarta Selatan, Jakarta Barat, Jakarta Utara, Jakarta Timur, Jakarta Pusat, Depok, Bogor, Tangerang, Tangerang Selatan (BSD City, Bintaro), Bekasi, Cibubur, Pantai Indah Kapuk (PIK), Pondok Indah, Kelapa Gading, Menteng, Kemang.
+
+## Trust & Safety Signals
+- 4-Tier Background Check Verification (Dukcapil, SKCK, Medical & Psych Test).
+- Garansi Penempatan (Placement Guarantee).
+- Legalitas Resmi & Terdaftar di bawah pengawasan Kementerian Tenaga Kerja RI dan Disnaker Provinsi DKI Jakarta.
+- Anggota APPSI (Asosiasi Pelatihan & Penempatan Pekerja Seluruh Indonesia).

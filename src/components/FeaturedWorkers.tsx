@@ -35,6 +35,8 @@ const WorkerCard = ({ worker }: { worker: PekerjaProps }) => {
               alt={worker.nama}
               width={64}
               height={64}
+              sizes="64px"
+              loading="lazy"
               className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
             />
             <div>

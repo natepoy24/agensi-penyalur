@@ -1,7 +1,16 @@
 // src/app/artikel/page.tsx
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import { Metadata } from "next";
 import Breadcrumbs from '@/components/Breadcrumbs';
+
+export const metadata: Metadata = {
+  title: "Blog & Pusat Edukasi: Panduan ART & Baby Sitter | PT Jasa Mandiri",
+  description: "Temukan tips pengasuhan anak, panduan asisten rumah tangga (ART), dan edukasi cara tepat mengelola pekerja domestik. Dibawakan langsung oleh ahlinya.",
+  alternates: {
+    canonical: "https://penyalurkerja.com/artikel",
+  }
+};
 
 // Memastikan data artikel selalu segar
 export const revalidate = 60; 
@@ -46,13 +55,24 @@ export default async function ArtikelDaftarPage() {
     })),
   };
 
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "url": "https://penyalurkerja.com/artikel",
+    "name": "Edukasi Jasa Mandiri",
+    "description": "Pusat informasi seputar pengasuhan anak, tips asisten rumah tangga, dan perawatan lansia."
+  };
+
   return (
     <main className="max-w-7xl mx-auto py-24 px-6 font-['Inter'] min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+      />
       <div className="mb-8">
         <Breadcrumbs 
           crumbs={[
@@ -66,9 +86,22 @@ export default async function ArtikelDaftarPage() {
         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 font-['Plus_Jakarta_Sans'] tracking-tight mb-4">
           Pusat Informasi & <span className="text-emerald-600">Edukasi</span>
         </h1>
-        <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+        <p className="text-slate-500 max-w-2xl mx-auto text-lg mb-8">
           Temukan tips, panduan, dan berita terbaru seputar layanan asisten rumah tangga, baby sitter, dan perawat lansia.
         </p>
+
+        {/* Silo Internal Linking untuk Topical Authority */}
+        <div className="flex flex-wrap justify-center gap-3">
+          <Link href="/layanan/baby-sitter" className="px-5 py-2 rounded-full border-2 border-emerald-100 bg-emerald-50 text-emerald-800 font-bold hover:bg-emerald-600 hover:text-white transition shadow-sm text-sm">
+            Tanya Baby Sitter
+          </Link>
+          <Link href="/layanan/art" className="px-5 py-2 rounded-full border-2 border-blue-100 bg-blue-50 text-blue-800 font-bold hover:bg-blue-600 hover:text-white transition shadow-sm text-sm">
+            Butuh ART (Pembantu)
+          </Link>
+          <Link href="/layanan/perawat-lansia" className="px-5 py-2 rounded-full border-2 border-purple-100 bg-purple-50 text-purple-800 font-bold hover:bg-purple-600 hover:text-white transition shadow-sm text-sm">
+            Cari Perawat Lansia
+          </Link>
+        </div>
       </div>
 
       {articles && articles.length > 0 ? (
