@@ -9,18 +9,32 @@ import { signOut } from "@/app/actions";
 export default function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
+  // 1. Cek apakah ini halaman preview kontrak yang butuh layar penuh
+  const isFullscreenPage = pathname?.includes("/kontrak/preview");
+
   // State untuk kontrol Sidebar (Default: Terbuka / false)
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Opsional: Auto-collapse jika masuk ke halaman form tambah/edit agar layar lebih lega
   useEffect(() => {
-    if (pathname.includes("tambah") || pathname.includes("edit")) {
+    if (pathname?.includes("tambah") || pathname?.includes("edit")) {
       setIsCollapsed(true);
     } else {
       setIsCollapsed(false);
     }
   }, [pathname]);
 
+  // 2. JIKA HALAMAN PREVIEW KONTRAK: Render bersih tanpa Topbar & Sidebar
+  if (isFullscreenPage) {
+    return (
+      <div className="min-h-screen bg-slate-50 font-['Inter'] relative z-[60]">
+        <div className="fixed inset-0 bg-slate-50 -z-10"></div>
+        {children}
+      </div>
+    );
+  }
+
+  // 3. JIKA HALAMAN DASHBOARD LAINNYA: Render normal
   return (
     <div className="min-h-screen bg-slate-50 flex font-['Inter'] relative z-[60]">
       {/* Background putih penuh untuk menutupi layout global publik */}
@@ -74,7 +88,7 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
 
           <Link
             href="/admin/dashboard/pekerja"
-            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 ${pathname.includes("pekerja") || pathname.includes("tambah") || pathname.includes("edit") ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-slate-500 hover:bg-slate-100 hover:text-emerald-700"}`}
+            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 ${pathname?.includes("pekerja") || pathname?.includes("tambah") || pathname?.includes("edit") ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-slate-500 hover:bg-slate-100 hover:text-emerald-700"}`}
             title="List Pekerja"
           >
             <span className="material-symbols-outlined text-2xl">person</span>
@@ -83,11 +97,30 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
 
           <Link
             href="/admin/dashboard/artikel"
-            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 ${pathname.includes("artikel") ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-slate-500 hover:bg-slate-100 hover:text-emerald-700"}`}
+            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 ${pathname?.includes("artikel") ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-slate-500 hover:bg-slate-100 hover:text-emerald-700"}`}
             title="Artikel & SEO"
           >
             <span className="material-symbols-outlined text-2xl">description</span>
             {!isCollapsed && <span className="whitespace-nowrap">Artikel & SEO</span>}
+          </Link>
+
+          {/* Tambahan Link Menu Kontrak */}
+          <Link
+            href="/admin/dashboard/kontrak/preview"
+            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 ${pathname?.includes("kontrak") ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-slate-500 hover:bg-slate-100 hover:text-emerald-700"}`}
+            title="Buat Kontrak"
+          >
+            <span className="material-symbols-outlined text-2xl">contract</span>
+            {!isCollapsed && <span className="whitespace-nowrap">Buat Kontrak</span>}
+          </Link>
+
+          <Link
+            href="/admin/dashboard/laporan"
+            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 ${pathname?.includes("/laporan") ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-slate-500 hover:bg-slate-100 hover:text-emerald-700"}`}
+            title="Data Laporan"
+          >
+            <span className="material-symbols-outlined text-2xl">table_chart</span>
+            {!isCollapsed && <span className="whitespace-nowrap">Data Laporan</span>}
           </Link>
         </nav>
 

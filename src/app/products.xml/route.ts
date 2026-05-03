@@ -52,7 +52,7 @@ export async function GET() {
   const xmlHeader = `<?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
 <channel>
-<title>Stok Pekerja PT Jasa Mandiri</title>
+<title>Stok Pekerja Jasa Mandiri</title>
 <link>https://penyalurkerja.com</link>
 <description>Daftar tenaga kerja ready stock (ART, Baby Sitter, Perawat Lansia) siap kerja.</description>
 `;
@@ -81,7 +81,7 @@ export async function GET() {
     const title = escapeXml(`Jasa ${worker.kategori} - ${worker.nama} (${worker.lokasi})`);
     const location = escapeXml(worker.lokasi);
     const category = escapeXml(worker.kategori);
-    const brand = "PT Jasa Mandiri"; // Brand aman
+    const brand = "Jasa Mandiri"; // Brand aman
 
     return `
 <item>

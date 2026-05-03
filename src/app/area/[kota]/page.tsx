@@ -64,8 +64,8 @@ export async function generateMetadata(
   }
 
   return {
-    title: `Penyalur Baby Sitter & ART di ${areaName} (Resmi & Bergaransi) | PT Jasa Mandiri`,
-    description: `Sulit cari ART/Suster di ${areaName}? Jangan ambil risiko dengan pekerja cabutan dari internet atau calo. PT Jasa Mandiri Agency menyediakan tenaga kerja resmi, terverifikasi, dan bergaransi untuk wilayah ${areaName}.`,
+    title: `Penyalur Baby Sitter & ART di ${areaName} (Resmi & Bergaransi) | Jasa Mandiri`,
+    description: `Sulit cari ART/Suster di ${areaName}? Jangan ambil risiko dengan pekerja cabutan dari internet atau calo. Jasa Mandiri Agency menyediakan tenaga kerja resmi, terverifikasi, dan bergaransi untuk wilayah ${areaName}.`,
     alternates: {
       canonical: `https://penyalurkerja.com/area/${kota}`,
     },
@@ -93,7 +93,7 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
   const areaSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": `PT Jasa Mandiri Agency - Layanan ${areaName}`,
+    "name": `Jasa Mandiri Agency - Layanan ${areaName}`,
     "image": "https://penyalurkerja.com/Image/Logo-jm.png",
     "telephone": "+6282122415552",
     "url": `https://penyalurkerja.com/area/${kota}`,
@@ -139,7 +139,7 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
               Lihat Katalog Pekerja
             </Link>
             <a 
-              href={`https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20PT%20Jasa%20Mandiri,%20saya%20butuh%20bantuan%20untuk%20lokasi%20${encodeURIComponent(areaName)}.`}
+              href={`https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Jasa%20Mandiri,%20saya%20butuh%20bantuan%20untuk%20lokasi%20${encodeURIComponent(areaName)}.`}
               target="_blank"
               className="px-8 py-3 bg-emerald-600 text-white font-bold rounded-lg hover:bg-emerald-700 transition flex items-center justify-center gap-2"
             >
@@ -217,7 +217,7 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
           <div className="text-center mb-12">
             <span className="text-emerald-600 font-bold tracking-wider uppercase text-sm">Solusi Kami</span>
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2">
-              PT Jasa Mandiri Hadir Sebagai Jawaban
+              Jasa Mandiri Hadir Sebagai Jawaban
             </h2>
             <p className="text-slate-600 mt-4 max-w-2xl mx-auto">
               Kami memahami standar tinggi keluarga di {areaName}. Oleh karena itu, kami tidak sembarangan mengirim pekerja.
@@ -262,7 +262,7 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
 {/* --- KEUNTUNGAN (WHY US) --- */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 max-w-5xl">
-          <h2 className="text-3xl font-bold text-center text-slate-900 mb-10">Mengapa Memilih PT Jasa Mandiri?</h2>
+          <h2 className="text-3xl font-bold text-center text-slate-900 mb-10">Mengapa Memilih Jasa Mandiri?</h2>
           <div className="grid md:grid-cols-2 gap-8">
              <div className="flex gap-4">
                 <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 flex-shrink-0">

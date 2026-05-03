@@ -25,10 +25,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   
   title: {
-    template: '%s | PT Jasa Mandiri',
-    default: 'PT Jasa Mandiri Agency - Penyalur ART, Baby Sitter, & Perawat Lansia Terpercaya',
+    template: '%s | Jasa Mandiri',
+    default: 'Jasa Mandiri Agency - Penyalur ART, Baby Sitter, & Perawat Lansia Terpercaya',
   },
-  description: 'PT Jasa Mandiri Agency adalah perusahaan resmi penyalur tenaga kerja babysitter, asisten rumah tangga, dan perawat lansia bergaransi di Jakarta.',
+  description: 'Jasa Mandiri Agency adalah perusahaan resmi penyalur tenaga kerja babysitter, asisten rumah tangga, dan perawat lansia bergaransi di Jakarta.',
   keywords: ['penyalur art', 'yayasan baby sitter', 'penyalur baby sitter', 'jasa perawat lansia', 'agen pembantu rumah tangga', 'penyalur pembantu', 'home care jakarta', 'lowongan kerja art'],
   
   // SOLUSI GHOST DOMAIN: Canonical Hardcoded
@@ -37,10 +37,10 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'PT Jasa Mandiri Agency - Penyalur ART & Baby Sitter Resmi',
+    title: 'Jasa Mandiri Agency - Penyalur ART & Baby Sitter Resmi',
     description: 'Yayasan penyalur resmi, terpercaya, dan bergaransi di Jakarta. Tersedia ribuan pekerja siap kerja.',
     url: SITE_URL,
-    siteName: 'PT Jasa Mandiri Agency',
+    siteName: 'Jasa Mandiri Agency',
     locale: 'id_ID',
     type: 'website',
     images: [
@@ -48,13 +48,13 @@ export const metadata: Metadata = {
         url: '/Image/Logo-jm.png', // Next.js akan menggabungkan ini dengan metadataBase
         width: 1200,
         height: 630,
-        alt: 'PT Jasa Mandiri Agency Logo',
+        alt: 'Jasa Mandiri Agency Logo',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PT Jasa Mandiri Agency - Penyalur Tenaga Kerja',
+    title: 'Jasa Mandiri Agency - Penyalur Tenaga Kerja',
     description: 'Solusi pencarian ART dan Baby Sitter terpercaya di Jakarta.',
     images: ['/Image/Logo-jm.png'],
   },
@@ -78,12 +78,12 @@ const orgSchema = {
     {
       "@type": "Organization",
       "@id": "https://penyalurkerja.com/#organization", // KTP untuk dipanggil Schema Product
-      "name": "PT Jasa Mandiri Agency",
-      "legalName": "PT Jasa Mandiri Agency",
+      "name": "Jasa Mandiri Agency",
+      "legalName": "Jasa Mandiri Agency",
       "url": "https://penyalurkerja.com",
       "logo": "https://penyalurkerja.com/Image/Logo-jm.png",
       "image": "https://penyalurkerja.com/Image/banner.webp",
-      "description": "PT Jasa Mandiri Agency adalah perusahaan resmi penyalur tenaga kerja babysitter, asisten rumah tangga, dan perawat lansia.",
+      "description": "Jasa Mandiri Agency adalah perusahaan resmi penyalur tenaga kerja babysitter, asisten rumah tangga, dan perawat lansia.",
       "foundingDate": "2015",
       "address": {
         "@type": "PostalAddress",
@@ -108,7 +108,7 @@ const orgSchema = {
       "parentOrganization": {
          "@id": "https://penyalurkerja.com/#organization"
       },
-      "name": "PT Jasa Mandiri Agency",
+      "name": "Jasa Mandiri Agency",
       "image": "https://penyalurkerja.com/Image/Logo-jm.png",
       "priceRange": "Rp 2.200.000 - Rp 5.500.000",
       "address": {
@@ -136,7 +136,7 @@ const orgSchema = {
       "@type": "WebSite",
       "@id": "https://penyalurkerja.com/#website",
       "url": "https://penyalurkerja.com",
-      "name": "Penyalur Kerja Resmi | PT Jasa Mandiri Agency",
+      "name": "Penyalur Kerja Resmi | Jasa Mandiri Agency",
       "publisher": {
         "@id": "https://penyalurkerja.com/#organization"
       },

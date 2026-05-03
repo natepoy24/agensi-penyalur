@@ -3,8 +3,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import { ShieldCheck, CreditCard, RefreshCw } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Syarat & Ketentuan Layanan | PT Jasa Mandiri Agency',
-  description: 'Kebijakan garansi penggantian pekerja, prosedur pembayaran, dan syarat ketentuan penggunaan jasa penyalur PT Jasa Mandiri Agency.',
+  title: 'Syarat & Ketentuan Layanan | Jasa Mandiri Agency',
+  description: 'Kebijakan garansi penggantian pekerja, prosedur pembayaran, dan syarat ketentuan penggunaan jasa penyalur Jasa Mandiri Agency.',
 };
 
 export default function SyaratKetentuanPage() {
@@ -32,7 +32,7 @@ export default function SyaratKetentuanPage() {
             </div>
             <div className="prose prose-slate text-slate-600 max-w-none">
               <p>
-                PT Jasa Mandiri Agency berkomitmen memberikan kepuasan maksimal bagi pengguna jasa. Berikut adalah ketentuan garansi kami:
+                Jasa Mandiri Agency berkomitmen memberikan kepuasan maksimal bagi pengguna jasa. Berikut adalah ketentuan garansi kami:
               </p>
               <ul className="list-disc pl-5 space-y-2 mt-4">
                 <li><strong>Masa Garansi:</strong> 3 Bulan (90 hari) terhitung sejak pekerja mulai bekerja.</li>

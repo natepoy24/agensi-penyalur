@@ -6,21 +6,20 @@ import Link from 'next/link';
 import Image from 'next/image';
 import slugify from 'slugify';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 import { createClient } from '@/utils/supabase/client';
 import { type PekerjaProps } from './PekerjaCard';
 import { ArrowRightCircle, Briefcase, MapPin, Wallet } from 'lucide-react';
 
-// ✅ Fungsi format ke Rupiah
 const formatRupiah = (number: number | null | undefined) => {
   if (!number) return 'N/A';
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
 };
 
-// ✅ Komponen untuk kartu pekerja individual
 const WorkerCard = ({ worker }: { worker: PekerjaProps }) => {
   const kategoriSlug = slugify(worker.kategori, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g });
 
@@ -59,10 +58,10 @@ const WorkerCard = ({ worker }: { worker: PekerjaProps }) => {
         </div>
       </div>
 
-      {/* ✅ Link ke halaman detail */}
+      {/*  Link ke halaman detail */}
       <Link
         href={`/pekerja/${kategoriSlug}/${worker.slug}`}
-        className="block w-full text-center bg-blue-600 text-white font-semibold py-3 px-4 hover:bg-blue-700 transition"
+        className="block w-[cal(100%-3rem)] mx-6 mb-6 text-center rounded-full bg-blue-600 text-white font-semibold py-3 px-4 hover:shadow-lg transition-transform hover:-translate-y-0.5"
       >
         Lihat Detail
       </Link>
@@ -115,9 +114,8 @@ export default function FeaturedWorkers() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`filter-btn py-2 px-4 rounded-full font-semibold shadow-sm hover:bg-gray-100 transition ${
-              filter === f ? 'active bg-blue-600 text-white' : 'bg-white text-gray-700'
-            }`}
+            className={`filter-btn py-2 px-4 rounded-full font-semibold shadow-sm hover:bg-gray-100 transition ${filter === f ? 'active bg-blue-600 text-white' : 'bg-white text-gray-700'
+              }`}
           >
             {f === 'Asisten Rumah Tangga' ? 'ART' : f}
           </button>
@@ -127,11 +125,12 @@ export default function FeaturedWorkers() {
       {/* ✅ Swiper Slider */}
       <div className="relative">
         <Swiper
-          modules={[Navigation, Pagination]}
+          modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={20}
           slidesPerView={1}
           navigation
           pagination={{ clickable: true }}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
           breakpoints={{ 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }}
           className="pb-12"
         >

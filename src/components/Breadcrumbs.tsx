@@ -2,6 +2,7 @@
 "use client";
 
 import Link from 'next/link';
+import { ChevronRight, Home } from 'lucide-react';
 
 // Definisikan tipe untuk satu "remah roti" (crumb)
 type Crumb = {
@@ -42,34 +43,39 @@ export default function Breadcrumbs({ crumbs }: BreadcrumbsProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsSchema) }}
         />
       )}
-      <nav className="bg-blue-50 py-3 px-4 rounded-lg mb-8">
-      <ol className="flex items-center gap-2 text-sm text-gray-600">
-        {crumbs.map((crumb, index) => {
-          // Cek apakah ini adalah crumb terakhir dalam daftar
-          const isLast = index === crumbs.length - 1;
+      <nav className="inline-flex py-2.5 px-5 rounded-full bg-slate-50/80 border border-slate-100 shadow-sm backdrop-blur-sm mb-8 w-fit">
+        <ol className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-500">
+          {crumbs.map((crumb, index) => {
+            // Cek apakah ini adalah crumb terakhir dalam daftar
+            const isLast = index === crumbs.length - 1;
 
-          return (
-            <li key={index} className="flex items-center gap-2">
-              {/* Jika bukan yang terakhir, tampilkan sebagai link */}
-              {!isLast ? (
-                <Link href={crumb.path} className="text-blue-700 hover:underline font-medium">
-                  {crumb.name}
-                </Link>
-              ) : (
-                /* Jika yang terakhir, tampilkan sebagai teks biasa */
-                <span className="font-semibold text-gray-800" aria-current="page">
-                  {crumb.name}
-                </span>
-              )}
+            return (
+              <li key={index} className="flex items-center gap-2">
+                {/* Jika bukan yang terakhir, tampilkan sebagai link */}
+                {!isLast ? (
+                  <Link 
+                    href={crumb.path} 
+                    className="flex items-center gap-1.5 text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
+                  >
+                    {index === 0 && <Home size={14} className="mb-0.5" />}
+                    {crumb.name}
+                  </Link>
+                ) : (
+                  /* Jika yang terakhir, tampilkan sebagai teks biasa */
+                  <span className="flex items-center gap-1.5 font-semibold text-slate-800" aria-current="page">
+                    {index === 0 && <Home size={14} className="mb-0.5" />}
+                    {crumb.name}
+                  </span>
+                )}
 
-              {/* Tampilkan pemisah '/' jika bukan yang terakhir */}
-              {!isLast && (
-                <span className="text-gray-400">/</span>
-              )}
-            </li>
-          );
-        })}
-      </ol>
+                {/* Tampilkan pemisah jika bukan yang terakhir */}
+                {!isLast && (
+                  <ChevronRight size={14} className="text-slate-400" />
+                )}
+              </li>
+            );
+          })}
+        </ol>
       </nav>
     </>
   );

@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import FaqAccordion from '@/components/FaqAccordion';
 import { CheckCircle, ShieldCheck, Workflow } from 'lucide-react';
 import type { Metadata } from 'next';
 
@@ -68,121 +69,135 @@ export default function TentangPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <div className="pt-20 pb-20 px-4">
-        <div className="container mx-auto">
+      <div className="pt-16 pb-24 px-4 md:px-8">
+        <div className="container mx-auto max-w-7xl">
           <Breadcrumbs crumbs={crumbs} />
-          <div className="text-center mt-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+          
+          <div className="text-center mt-12 mb-20">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 leading-tight">
               Tentang PT Jasa Mandiri Agency
             </h1>
-            <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-              Yayasan Penyalur Pekerja Rumah Tangga (ART), Baby Sitter, dan Perawat Lansia Resmi di Jakarta.
+            <p className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
+              Yayasan Penyalur Pekerja Rumah Tangga (ART), Baby Sitter, dan Perawat Lansia Resmi di Jakarta. Berdedikasi untuk kenyamanan keluarga Anda.
             </p>
           </div>
 
           {/* Konten halaman tentang kami */}
-          <div className="mt-16 grid md:grid-cols-2 gap-12 items-center">
-            <div>
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="group perspective">
               <Image
                 src="/Image/kisah-kami.jpg"
                 alt="Tim PT Jasa Mandiri Agency"
-                width={600}
-                height={400}
-                className="rounded-lg shadow-xl"
+                width={800}
+                height={600}
+                className="rounded-3xl shadow-xl group-hover:shadow-2xl group-hover:scale-[1.02] transition-all duration-500 object-cover w-full h-[500px]"
               />
             </div>
 
-            <div className="text-gray-700 space-y-4">
-              <h2 className="text-3xl font-bold text-gray-800">Misi Kami</h2>
-              <p>
+            <div className="text-slate-700 space-y-8 bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800">Misi Kami</h2>
+              <p className="text-lg leading-relaxed text-slate-600">
                 Misi kami adalah menjembatani kebutuhan keluarga di Indonesia dengan tenaga kerja yang profesional, terampil, dan dapat dipercaya. Kami berkomitmen untuk memberikan ketenangan dan solusi terbaik bagi setiap klien.
               </p>
 
-              <ul className="space-y-2 mt-4">
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-blue-600 mr-2 flex-shrink-0 mt-1" />
-                  <span>Menyediakan tenaga kerja yang telah melalui proses verifikasi ketat.</span>
+              <ul className="space-y-6 mt-8">
+                <li className="flex items-start group">
+                  <div className="bg-emerald-100 p-2 rounded-full mr-4 group-hover:scale-110 transition-transform flex-shrink-0">
+                    <CheckCircle className="h-6 w-6 text-emerald-600" />
+                  </div>
+                  <span className="text-slate-700 font-medium pt-1">Menyediakan tenaga kerja yang telah melalui proses verifikasi ketat.</span>
                 </li>
 
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-blue-600 mr-2 flex-shrink-0 mt-1" />
-                  <span>Memberikan pelatihan dan pengembangan berkelanjutan bagi para pekerja.</span>
+                <li className="flex items-start group">
+                  <div className="bg-emerald-100 p-2 rounded-full mr-4 group-hover:scale-110 transition-transform flex-shrink-0">
+                    <CheckCircle className="h-6 w-6 text-emerald-600" />
+                  </div>
+                  <span className="text-slate-700 font-medium pt-1">Memberikan pelatihan dan pengembangan berkelanjutan bagi para pekerja.</span>
                 </li>
 
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-blue-600 mr-2 flex-shrink-0 mt-1" />
-                  <span>Menawarkan proses yang transparan, cepat, dan didukung garansi.</span>
+                <li className="flex items-start group">
+                  <div className="bg-emerald-100 p-2 rounded-full mr-4 group-hover:scale-110 transition-transform flex-shrink-0">
+                    <CheckCircle className="h-6 w-6 text-emerald-600" />
+                  </div>
+                  <span className="text-slate-700 font-medium pt-1">Menawarkan proses yang transparan, cepat, dan didukung garansi.</span>
                 </li>
               </ul>
             </div>
           </div>
 
           {/* --- KONTEN SEO BARU: LEGALITAS & ALUR KERJA --- */}
-          <section id="alur-kerja" className="mt-20 bg-slate-50 p-8 md:p-12 rounded-2xl">
-            <div className="grid md:grid-cols-2 gap-12 items-start">
+          <section id="alur-kerja" className="mt-24 bg-gradient-to-br from-slate-50 to-emerald-50/30 p-10 md:p-16 rounded-[2.5rem] border border-slate-100 shadow-sm">
+            <div className="grid lg:grid-cols-2 gap-16 items-start">
               {/* Kolom Legalitas */}
-              <div>
-                <h2 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                  <ShieldCheck className="w-8 h-8 text-blue-600" />
+              <div className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <h2 className="text-3xl font-bold text-slate-800 flex items-center gap-4">
+                  <div className="bg-emerald-100 p-3 rounded-2xl text-emerald-600">
+                    <ShieldCheck className="w-8 h-8" />
+                  </div>
                   Legalitas & Keamanan
                 </h2>
-                <p className="mt-4 text-gray-600">
+                <p className="mt-6 text-slate-600 leading-relaxed text-lg">
                   Kepercayaan Anda adalah prioritas kami. PT Jasa Mandiri Agency beroperasi sebagai Lembaga Pelatihan Kerja (LPK) dan Perusahaan Penempatan Pekerja Rumah Tangga (P3RT) yang resmi dan terdaftar.
                 </p>
-                <ul className="mt-4 space-y-2 text-gray-600">
-                  <li className="flex items-center gap-2"><CheckCircle size={18} className="text-blue-600" /> Diawasi oleh Disnaker.</li>
-                  <li className="flex items-center gap-2"><CheckCircle size={18} className="text-blue-600" /> Verifikasi identitas pekerja yang ketat.</li>
-                  <li className="flex items-center gap-2"><CheckCircle size={18} className="text-blue-600" /> Kontrak kerja yang jelas dan adil.</li>
+                <ul className="mt-8 space-y-4 text-slate-700">
+                  <li className="flex items-center gap-3"><CheckCircle size={20} className="text-emerald-500" /> Diawasi oleh Disnaker.</li>
+                  <li className="flex items-center gap-3"><CheckCircle size={20} className="text-emerald-500" /> Verifikasi identitas pekerja yang ketat.</li>
+                  <li className="flex items-center gap-3"><CheckCircle size={20} className="text-emerald-500" /> Kontrak kerja yang jelas dan adil.</li>
                 </ul>
               </div>
+              
               {/* Kolom Alur Kerja */}
-              <div>
-                <h2 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                  <Workflow className="w-8 h-8 text-blue-600" />
+              <div className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <h2 className="text-3xl font-bold text-slate-800 flex items-center gap-4">
+                  <div className="bg-blue-100 p-3 rounded-2xl text-blue-600">
+                    <Workflow className="w-8 h-8" />
+                  </div>
                   Alur Kerja Profesional
                 </h2>
-                <p className="mt-4 text-gray-600">
+                <p className="mt-6 text-slate-600 leading-relaxed text-lg">
                   Kami menyederhanakan proses pencarian pekerja untuk Anda melalui langkah-langkah yang terstruktur dan efisien.
                 </p>
-                <ol className="mt-4 space-y-2 text-gray-600 list-decimal list-inside">
-                  <li><strong>Konsultasi:</strong> Tim kami akan memahami kriteria dan kebutuhan spesifik Anda.</li>
-                  <li><strong>Seleksi:</strong> Kami merekomendasikan kandidat yang paling sesuai dari database kami.</li>
-                  <li><strong>Wawancara:</strong> Anda dapat mewawancarai kandidat secara langsung atau via video call.</li>
-                  <li><strong>Administrasi:</strong> Pengurusan kontrak dan administrasi yang transparan.</li>
-                  <li><strong>Penempatan:</strong> Pekerja siap diantar ke lokasi Anda dengan aman.</li>
-                </ol>
+                <div className="mt-8 space-y-5">
+                  <div className="flex gap-4 group">
+                    <span className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">1</span>
+                    <p className="text-slate-700 pt-1"><strong>Konsultasi:</strong> Tim kami akan memahami kriteria dan kebutuhan spesifik Anda.</p>
+                  </div>
+                  <div className="flex gap-4 group">
+                    <span className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">2</span>
+                    <p className="text-slate-700 pt-1"><strong>Seleksi:</strong> Kami merekomendasikan kandidat yang paling sesuai dari database kami.</p>
+                  </div>
+                  <div className="flex gap-4 group">
+                    <span className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">3</span>
+                    <p className="text-slate-700 pt-1"><strong>Wawancara:</strong> Anda dapat mewawancarai kandidat secara langsung atau via video call.</p>
+                  </div>
+                  <div className="flex gap-4 group">
+                    <span className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">4</span>
+                    <p className="text-slate-700 pt-1"><strong>Administrasi:</strong> Pengurusan kontrak dan administrasi yang transparan.</p>
+                  </div>
+                  <div className="flex gap-4 group">
+                    <span className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">5</span>
+                    <p className="text-slate-700 pt-1"><strong>Penempatan:</strong> Pekerja siap diantar ke lokasi Anda dengan aman.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
           {/* --- BAGIAN FAQ BARU --- */}
-          <section id="faq" className="max-w-4xl mx-auto mt-20">
-            <h2 className="text-3xl font-semibold text-gray-900 mb-8 text-center">
-              Pertanyaan Umum Tentang Kami
-            </h2>
-            {/* Komponen FAQ bisa dibuat terpisah atau langsung di sini */}
-            <div className="space-y-4">
-              {faqData.map((item, index) => (
-                <details key={index} className="group bg-white p-6 rounded-lg shadow-sm border">
-                  <summary className="flex justify-between items-center font-semibold cursor-pointer text-gray-800">
-                    {item.question}
-                    <span className="ml-4 transition-transform duration-200 group-open:rotate-180">▼</span>
-                  </summary>
-                  <p className="mt-4 text-gray-600 leading-relaxed">{item.answer}</p>
-                </details>
-              ))}
-            </div>
-          </section>
+          <div className="mt-24 max-w-4xl mx-auto">
+             <FaqAccordion faqData={faqData} />
+          </div>
 
           {/* --- CALL TO ACTION (CTA) BARU --- */}
-          <section className="mt-20 bg-emerald-900 rounded-2xl shadow-2xl p-8 md:p-12 text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 opacity-10">
-              <Image src="/Image/Logo-jm.png" width={300} height={300} alt="Latar belakang logo" />
+          <section className="mt-24 bg-emerald-900 rounded-[2.5rem] shadow-2xl p-10 md:p-16 text-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 opacity-10 group-hover:scale-110 transition-transform duration-700 ease-out">
+              <Image src="/Image/Logo-jm.png" width={400} height={400} alt="Latar belakang logo" />
             </div>
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/50 to-transparent"></div>
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
               <div className="text-center md:text-left">
-                <h2 className="text-2xl md:text-4xl font-bold mb-4">Percayakan Kebutuhan Anda Pada Kami</h2>
-                <p className="text-emerald-100 text-lg max-w-xl">
+                <h2 className="text-3xl md:text-5xl font-black mb-6 tracking-tight">Percayakan Kebutuhan Anda Pada Kami</h2>
+                <p className="text-emerald-100 text-lg md:text-xl max-w-2xl font-light leading-relaxed">
                   Setelah mengenal kami lebih jauh, jangan ragu untuk berkonsultasi. Tim kami siap membantu menemukan solusi terbaik untuk keluarga Anda.
                 </p>
               </div>
@@ -191,7 +206,7 @@ export default function TentangPage() {
                   href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20PT%20Jasa%20Mandiri%20Agency,%20saya%20ingin%20berkonsultasi."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block bg-white text-emerald-900 font-bold py-4 px-8 rounded-xl shadow-lg hover:bg-gray-100 hover:scale-105 transition transform"
+                  className="inline-block bg-white text-emerald-900 font-black text-lg py-5 px-10 rounded-full shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] hover:-translate-y-1 transition-all duration-300 transform"
                 >
                   Hubungi Kami Sekarang
                 </a>

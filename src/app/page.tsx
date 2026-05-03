@@ -65,7 +65,7 @@ export default function HomePage() {
               Penyalur ART, Baby Sitter, & Perawat Lansia Terpercaya
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-xl mx-auto md:mx-0">
-              PT Jasa Mandiri menyediakan pekerja rumah tangga, baby sitter, dan perawat lansia
+              Jasa Mandiri menyediakan pekerja rumah tangga, baby sitter, dan perawat lansia
               yang terverifikasi, terlatih, dan profesional untuk wilayah Jakarta dan sekitarnya.
             </p>
             <Link
@@ -78,7 +78,7 @@ export default function HomePage() {
           <div className="hidden md:block">
             <Image
               src="/Image/hero-image.webp"
-              alt="Seorang baby sitter profesional dari PT Jasa Mandiri sedang mendampingi anak-anak"
+              alt="Seorang baby sitter profesional dari Jasa Mandiri sedang mendampingi anak-anak"
               width={1035}
               height={690}
               sizes="(min-width: 768px) 50vw, 100vw"
@@ -96,7 +96,7 @@ export default function HomePage() {
           Yayasan Penyalur Pekerja Rumah Tangga Resmi di Jakarta
         </h2>
         <p className="mt-4 text-gray-600 leading-relaxed">
-          Selamat datang di <strong>PT Jasa Mandiri</strong>, sebuah
+          Selamat datang di <strong>Jasa Mandiri</strong>, sebuah
           <Link href="/tentang" className="text-blue-600 hover:underline font-semibold"> yayasan penyalur pekerja rumah tangga (ART)</Link>
           terkemuka. Kami juga berperan sebagai
           <Link href="/layanan" className="text-blue-600 hover:underline font-semibold"> agensi baby sitter profesional </Link>
@@ -107,19 +107,19 @@ export default function HomePage() {
       </section>
 
       {/* Keunggulan */}
-      <section className="mt-16">
+      <section className="mt-32">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-800">Mengapa Memilih PT Jasa Mandiri?</h2>
-          <p className="mt-2 text-lg text-gray-500">Dedikasi kami adalah memberikan yang terbaik untuk ketenangan keluarga Anda.</p>
+          <h2 className="text-4xl font-display font-bold text-on-surface">Mengapa Memilih PT Jasa Mandiri?</h2>
+          <p className="mt-4 text-xl text-on-surface-variant max-w-2xl mx-auto">Dedikasi kami adalah memberikan yang terbaik untuk ketenangan keluarga Anda.</p>
         </div>
-        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="bg-white p-8 rounded-xl shadow-lg text-center border border-slate-100 hover:shadow-xl transition">
+            <div key={index} className="bg-white p-8 md:p-10 rounded-[2rem] shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center group">
               <div className="inline-block p-4 bg-emerald-50 rounded-full">
                 <div className="h-8 w-8 text-emerald-600 flex items-center justify-center">{feature.icon}</div>
               </div>
-              <h3 className="mt-4 text-xl font-semibold">{feature.title}</h3>
-              <p className="mt-2 text-gray-500">{feature.text}</p>
+              <h3 className="text-xl font-display font-bold text-on-surface">{feature.title}</h3>
+              <p className="mt-4 text-on-surface-variant leading-relaxed">{feature.text}</p>
             </div>
           ))}
         </div>
@@ -134,7 +134,7 @@ export default function HomePage() {
           <div>
             <h2 className="text-3xl font-bold text-emerald-900 mb-6">Legalitas Resmi & Screening Pekerja yang Ketat</h2>
             <p className="text-slate-700 leading-relaxed mb-4">
-              Sebagai lembaga penyalur tenaga kerja berbadan hukum yang terdaftar di kemenkum, PT Jasa Mandiri menaruh prioritas tertinggi pada aspek keamanan dan legalitas. Kami diawasi langsung oleh <strong>Kementerian Ketenagakerjaan RI</strong> dan <strong>Disnaker Provinsi DKI Jakarta</strong>. Kepercayaan Anda adalah pilar kami.
+              Sebagai lembaga penyalur tenaga kerja berbadan hukum yang terdaftar di kemenkum, Jasa Mandiri menaruh prioritas tertinggi pada aspek keamanan dan legalitas. Kami diawasi langsung oleh <strong>Kementerian Ketenagakerjaan RI</strong> dan <strong>Disnaker Provinsi DKI Jakarta</strong>. Kepercayaan Anda adalah pilar kami.
             </p>
             <p className="text-slate-700 leading-relaxed mb-4">
               Setiap asisten rumah tangga (ART), baby sitter, maupun perawat lansia yang kami salurkan harus melewati prosedur <em>screening</em> hingga 4 tahap wajib. Prosedur ini meliputi pengecekan validitas identitas KTP (Dukcapil), interview psikologis perilaku, verifikasi izin keluarga, hingga serangkaian uji kompetensi bersertifikasi untuk memastikan <em>Hard-Skill</em> yang dapat diandalkan oleh keluarga Anda.
@@ -239,7 +239,7 @@ export default function HomePage() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:underline hover:text-emerald-800 transition"
           >
-            <MapPin size={18} /> Kunjungi Kantor Yayasan ART PT Jasa Mandiri di Maps
+            <MapPin size={18} /> Kunjungi Kantor Yayasan ART Jasa Mandiri di Maps
           </a>
         </div>
       </section>
@@ -251,7 +251,7 @@ export default function HomePage() {
         <p className="text-center mt-6 text-slate-600">
           Masih punya pertanyaan?
           <a
-            href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20PT%20Jasa%20Mandiri,%20saya%20ingin%20bertanya."
+            href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Jasa%20Mandiri,%20saya%20ingin%20bertanya."
             className="text-emerald-600 hover:underline font-semibold ml-1"
             target="_blank"
             rel="noreferrer"
@@ -275,7 +275,7 @@ export default function HomePage() {
           </div>
           <div className="flex-shrink-0">
             <a
-              href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20PT%20Jasa%20Mandiri,%20saya%20sedang%20mencari%20pekerja."
+              href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Jasa%20Mandiri,%20saya%20sedang%20mencari%20pekerja."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-white text-emerald-900 font-bold py-4 px-8 rounded-xl shadow-lg hover:bg-gray-100 hover:scale-105 transition transform"

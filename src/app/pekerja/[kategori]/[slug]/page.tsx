@@ -43,7 +43,7 @@ export async function generateMetadata(
     return { title: 'Pekerja Tidak Ditemukan' };
   }
 
-  const title = `Profil ${pekerja.nama} - ${pekerja.kategori} Asal ${pekerja.lokasi} | PT Jasa Mandiri Agency`;
+  const title = `Profil ${pekerja.nama} - ${pekerja.kategori} Asal ${pekerja.lokasi} | Jasa Mandiri Agency`;
   const description = `Lihat profil lengkap ${pekerja.nama}, ${pekerja.kategori} berpengalaman ${pekerja.pengalaman} tahun asal ${pekerja.lokasi}. Gaji Rp ${pekerja.gaji?.toLocaleString('id-ID')}. Status: ${pekerja.status}.`;
 
   const kategoriSlug = slugify(pekerja.kategori, { lower: true, strict: true });
@@ -103,7 +103,7 @@ export default async function PekerjaDetailPage({ params }: Props) {
     "knowsLanguage": pekerja.bahasa_asing?.join(", "),
     "worksFor": {
       "@type": "Organization",
-      "name": "PT Jasa Mandiri Agency",
+      "name": "Jasa Mandiri Agency",
       "url": "https://penyalurkerja.com",
       "logo": "https://penyalurkerja.com/Image/Logo-jm.png"
     }
@@ -118,7 +118,7 @@ export default async function PekerjaDetailPage({ params }: Props) {
     "description": `Layanan ${pekerja.kategori} profesional oleh ${pekerja.nama}, pengalaman ${pekerja.pengalaman} tahun.`,
     "brand": {
       "@type": "Brand",
-      "name": "PT Jasa Mandiri Agency"
+      "name": "Jasa Mandiri Agency"
     },
     "offers": {
       "@type": "Offer",

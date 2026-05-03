@@ -66,11 +66,11 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
   const getStatusClass = () => {
     switch (pekerja.status) {
       case "Tersedia":
-        return "bg-green-100 text-green-800";
+        return "bg-emerald-100 text-emerald-800 border-emerald-200";
       case "Akan Tersedia":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-amber-100 text-amber-800 border-amber-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-slate-100 text-slate-800 border-slate-200";
     }
   };
 
@@ -86,9 +86,9 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
   return (
     <div
       onClick={handleCardClick}
-      className="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
+      className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer group"
     >
-      <div className="relative w-full aspect-square bg-slate-100">
+      <div className="relative w-full aspect-square bg-slate-100 overflow-hidden">
         <Image
           src={pekerja.fotoUrl}
           alt={`Foto ${pekerja.nama}`}
@@ -96,7 +96,7 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           loading="lazy"
           style={{ objectFit: "cover" }}
-          className={pekerja.status === "Akan Tersedia" ? "grayscale opacity-80" : ""}
+          className={`transition-transform duration-700 group-hover:scale-105 ${pekerja.status === "Akan Tersedia" ? "grayscale opacity-80" : ""}`}
         />
 
         {/* Logika Kondisional untuk Watermark */}
@@ -104,11 +104,11 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
           <div
             className="absolute top-0 left-0 w-full h-full flex items-center justify-center p-2 text-center pointer-events-none"
             style={{
-              backgroundColor: "rgba(128, 128, 128, 0.5)",
+              backgroundColor: "rgba(15, 23, 42, 0.4)",
             }}
           >
             <span
-              className="font-bold text-white text-xl uppercase tracking-wider drop-shadow-md"
+              className="font-black text-white text-xl uppercase tracking-widest drop-shadow-lg"
               style={{
                 display: "block",
                 lineHeight: "tight",
@@ -121,45 +121,51 @@ export default function PekerjaCard({ pekerja }: { pekerja: PekerjaProps }) {
 
         {/* Badge Status di kanan atas */}
         <span
-          className={`absolute top-3 right-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800 ${getStatusClass()}`}
+          className={`absolute top-4 right-4 text-xs font-bold px-3 py-1.5 rounded-full border shadow-sm ${getStatusClass()}`}
         >
           {pekerja.status}
         </span>
 
         {/* Badge Suku di kiri atas */}
         {pekerja.suku && (
-          <p className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-300 text-slate-800">
+          <p className="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-full bg-white/90 text-slate-800 shadow-sm backdrop-blur-sm border border-white/50">
             Suku {pekerja.suku}
           </p>
         )}
       </div>
 
-      <div className="p-6 flex flex-col flex-grow">
-        <div className="text-center">
-          <h3 className="text-xl font-bold text-gray-900">{pekerja.nama}</h3>
-          <p className="text-blue-600 font-semibold">{pekerja.kategori}</p>
+      <div className="p-6 md:p-8 flex flex-col flex-grow">
+        <div className="text-center mb-6">
+          <h3 className="text-2xl font-black text-slate-800 mb-1">{pekerja.nama}</h3>
+          <p className="text-emerald-600 font-bold text-sm tracking-wide uppercase">{pekerja.kategori}</p>
         </div>
 
-        <div className="mt-4 space-y-2 text-gray-600 text-sm flex-grow">
-          <p>
-            <Briefcase className="inline-block w-4 h-4 mr-2" />
-            <strong>Pengalaman:</strong> {pekerja.pengalaman} tahun
-          </p>
-          <p>
-            <MapPin className="inline-block w-4 h-4 mr-2" />
-            <strong>Kota Asal:</strong> {pekerja.lokasi}
-          </p>
-          <p>
-            <Wallet className="inline-block w-4 h-4 mr-2" />
-            <strong>Gaji:</strong> Rp {formatRupiah(pekerja.gaji)}
-          </p>
+        <div className="space-y-3 text-slate-600 text-sm flex-grow font-medium">
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-100 p-2 rounded-lg">
+               <Briefcase className="w-4 h-4 text-slate-500" />
+            </div>
+            <span><strong>Pengalaman:</strong> {pekerja.pengalaman} tahun</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-100 p-2 rounded-lg">
+               <MapPin className="w-4 h-4 text-slate-500" />
+            </div>
+            <span><strong>Kota Asal:</strong> {pekerja.lokasi}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-100 p-2 rounded-lg">
+               <Wallet className="w-4 h-4 text-slate-500" />
+            </div>
+            <span><strong>Gaji:</strong> Rp {formatRupiah(pekerja.gaji)}</span>
+          </div>
         </div>
 
-        {/* Tombol Lihat Detail tetap ada */}
-        <div className="mt-4">
+        {/* Tombol Lihat Detail */}
+        <div className="mt-8">
           <Link
             href={`/pekerja/${kategoriSlug}/${pekerja.slug}`}
-            className="block w-full text-center rounded-lg bg-blue-600 text-white font-semibold py-3 px-4 hover:bg-blue-700 transition"
+            className="block w-full text-center rounded-xl bg-emerald-600 text-white font-bold py-3.5 px-4 hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-600/20 transition-all duration-300"
           >
             Lihat Detail
           </Link>

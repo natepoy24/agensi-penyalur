@@ -8,7 +8,7 @@ export default function NotFound() {
         <div className="bg-green-200 p-2 rounded-full inline-block mb-3 mt-8 md:mt-0">
           <Image
             src="/Image/Logo-jm.png"
-            alt="Logo PT Jasa Mandiri Agency"
+            alt="Logo Jasa Mandiri Agency"
             width={125}
             height={125}
             className="w-[75px] h-[75px] md:w-[125px] md:h-[125px]"

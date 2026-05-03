@@ -17,14 +17,15 @@
     "@vercel/speed-insights": "^1.2.0",
     "lexical": "^0.37.0",
     "lucide-react": "^0.544.0",
-    "next": "^16.0.7",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
+    "next": "^16.2.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "react-hot-toast": "^2.6.0",
     "react-image-crop": "^11.0.10",
     "slugify": "^1.6.6",
     "supabase": "^2.48.3",
-    "swiper": "^12.0.2"
+    "swiper": "^12.0.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -32,6 +33,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "baseline-browser-mapping": "^2.10.27",
     "eslint": "^9",
     "eslint-config-next": "^16.0.7",
     "tailwindcss": "^4",

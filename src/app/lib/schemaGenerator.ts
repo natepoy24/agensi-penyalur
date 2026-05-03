@@ -90,7 +90,7 @@ export function generateSchema(type: SchemaType, data: SchemaInputData) {
         serviceType: data.serviceType,
         provider: {
           "@type": "Organization",
-          name: "PT Jasa Mandiri Agency",
+          name: "Jasa Mandiri Agency",
           url: siteUrl,
         },
         areaServed: {
@@ -116,7 +116,7 @@ export function generateSchema(type: SchemaType, data: SchemaInputData) {
         datePublished: data.datePublished,
         author: {
           "@type": "Organization",
-          name: data.author ?? "PT Jasa Mandiri Agency",
+          name: data.author ?? "Jasa Mandiri Agency",
         },
       };
 
