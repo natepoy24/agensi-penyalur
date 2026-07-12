@@ -3,8 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ShieldCheck, Star, UserCheck, Phone, AlertTriangle, CheckCircle, Banknote, Clock } from 'lucide-react';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import FeaturedWorkers from '@/components/FeaturedWorkers';
+import Breadcrumbs from '@/components/layout/Breadcrumbs';
+import FeaturedWorkers from '@/components/crudpekerja/FeaturedWorkers';
 
 // --- 1. DATABASE AREA TARGET (Lengkap) ---
 const TARGET_AREAS: Record<string, string> = {

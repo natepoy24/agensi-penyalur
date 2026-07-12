@@ -1,7 +1,7 @@
 // src/app/lowongan-kerja/page.tsx
 import type { Metadata } from "next";
-import Breadcrumbs from "@/components/Breadcrumbs";
-import FaqAccordion from '@/components/FaqAccordion';
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import FaqAccordion from '@/components/layout/FaqAccordion';
 import { CheckCircle, User, Briefcase, BookOpen, Heart, Soup, Home, Phone, MapPin, Target } from "lucide-react";
 
 export const metadata: Metadata = {

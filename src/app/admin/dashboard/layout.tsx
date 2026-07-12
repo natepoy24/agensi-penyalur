@@ -14,6 +14,8 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
 
   // State untuk kontrol Sidebar (Default: Terbuka / false)
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isKontrakOpen, setIsKontrakOpen] = useState(false);
+  const [activeType, setActiveType] = useState("1_tahun");
 
   // Opsional: Auto-collapse jika masuk ke halaman form tambah/edit agar layar lebih lega
   useEffect(() => {
@@ -21,6 +23,15 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
       setIsCollapsed(true);
     } else {
       setIsCollapsed(false);
+    }
+
+    if (pathname?.includes("kontrak")) {
+      setIsKontrakOpen(true);
+    }
+
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setActiveType(params.get("type") || "1_tahun");
     }
   }, [pathname]);
 
@@ -105,14 +116,46 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
           </Link>
 
           {/* Tambahan Link Menu Kontrak */}
-          <Link
-            href="/admin/dashboard/kontrak/preview"
-            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 ${pathname?.includes("kontrak") ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-slate-500 hover:bg-slate-100 hover:text-emerald-700"}`}
-            title="Buat Kontrak"
-          >
-            <span className="material-symbols-outlined text-2xl">contract</span>
-            {!isCollapsed && <span className="whitespace-nowrap">Buat Kontrak</span>}
-          </Link>
+          <div className="space-y-1">
+            <button
+              onClick={() => {
+                if (isCollapsed) {
+                  setIsCollapsed(false);
+                  setIsKontrakOpen(true);
+                } else {
+                  setIsKontrakOpen(!isKontrakOpen);
+                }
+              }}
+              className={`flex items-center justify-between w-full ${isCollapsed ? 'justify-center' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 ${pathname?.includes("kontrak") ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-slate-500 hover:bg-slate-100 hover:text-emerald-700"}`}
+              title="Buat Kontrak"
+            >
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-2xl">contract</span>
+                {!isCollapsed && <span className="whitespace-nowrap">Buat Kontrak</span>}
+              </div>
+              {!isCollapsed && (
+                <span className="material-symbols-outlined text-slate-400 transition-transform duration-200" style={{ transform: isKontrakOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                  expand_more
+                </span>
+              )}
+            </button>
+            {isKontrakOpen && !isCollapsed && (
+              <div className="pl-9 space-y-1 animate-in slide-in-from-top-1 fade-in duration-200">
+                <Link
+                  href="/admin/dashboard/kontrak/preview?type=1_tahun"
+                  className={`flex items-center gap-2 py-2 px-3 rounded-lg text-sm transition-all duration-200 ${pathname?.includes("kontrak") && activeType === "1_tahun" ? "bg-emerald-50 text-emerald-700 font-semibold border-l-2 border-emerald-500" : "text-slate-500 hover:bg-slate-50 hover:text-emerald-700"}`}
+                >
+                  Kontrak 1 Tahun
+                </Link>
+                <Link
+                  href="/admin/dashboard/kontrak/preview?type=permanen"
+                  className={`flex items-center gap-2 py-2 px-3 rounded-lg text-sm transition-all duration-200 ${pathname?.includes("kontrak") && activeType === "permanen" ? "bg-emerald-50 text-emerald-700 font-semibold border-l-2 border-emerald-500" : "text-slate-500 hover:bg-slate-50 hover:text-emerald-700"}`}
+                >
+                  Permanen 3 Bulan
+                </Link>
+              </div>
+            )}
+          </div>
 
           <Link
             href="/admin/dashboard/laporan"

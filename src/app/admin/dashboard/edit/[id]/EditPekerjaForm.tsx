@@ -4,11 +4,11 @@ import { useActionState, useEffect, useState, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import { updatePekerja } from "@/app/actions";
 import toast from "react-hot-toast";
-import SukuInput from "@/components/SukuInput";
-import KeterampilanSelector from "@/components/KeterampilanSelector";
-import ImageCropModal from "@/components/ImageCropModal";
+import SukuInput from "@/components/crudpekerja/SukuInput";
+import KeterampilanSelector from "@/components/crudpekerja/KeterampilanSelector";
+import ImageCropModal from "@/components/crudpekerja/ImageCropModal";
 import Link from "next/link";
-import { type PekerjaProps } from "@/components/PekerjaCard";
+import { type PekerjaProps } from "@/components/crudpekerja/PekerjaCard";
 import Image from "next/image";
 
 function SubmitButton() {

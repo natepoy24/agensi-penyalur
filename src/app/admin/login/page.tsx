@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
-import BackgroundDecoration from '@/components/BackgroundDecoration'; // Impor komponen baru
+import BackgroundDecoration from '@/components/layout/BackgroundDecoration'; // Impor komponen baru
 
 export default function LoginPage() {
   const router = useRouter();

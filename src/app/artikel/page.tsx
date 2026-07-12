@@ -2,8 +2,8 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { Metadata } from "next";
-import Breadcrumbs from '@/components/Breadcrumbs';
-import FaqAccordion from '@/components/FaqAccordion';
+import Breadcrumbs from '@/components/layout/Breadcrumbs';
+import FaqAccordion from '@/components/layout/FaqAccordion';
 
 export const metadata: Metadata = {
   title: "Blog & Pusat Edukasi: Panduan ART & Baby Sitter | Jasa Mandiri",

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/layout/Breadcrumbs';
 import { ShieldCheck, CreditCard, RefreshCw } from 'lucide-react';
 
 export const metadata: Metadata = {

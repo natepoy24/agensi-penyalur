@@ -2,7 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import ArticleRenderer from './ArticleRenderer';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/layout/Breadcrumbs';
 import Link from 'next/link';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { cache } from 'react';

@@ -2,9 +2,9 @@
 import { User, Users, Briefcase, MapPin, Sparkles, Wallet, Bike, Dog, Heart, BookOpen, Utensils, Languages, XCircle } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
-import { type PekerjaProps } from '@/components/PekerjaCard';
-import ImageLightbox from '@/components/ImageLightbox';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import { type PekerjaProps } from '@/components/crudpekerja/PekerjaCard';
+import ImageLightbox from '@/components/crudpekerja/ImageLightbox';
+import Breadcrumbs from '@/components/layout/Breadcrumbs';
 import slugify from 'slugify';
 import type { Metadata } from 'next';
 

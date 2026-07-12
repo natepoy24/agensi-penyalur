@@ -2,8 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import Breadcrumbs from "@/components/Breadcrumbs";
-import FaqAccordion from '@/components/FaqAccordion';
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import FaqAccordion from '@/components/layout/FaqAccordion';
 import { HeartHandshake, Baby, AlertTriangle, ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {

@@ -2,17 +2,17 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { createClient } from '@/utils/supabase/server';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import { Toaster } from 'react-hot-toast';
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import NotificationHandler from '@/components/NotificationHandler';
-import GoogleAnalytics from '@/components/GoogleAnalytics';
+import NotificationHandler from '@/components/layout/NotificationHandler';
+import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
 import { Analytics } from "@vercel/analytics/next"
 import dynamic from 'next/dynamic';
 
 // OPTIMASI PERFORMA: Load Floating Button hanya di client side (Lazy Load)
-const FloatingWhatsApp = dynamic(() => import('@/components/FloatingWhatsApp'));
+const FloatingWhatsApp = dynamic(() => import('@/components/layout/FloatingWhatsApp'));
 
 // Optimasi Font: Swap agar teks muncul duluan sebelum font load
 const inter = Inter({ subsets: ['latin'], display: 'swap' });

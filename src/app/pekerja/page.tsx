@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   description: 'Lihat daftar pekerja rumah tangga, baby sitter, dan perawat lansia yang siap kerja hari ini. Foto lengkap, identitas jelas, dan bergaransi.',
 };
 
-import PekerjaCard, { type PekerjaProps } from '@/components/PekerjaCard';
+import PekerjaCard, { type PekerjaProps } from '@/components/crudpekerja/PekerjaCard';
 import { createClient } from '@/utils/supabase/server';
-import FilterControls from '@/components/FilterControls';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import FaqAccordion from '@/components/FaqAccordion';
-import Pagination from '@/components/Pagination';
+import FilterControls from '@/components/crudpekerja/FilterControls';
+import Breadcrumbs from '@/components/layout/Breadcrumbs';
+import FaqAccordion from '@/components/layout/FaqAccordion';
+import Pagination from '@/components/crudpekerja/Pagination';
 
 export const dynamic = 'force-dynamic';
 

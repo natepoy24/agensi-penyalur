@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Users, ShieldCheck, Sparkles, AlertTriangle } from "lucide-react";
-import Breadcrumbs from "@/components/Breadcrumbs";
-import FaqAccordion from '@/components/FaqAccordion';
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import FaqAccordion from '@/components/layout/FaqAccordion';
 
 export const metadata: Metadata = {
   title: "Penyalur Pembantu (ART) Berpengalaman | Jasa Mandiri",

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { incrementViews } from "@/app/actions";
 
-const LexicalEditor = dynamic(() => import("@/components/LexicalEditor"), {
+const LexicalEditor = dynamic(() => import("@/components/artikel/LexicalEditor"), {
   ssr: false,
   loading: () => <div className="prose lg:prose-lg mx-auto pt-8 text-center text-slate-500 font-medium">Memuat konten...</div>,
 });

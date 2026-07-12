@@ -1,6 +1,6 @@
 // src/app/kontak/page.tsx
 import type { Metadata } from 'next';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/layout/Breadcrumbs';
 import KontakContent from '@/app/kontak/KontakContent';
 
 export const metadata: Metadata = {

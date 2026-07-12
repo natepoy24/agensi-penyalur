@@ -14,6 +14,10 @@ export default function TemplatePernyataanPekerja({ formData, pernyataanList }: 
         return new Intl.NumberFormat('id-ID').format(Number(angka));
     };
 
+    // Logika Tanggal Pintar: Gunakan tanggal mulai bekerja (tanggalMasuk) jika ada, jika kosong gunakan hari ini
+    const baseDate = formData.tanggalMasuk ? new Date(formData.tanggalMasuk) : new Date();
+    const formattedTanggalMasuk = baseDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
     // FUNGSI REPLACE VARIABEL (PENTING: Menangani Potongan Bulan 1-3)
     const parseVariabelText = (text: string) => {
         let result = text;
@@ -157,7 +161,7 @@ export default function TemplatePernyataanPekerja({ formData, pernyataanList }: 
                                         <p className="font-bold underline uppercase">( ATEP JAENUDIN )</p>
                                     </div>
                                     <div className="text-center">
-                                        <p className="mb-20 font-medium text-slate-600">Jakarta, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                        <p className="mb-20 font-medium text-slate-600">Jakarta, {formattedTanggalMasuk}</p>
                                         <p className="font-bold underline uppercase">( {formData.namaPekerja || "________________"} )</p>
                                         <p className="font-bold text-[10px] mt-1 uppercase text-slate-500">Tenaga Kerja</p>
                                     </div>

@@ -1,6 +1,6 @@
 // src/app/admin/dashboard/tambah/page.tsx
 import AddPekerjaForm from './AddPekerjaForm';
-import BackgroundDecoration from '@/components/BackgroundDecoration'; // Impor komponen baru
+import BackgroundDecoration from '@/components/layout/BackgroundDecoration'; // Impor komponen baru
 
 export default function TambahPekerjaPage() {
   return (

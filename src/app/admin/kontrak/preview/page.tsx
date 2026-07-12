@@ -1,17 +1,28 @@
 // src/app/admin/kontrak/preview/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
+import { useSearchParams } from "next/navigation";
 
 // Komponen Pendukung
-import FormInputKontrak from "@/components/FormInputKontrak";
-import TemplateKontrak from "@/components/TemplateKontrak";
-import TemplatePernyataanPekerja from "@/components/TemplatePernyataanPekerja";
+import FormInputKontrak from "@/components/perjanjiankerja/FormInputKontrak";
+import TemplateKontrak from "@/components/perjanjiankerja/TemplateKontrak";
+import TemplatePernyataanPekerja from "@/components/perjanjiankerja/TemplatePernyataanPekerja";
 
 export default function BuatKontrakPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-slate-100 flex items-center justify-center font-medium text-slate-500">Memuat Dokumen...</div>}>
+            <BuatKontrakContent />
+        </Suspense>
+    );
+}
+
+function BuatKontrakContent() {
     const supabase = createClient();
+    const searchParams = useSearchParams();
+    const typeParam = searchParams.get('type') || '1_tahun';
 
     // === STATE UTAMA ===
     const [pekerjaList, setPekerjaList] = useState<any[]>([]);
@@ -23,7 +34,7 @@ export default function BuatKontrakPage() {
 
     const [formData, setFormData] = useState({
         nomorKontrak: "",
-        jenisKontrak: "1_tahun",
+        jenisKontrak: typeParam,
         namaMajikan: "", nikMajikan: "", noHpMajikan: "", alamatMajikan: "",
         provinsiLokasiKerja: "", kotaLokasiKerja: "",
         pekerja_id: "", namaPekerja: "", namaPanggilan: "", nikPekerja: "", noHpPekerja: "",
@@ -69,6 +80,12 @@ export default function BuatKontrakPage() {
         };
         fetchData();
     }, [supabase]);
+
+    useEffect(() => {
+        if (typeParam) {
+            setFormData(prev => ({ ...prev, jenisKontrak: typeParam }));
+        }
+    }, [typeParam]);
 
     useEffect(() => {
         const fetchPasal = async () => {

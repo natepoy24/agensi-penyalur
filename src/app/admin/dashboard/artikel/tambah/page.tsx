@@ -7,9 +7,9 @@ import { addArtikel } from "@/app/actions";
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import TagSelector from "@/components/TagSelector";
+import TagSelector from "@/components/artikel/TagSelector";
 
-const LexicalEditor = dynamic(() => import("@/components/LexicalEditor"), {
+const LexicalEditor = dynamic(() => import("@/components/artikel/LexicalEditor"), {
   ssr: false,
   loading: () => (
     <div className="h-96 flex items-center justify-center bg-slate-50 animate-pulse rounded-xl border border-slate-100">

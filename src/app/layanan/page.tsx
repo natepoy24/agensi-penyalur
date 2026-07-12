@@ -3,8 +3,8 @@ import { CheckCircle, ShieldAlert, BadgeCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import Breadcrumbs from "@/components/Breadcrumbs";
-import FaqAccordion from '@/components/FaqAccordion';
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import FaqAccordion from '@/components/layout/FaqAccordion';
 
 // ✅ Metadata untuk SEO
 export const metadata: Metadata = {

@@ -13,7 +13,7 @@ interface PreviewData {
 }
 
 // Dynamic import untuk LexicalEditor, sama seperti di halaman artikel
-const LexicalEditor = dynamic(() => import("@/components/LexicalEditor"), {
+const LexicalEditor = dynamic(() => import("@/components/artikel/LexicalEditor"), {
   ssr: false,
   loading: () => <div className="prose lg:prose-xl max-w-none">Memuat konten...</div>,
 });

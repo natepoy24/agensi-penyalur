@@ -1,6 +1,6 @@
 "use client";
 
-import FaqAccordion from '@/components/FaqAccordion';
+import FaqAccordion from '@/components/layout/FaqAccordion';
 import { useState } from 'react';
 import { Clock, Mail, MapPin, Phone, Send } from 'lucide-react';
 

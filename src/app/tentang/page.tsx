@@ -1,8 +1,8 @@
 // src/app/tentang/page.tsx
 
 import Image from 'next/image';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import FaqAccordion from '@/components/FaqAccordion';
+import Breadcrumbs from '@/components/layout/Breadcrumbs';
+import FaqAccordion from '@/components/layout/FaqAccordion';
 import { CheckCircle, ShieldCheck, Workflow } from 'lucide-react';
 import type { Metadata } from 'next';
 

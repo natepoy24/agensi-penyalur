@@ -2,7 +2,7 @@
 import { createClient } from "@/utils/supabase/server";
 import EditPekerjaForm from "./EditPekerjaForm";
 import { redirect } from "next/navigation";
-import BackgroundDecoration from "@/components/BackgroundDecoration";
+import BackgroundDecoration from "@/components/layout/BackgroundDecoration";
 
 export default async function EditPekerjaPage(props: { params: Promise<{ id: string }> }) {
   // ✅ Await params dulu sebelum diakses

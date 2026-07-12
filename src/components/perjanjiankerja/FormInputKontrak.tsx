@@ -60,16 +60,7 @@ export default function FormInputKontrak({
     return (
         <div className="space-y-6 overflow-y-auto pr-2">
 
-            {/* 1. JENIS DOKUMEN */}
-            <div className="bg-white p-6 rounded-2xl border-l-4 border-l-emerald-500 shadow-sm">
-                <label className="block text-sm font-bold mb-2">Jenis Dokumen</label>
-                <select name="jenisKontrak" value={formData.jenisKontrak} onChange={handleChange} className="w-full p-3 bg-emerald-50 border rounded-xl font-bold outline-none cursor-pointer">
-                    <option value="1_tahun">Kontrak Kerja 1 Tahun</option>
-                    <option value="permanen">Perjanjian Kerja (Permanen)</option>
-                </select>
-            </div>
-
-            {/* 2. MAJIKAN & LOKASI KERJA */}
+            {/* 1. MAJIKAN & LOKASI KERJA */}
             <div className="bg-white p-6 rounded-2xl border shadow-sm space-y-4">
                 <h2 className="font-bold border-b pb-2 flex items-center gap-2 text-slate-800">
                     <span className="material-symbols-outlined text-emerald-600">apartment</span> Data Majikan & Lokasi
@@ -104,7 +95,7 @@ export default function FormInputKontrak({
                 </div>
             </div>
 
-            {/* 3. BIODATA TENAGA KERJA */}
+            {/* 2. BIODATA TENAGA KERJA */}
             <div className="bg-white p-6 rounded-2xl border-t-4 border-t-emerald-500 shadow-sm space-y-4">
                 <h2 className="font-bold border-b pb-2 flex items-center gap-2 text-slate-800">
                     <span className="material-symbols-outlined text-emerald-600">badge</span> Biodata Tenaga Kerja
@@ -187,7 +178,7 @@ export default function FormInputKontrak({
                 )}
             </div>
 
-            {/* 4. DATA KELUARGA & DARURAT */}
+            {/* 3. DATA KELUARGA & DARURAT */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <h2 className="text-lg font-bold text-slate-800 mb-4 border-b pb-2 flex items-center gap-2">
                     <span className="material-symbols-outlined text-blue-600">family_history</span> Data Keluarga Pekerja
@@ -221,13 +212,13 @@ export default function FormInputKontrak({
                         </div>
                     </div>
                     <div>
-                        <label className="text-xs font-bold text-slate-700">Kontak Darurat (Nama & Hubungan)</label>
-                        <input name="kontakDarurat" value={formData.kontakDarurat || ""} onChange={handleChange} className="w-full p-2 border rounded-lg outline-none" placeholder="Contoh: Budi (Kakak)" />
+                        <label className="text-xs font-bold text-slate-700">Kontak Darurat (Nomor Hp & Hubungan)</label>
+                        <input name="kontakDarurat" value={formData.kontakDarurat || ""} onChange={handleChange} className="w-full p-2 border rounded-lg outline-none" placeholder="Contoh: 08123456789 (Kakak)" />
                     </div>
                 </div>
             </div>
 
-            {/* 5. PENGALAMAN KERJA */}
+            {/* 4. PENGALAMAN KERJA */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <h2 className="text-lg font-bold text-slate-800 mb-4 border-b pb-2 flex items-center gap-2">
                     <span className="material-symbols-outlined text-amber-600">history_edu</span> Pengalaman Kerja Terakhir
@@ -252,7 +243,7 @@ export default function FormInputKontrak({
                 </div>
             </div>
 
-            {/* 6. RINCIAN PENEMPATAN & KEUANGAN */}
+            {/* 5. RINCIAN PENEMPATAN & KEUANGAN */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 border-t-4 border-t-emerald-500">
                 <h2 className="text-lg font-bold text-slate-800 mb-4 border-b pb-2 flex items-center gap-2">
                     <span className="material-symbols-outlined text-emerald-600">payments</span> Rincian Penempatan
@@ -289,7 +280,7 @@ export default function FormInputKontrak({
                 </div>
             </div>
 
-            {/* 7. EDITOR PASAL DINAMIS (ACCORDION) */}
+            {/* 6. EDITOR PASAL DINAMIS (ACCORDION) */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 border-t-4 border-t-blue-500">
                 <h2 className="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2 border-b border-slate-100 pb-3">
                     <span className="material-symbols-outlined text-blue-600">gavel</span> Editor Pasal & Pernyataan

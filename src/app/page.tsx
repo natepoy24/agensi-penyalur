@@ -2,9 +2,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ShieldCheck, UserRoundCheck, FileText, Award, LifeBuoy, Building, Star, MapPin } from 'lucide-react';
-import FaqAccordion from '@/components/FaqAccordion';
-import FeaturedWorkers from '@/components/FeaturedWorkers';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import FaqAccordion from '@/components/layout/FaqAccordion';
+import FeaturedWorkers from '@/components/crudpekerja/FeaturedWorkers';
+import Breadcrumbs from '@/components/layout/Breadcrumbs';
 
 interface FAQItem {
   question: string;
