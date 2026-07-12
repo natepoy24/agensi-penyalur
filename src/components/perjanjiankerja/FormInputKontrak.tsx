@@ -11,6 +11,8 @@ interface FormInputKontrakProps {
     setPasalList: (data: any[]) => void;
     pernyataanList: any[];
     setPernyataanList: (data: any[]) => void;
+    handleSaveTemplate?: () => void;
+    isSavingTemplate?: boolean;
 }
 
 export default function FormInputKontrak({
@@ -21,7 +23,9 @@ export default function FormInputKontrak({
     pasalList,
     setPasalList,
     pernyataanList,
-    setPernyataanList
+    setPernyataanList,
+    handleSaveTemplate,
+    isSavingTemplate
 }: FormInputKontrakProps) {
 
     // === STATE API WILAYAH ===
@@ -362,6 +366,17 @@ export default function FormInputKontrak({
                         ))}
                     </div>
                 </div>
+
+                {handleSaveTemplate && (
+                    <button
+                        onClick={handleSaveTemplate}
+                        disabled={isSavingTemplate}
+                        className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md"
+                    >
+                        <span className="material-symbols-outlined text-[18px]">save</span>
+                        {isSavingTemplate ? "Proses Menyimpan..." : "Simpan Perubahan Pasal Global"}
+                    </button>
+                )}
 
             </div>
         </div>

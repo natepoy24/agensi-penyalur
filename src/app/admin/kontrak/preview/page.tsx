@@ -3,13 +3,118 @@
 
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { useSearchParams } from "next/navigation";
 
 // Komponen Pendukung
 import FormInputKontrak from "@/components/perjanjiankerja/FormInputKontrak";
 import TemplateKontrak from "@/components/perjanjiankerja/TemplateKontrak";
 import TemplatePernyataanPekerja from "@/components/perjanjiankerja/TemplatePernyataanPekerja";
+
+// Helper Mappings
+const mapToCamelCase = (dbRow: any) => {
+    return {
+        nomorKontrak: dbRow.nomor_kontrak || "",
+        jenisKontrak: dbRow.jenis_kontrak || "1_tahun",
+        namaMajikan: dbRow.nama_majikan || "",
+        nikMajikan: dbRow.nik_majikan || "",
+        noHpMajikan: dbRow.no_hp_majikan || "",
+        alamatMajikan: dbRow.alamat_majikan || "",
+        provinsiLokasiKerja: dbRow.provinsi_lokasi_kerja || "",
+        kotaLokasiKerja: dbRow.kota_lokasi_kerja || "",
+        pekerja_id: dbRow.pekerja_id ? dbRow.pekerja_id.toString() : "",
+        namaPekerja: dbRow.nama_pekerja || "",
+        namaPanggilan: dbRow.nama_panggilan || "",
+        nikPekerja: dbRow.nik_pekerja || "",
+        noHpPekerja: dbRow.no_hp_pekerja || "",
+        umurPekerja: dbRow.umur_pekerja || "",
+        tinggiBadan: dbRow.tinggi_badan || "",
+        beratBadan: dbRow.berat_badan || "",
+        jenisKelamin: dbRow.jenis_kelamin || "",
+        pendidikan: dbRow.pendidikan || "",
+        agama: dbRow.agama || "",
+        statusPerkawinan: dbRow.status_perkawinan || "",
+        tempatLahir: dbRow.tempat_lahir || "",
+        tglLahir: dbRow.tgl_lahir || "",
+        provinsiPekerja: dbRow.provinsi_pekerja || "",
+        kotaAsalPekerja: dbRow.kota_asal_pekerja || "",
+        kecamatanPekerja: dbRow.kecamatan_pekerja || "",
+        kelurahanPekerja: dbRow.kelurahan_pekerja || "",
+        namaAyah: dbRow.nama_ayah || "",
+        namaIbu: dbRow.nama_ibu || "",
+        namaKakak: dbRow.nama_kakak || "",
+        namaAdik: dbRow.nama_adik || "",
+        anakKe: dbRow.anak_ke || "",
+        jumlahSaudara: dbRow.jumlah_saudara || "",
+        alamatJalanKeluarga: dbRow.alamat_jalan_keluarga || "",
+        provinsiKeluarga: dbRow.provinsi_keluarga || "",
+        kotaKeluarga: dbRow.kota_keluarga || "",
+        kontakDarurat: dbRow.kontak_darurat || "",
+        ijinKerja: dbRow.ijin_kerja || "",
+        pengalamanKerja: dbRow.pengalaman_kerja || "",
+        lamaKerja: dbRow.lama_kerja || "",
+        gajiTerakhir: dbRow.gaji_terakhir || "",
+        alamatKerjaSebelumnya: dbRow.alamat_kerja_sebelumnya || "",
+        pekerjaanPokok: dbRow.pekerjaan_pokok || "",
+        gajiPekerja: dbRow.gaji_pekerja || "",
+        biayaAdmin: dbRow.biaya_admin || "",
+        tanggalMasuk: dbRow.tanggal_masuk || "",
+        potonganBulanPertama: dbRow.potongan_bulan_pertama || "",
+        biayaOngkir: dbRow.biaya_ongkir || ""
+    };
+};
+
+const mapToSnakeCase = (form: any) => {
+    return {
+        nomor_kontrak: form.nomorKontrak,
+        jenis_kontrak: form.jenisKontrak,
+        nama_majikan: form.namaMajikan,
+        nik_majikan: form.nikMajikan,
+        no_hp_majikan: form.noHpMajikan,
+        alamat_majikan: form.alamatMajikan,
+        provinsi_lokasi_kerja: form.provinsiLokasiKerja,
+        kota_lokasi_kerja: form.kotaLokasiKerja,
+        pekerja_id: form.pekerja_id === "manual" || form.pekerja_id === "" ? null : parseInt(form.pekerja_id),
+        nama_pekerja: form.namaPekerja,
+        nama_panggilan: form.namaPanggilan,
+        nik_pekerja: form.nikPekerja,
+        no_hp_pekerja: form.noHpPekerja,
+        umur_pekerja: form.umur_pekerja,
+        tinggi_badan: form.tinggiBadan,
+        berat_badan: form.beratBadan,
+        jenis_kelamin: form.jenisKelamin,
+        pendidikan: form.pendidikan,
+        agama: form.agama,
+        status_perkawinan: form.statusPerkawinan,
+        tempat_lahir: form.tempatLahir,
+        tgl_lahir: form.tglLahir,
+        provinsi_pekerja: form.provinsiPekerja,
+        kota_asal_pekerja: form.kotaAsalPekerja,
+        kecamatan_pekerja: form.kecamatanPekerja,
+        kelurahan_pekerja: form.kelurahanPekerja,
+        nama_ayah: form.namaAyah,
+        nama_ibu: form.namaIbu,
+        nama_kakak: form.namaKakak,
+        nama_adik: form.namaAdik,
+        anak_ke: form.anakKe,
+        jumlah_saudara: form.jumlahSaudara,
+        alamat_jalan_keluarga: form.alamatJalanKeluarga,
+        provinsi_keluarga: form.provinsiKeluarga,
+        kota_keluarga: form.kotaKeluarga,
+        kontak_darurat: form.kontakDarurat,
+        ijin_kerja: form.ijinKerja,
+        pengalaman_kerja: form.pengalamanKerja,
+        lama_kerja: form.lamaKerja,
+        gaji_terakhir: form.gajiTerakhir,
+        alamat_kerja_sebelumnya: form.alamatKerjaSebelumnya,
+        pekerjaan_pokok: form.pekerjaanPokok,
+        gaji_pekerja: form.gajiPekerja,
+        biaya_admin: form.biayaAdmin,
+        tanggal_masuk: form.tanggalMasuk,
+        potongan_bulan_pertama: form.potonganBulanPertama,
+        biaya_ongkir: form.biayaOngkir
+    };
+};
 
 export default function BuatKontrakPage() {
     return (
@@ -19,21 +124,24 @@ export default function BuatKontrakPage() {
     );
 }
 
+// Halaman editor kontrak kerja utama
 function BuatKontrakContent() {
     const supabase = createClient();
+    const router = useRouter();
     const searchParams = useSearchParams();
     const typeParam = searchParams.get('type') || '1_tahun';
+    const idParam = searchParams.get('id');
 
     // === STATE UTAMA ===
     const [pekerjaList, setPekerjaList] = useState<any[]>([]);
     const [pasalList, setPasalList] = useState<any[]>([]);
     const [pernyataanList, setPernyataanList] = useState<any[]>([]);
 
-    const [isSavingLaporan, setIsSavingLaporan] = useState(false);
     const [isSavingTemplate, setIsSavingTemplate] = useState(false);
+    const [isSavingKontrak, setIsSavingKontrak] = useState(false);
 
     const [formData, setFormData] = useState({
-        nomorKontrak: "",
+        nomorKontrak: "", // Nomor Kontrak Otomatis
         jenisKontrak: typeParam,
         namaMajikan: "", nikMajikan: "", noHpMajikan: "", alamatMajikan: "",
         provinsiLokasiKerja: "", kotaLokasiKerja: "",
@@ -58,36 +166,64 @@ function BuatKontrakContent() {
             const { data: sData } = await supabase.from('template_pasal').select('*').eq('jenis_kontrak', 'pernyataan_pekerja');
             if (sData) setPernyataanList(sData);
 
-            // --- LOGIKA GENERATOR NOMOR KONTRAK OTOMATIS ---
-            const { data: lastLaporan } = await supabase
-                .from('laporan_kemnaker')
-                .select('id')
-                .order('id', { ascending: false })
-                .limit(1);
+            // Fetch Nomor Kontrak Otomatis (hanya jika membuat baru)
+            if (!idParam) {
+                const { data: lastLaporan } = await supabase
+                    .from('laporan_kemnaker')
+                    .select('id')
+                    .order('id', { ascending: false })
+                    .limit(1);
 
-            let nextId = 1;
-            if (lastLaporan && lastLaporan.length > 0) {
-                nextId = lastLaporan[0].id + 1; // Ambil ID terakhir + 1
+                let nextId = 1;
+                if (lastLaporan && lastLaporan.length > 0) {
+                    nextId = lastLaporan[0].id + 1;
+                }
+
+                const paddedId = String(nextId).padStart(3, '0');
+                const d = new Date();
+                const autoNomor = `JM/KTR/${d.getFullYear()}/${d.getMonth() + 1}/${paddedId}`;
+
+                setFormData(prev => ({ ...prev, nomorKontrak: autoNomor }));
             }
-
-            // Format ID menjadi 3 digit (contoh: 1 menjadi 001, 15 menjadi 015)
-            const paddedId = String(nextId).padStart(3, '0');
-            const d = new Date();
-            const autoNomor = `JM/KTR/${d.getFullYear()}/${d.getMonth() + 1}/${paddedId}`;
-
-            // Masukkan nomor otomatis ini ke dalam formData
-            setFormData(prev => ({ ...prev, nomorKontrak: autoNomor }));
         };
         fetchData();
-    }, [supabase]);
+    }, [supabase, idParam]);
+
+    // Memuat kontrak lama dari DB jika ada idParam
+    useEffect(() => {
+        if (!idParam) return;
+        const loadSavedKontrak = async () => {
+            const { data, error } = await supabase
+                .from("kontrak_kerja")
+                .select("*")
+                .eq("id", idParam)
+                .single();
+
+            if (error) {
+                alert("Gagal memuat kontrak tersimpan: " + error.message);
+                return;
+            }
+
+            if (data) {
+                setFormData(mapToCamelCase(data));
+                if (data.pasal_list) setPasalList(data.pasal_list);
+                if (data.pernyataan_list) setPernyataanList(data.pernyataan_list);
+            }
+        };
+        loadSavedKontrak();
+    }, [idParam, supabase]);
 
     useEffect(() => {
-        if (typeParam) {
+        // Hanya sinkronkan jenis kontrak dari URL jika membuat kontrak baru
+        if (!idParam && typeParam) {
             setFormData(prev => ({ ...prev, jenisKontrak: typeParam }));
         }
-    }, [typeParam]);
+    }, [typeParam, idParam]);
 
     useEffect(() => {
+        // Hanya ambil template default dari DB jika tidak memuat kontrak yang tersimpan
+        if (idParam) return;
+
         const fetchPasal = async () => {
             const { data } = await supabase.from('template_pasal')
                 .select('*')
@@ -96,13 +232,14 @@ function BuatKontrakContent() {
             if (data) setPasalList(data);
         };
         fetchPasal();
-    }, [supabase, formData.jenisKontrak]);
+    }, [supabase, formData.jenisKontrak, idParam]);
 
-    // === HANDLER ===
+    // === HANDLER INPUT ===
     const handleChange = (e: any) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // LOGIKA AUTO-FILL BIODATA PEKERJA YANG DISEMPURNAKAN
     const handlePekerjaChange = (e: any) => {
         const id = e.target.value;
         if (id === "manual" || id === "") {
@@ -113,54 +250,42 @@ function BuatKontrakContent() {
                 setFormData({
                     ...formData,
                     pekerja_id: id,
+                    // Biodata Utama
                     namaPekerja: p.nama || "",
                     nikPekerja: p.nik || "",
-                    tinggiBadan: p.tinggi_badan || "",
-                    beratBadan: p.berat_badan || "",
-                    pekerjaanPokok: p.kategori || "",
-                    gajiPekerja: p.gaji || "",
+                    noHpPekerja: p.no_hp || "",
                     tempatLahir: p.tempat_lahir || "",
                     tglLahir: p.tanggal_lahir || "",
-                    noHpPekerja: p.no_hp || "",
-                    pendidikan: p.pendidikan || "",
+
+                    // Fisik & Identitas
+                    umurPekerja: p.umur || "",
+                    tinggiBadan: p.tinggi_badan || "",
+                    beratBadan: p.berat_badan || "",
+                    jenisKelamin: p.jenis_kelamin || "",
+                    pendidikan: p.pendidikan_terakhir || "",
+                    agama: p.agama || "",
+                    statusPerkawinan: p.status_perkawinan || "",
+
+                    // Alamat Domisili
+                    provinsiPekerja: p.provinsi || "",
+                    kotaAsalPekerja: p.lokasi || "",
+
+                    // Pekerjaan & Keluarga
+                    pekerjaanPokok: p.kategori || "",
+                    gajiPekerja: p.gaji || "",
+                    pengalamanKerja: p.pengalaman || "",
+                    namaAyah: p.nama_ayah || "",
+                    namaIbu: p.nama_ibu || "",
+                    kontakDarurat: p.kontak_darurat || "",
+                    ijinKerja: p.ijin_kerja || ""
                 });
             }
         }
     };
 
-    // FUNGSI SIMPAN LAPORAN KEMNAKER[cite: 5]
-    const handleSimpanLaporan = async () => {
-        setIsSavingLaporan(true);
-        try {
-            const { error } = await supabase.from('laporan_kemnaker').insert([{
-                nik_tenaga_kerja: formData.nikPekerja,
-                nama_tenaga_kerja: formData.namaPekerja,
-                kabupaten_domisili: formData.kotaAsalPekerja,
-                provinsi_domisili: formData.provinsiPekerja,
-                no_hp: formData.noHpPekerja,
-                jenis_kelamin: formData.jenisKelamin,
-                pendidikan: formData.pendidikan,
-                nama_pemberi_kerja: formData.namaMajikan,
-                nama_jabatan: formData.pekerjaanPokok,
-                kabupaten_lokasi_kerja: formData.kotaLokasiKerja,
-                provinsi_lokasi_kerja: formData.provinsiLokasiKerja,
-                tanggal_mulai_bekerja: formData.tanggalMasuk,
-                upah_diterima: parseFloat(formData.gajiPekerja || "0")
-            }]);
-            if (error) throw error;
-            alert("Laporan Kemnaker berhasil disimpan!");
-        } catch (err: any) {
-            alert(err.message);
-        } finally {
-            setIsSavingLaporan(false);
-        }
-    };
-
-    // FUNGSI SIMPAN TEMPLATE PASAL (YANG TADI HILANG)
     const handleSaveTemplate = async () => {
         setIsSavingTemplate(true);
         try {
-            // Gabungkan list pasal kontrak dan pernyataan pekerja untuk diupdate sekaligus
             const allTemplates = [...pasalList, ...pernyataanList];
             const { error } = await supabase.from('template_pasal').upsert(allTemplates);
 
@@ -170,6 +295,71 @@ function BuatKontrakContent() {
             alert("Gagal simpan template: " + err.message);
         } finally {
             setIsSavingTemplate(false);
+        }
+    };
+
+    // === FUNGSI SIMPAN KONTRAK KERJA KE DATABASE & LAPORAN KEMNAKER ===
+    const handleSimpanKontrak = async () => {
+        if (!formData.nomorKontrak) {
+            alert("Nomor kontrak tidak boleh kosong.");
+            return;
+        }
+        setIsSavingKontrak(true);
+        try {
+            const dataToSave = {
+                ...mapToSnakeCase(formData),
+                pasal_list: pasalList,
+                pernyataan_list: pernyataanList
+            };
+
+            // 1. Simpan Kontrak Kerja
+            if (idParam) {
+                // UPDATE
+                const { error } = await supabase
+                    .from("kontrak_kerja")
+                    .update(dataToSave)
+                    .eq("id", idParam);
+
+                if (error) throw error;
+            } else {
+                // INSERT
+                const { error } = await supabase
+                    .from("kontrak_kerja")
+                    .insert([dataToSave]);
+
+                if (error) throw error;
+            }
+
+            // 2. Simpan Laporan Kemnaker (secara otomatis)
+            try {
+                await supabase.from('laporan_kemnaker').insert([{
+                    nik_tenaga_kerja: formData.nikPekerja,
+                    nama_tenaga_kerja: formData.namaPekerja,
+                    kabupaten_domisili: formData.kotaAsalPekerja,
+                    provinsi_domisili: formData.provinsiPekerja,
+                    no_hp: formData.noHpPekerja,
+                    jenis_kelamin: formData.jenisKelamin,
+                    pendidikan: formData.pendidikan,
+                    nama_pemberi_kerja: formData.namaMajikan,
+                    nama_jabatan: formData.pekerjaanPokok,
+                    kabupaten_lokasi_kerja: formData.kotaLokasiKerja,
+                    provinsi_lokasi_kerja: formData.provinsiLokasiKerja,
+                    tanggal_mulai_bekerja: formData.tanggalMasuk,
+                    upah_diterima: parseFloat(formData.gajiPekerja || "0")
+                }]);
+            } catch (laporanErr) {
+                console.error("Gagal menyimpan Laporan Kemnaker:", laporanErr);
+                // Jangan batalkan penyimpanan kontrak utama jika laporan gagal
+            }
+
+            alert("Kontrak dan Laporan Kemnaker berhasil disimpan!");
+
+            // Redirect ke halaman daftar kontrak
+            router.push("/admin/dashboard/kontrak");
+        } catch (error: any) {
+            alert("Gagal menyimpan kontrak: " + error.message);
+        } finally {
+            setIsSavingKontrak(false);
         }
     };
 
@@ -188,24 +378,18 @@ function BuatKontrakContent() {
             {/* HEADER NAVBAR - FULL WIDTH */}
             <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-[100] no-print shadow-sm">
                 <div className="flex items-center gap-4">
-                    <Link href="/admin/dashboard" className="p-2 hover:bg-slate-100 rounded-full">
+                    <Link href="/admin/dashboard/kontrak" className="p-2 hover:bg-slate-100 rounded-full">
                         <span className="material-symbols-outlined">arrow_back</span>
                     </Link>
                     <h1 className="text-lg font-bold text-black uppercase tracking-tight">Generator Dokumen JM</h1>
                 </div>
                 <div className="flex gap-2">
-                    {/* TOMBOL SIMPAN PASAL */}
-                    <button onClick={handleSaveTemplate} disabled={isSavingTemplate} className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-700 transition-all">
+                    <button onClick={handleSimpanKontrak} disabled={isSavingKontrak} className="bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-emerald-800 transition-all shadow-md">
                         <span className="material-symbols-outlined text-sm">save</span>
-                        {isSavingTemplate ? "Proses..." : "Simpan Perubahan Pasal"}
+                        {isSavingKontrak ? "Menyimpan..." : idParam ? "Perbarui Kontrak & Laporan" : "Simpan Kontrak & Laporan"}
                     </button>
 
-                    <button onClick={handleSimpanLaporan} disabled={isSavingLaporan} className="bg-slate-800 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2">
-                        <span className="material-symbols-outlined text-sm">database</span>
-                        {isSavingLaporan ? "..." : "Simpan Laporan"}
-                    </button>
-
-                    <button onClick={() => window.print()} className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 shadow-md">
+                    <button onClick={() => window.print()} className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 shadow-md hover:bg-emerald-700 transition-all">
                         <span className="material-symbols-outlined text-sm">print</span> Cetak (F4)
                     </button>
                 </div>
@@ -225,6 +409,8 @@ function BuatKontrakContent() {
                         setPasalList={setPasalList}
                         pernyataanList={pernyataanList}
                         setPernyataanList={setPernyataanList}
+                        handleSaveTemplate={handleSaveTemplate}
+                        isSavingTemplate={isSavingTemplate}
                     />
                 </aside>
 

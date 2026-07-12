@@ -142,14 +142,20 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
             {isKontrakOpen && !isCollapsed && (
               <div className="pl-9 space-y-1 animate-in slide-in-from-top-1 fade-in duration-200">
                 <Link
+                  href="/admin/dashboard/kontrak"
+                  className={`flex items-center gap-2 py-2 px-3 rounded-lg text-sm transition-all duration-200 ${pathname === "/admin/dashboard/kontrak" ? "bg-emerald-50 text-emerald-700 font-semibold border-l-2 border-emerald-500" : "text-slate-500 hover:bg-slate-50 hover:text-emerald-700"}`}
+                >
+                  Daftar Kontrak
+                </Link>
+                <Link
                   href="/admin/dashboard/kontrak/preview?type=1_tahun"
-                  className={`flex items-center gap-2 py-2 px-3 rounded-lg text-sm transition-all duration-200 ${pathname?.includes("kontrak") && activeType === "1_tahun" ? "bg-emerald-50 text-emerald-700 font-semibold border-l-2 border-emerald-500" : "text-slate-500 hover:bg-slate-50 hover:text-emerald-700"}`}
+                  className={`flex items-center gap-2 py-2 px-3 rounded-lg text-sm transition-all duration-200 ${pathname?.includes("kontrak/preview") && activeType === "1_tahun" ? "bg-emerald-50 text-emerald-700 font-semibold border-l-2 border-emerald-500" : "text-slate-500 hover:bg-slate-50 hover:text-emerald-700"}`}
                 >
                   Kontrak 1 Tahun
                 </Link>
                 <Link
                   href="/admin/dashboard/kontrak/preview?type=permanen"
-                  className={`flex items-center gap-2 py-2 px-3 rounded-lg text-sm transition-all duration-200 ${pathname?.includes("kontrak") && activeType === "permanen" ? "bg-emerald-50 text-emerald-700 font-semibold border-l-2 border-emerald-500" : "text-slate-500 hover:bg-slate-50 hover:text-emerald-700"}`}
+                  className={`flex items-center gap-2 py-2 px-3 rounded-lg text-sm transition-all duration-200 ${pathname?.includes("kontrak/preview") && activeType === "permanen" ? "bg-emerald-50 text-emerald-700 font-semibold border-l-2 border-emerald-500" : "text-slate-500 hover:bg-slate-50 hover:text-emerald-700"}`}
                 >
                   Permanen 3 Bulan
                 </Link>
