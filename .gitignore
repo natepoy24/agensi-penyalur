@@ -41,3 +41,4 @@ yarn-error.log*
 next-env.d.ts
 .agent/
 gsc bot.json
+mcp_config.json

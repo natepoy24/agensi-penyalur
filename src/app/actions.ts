@@ -11,6 +11,11 @@ import slugify from 'slugify';
 export async function addPekerja(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
 
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return { error: 'Akses ditolak. Silakan login terlebih dahulu.' };
+  }
+
   const bahasaAsing = formData.getAll('bahasa_asing') as string[];
   const bahasaLain = formData.get('bahasa_lain_text') as string;
   if (bahasaLain) {
@@ -74,6 +79,11 @@ export async function addPekerja(prevState: FormState, formData: FormData): Prom
 // --- Perubahan di sini fungsi edit pekerja: ganti 'any' dengan 'FormState' ---
 export async function updatePekerja(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return { error: 'Akses ditolak. Silakan login terlebih dahulu.' };
+  }
 
   const bahasaAsing = formData.getAll('bahasa_asing') as string[];
   const bahasaLain = formData.get('bahasa_lain_text') as string;
@@ -141,6 +151,11 @@ export async function deletePekerjaById(id: number, fotoUrl: string | null) {
 
   const supabase = await createClient();
 
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    throw new Error('Akses ditolak. Silakan login terlebih dahulu.');
+  }
+
   // Hapus dari database
   const { error: deleteError } = await supabase.from('pekerja').delete().eq('id', id);
 
@@ -171,6 +186,11 @@ export async function deletePekerjaById(id: number, fotoUrl: string | null) {
 
 export async function updateArtikel(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return { error: 'Akses ditolak. Silakan login terlebih dahulu.' };
+  }
 
   const id = formData.get('id') as string;
   const judul = formData.get('judul') as string;
@@ -236,6 +256,11 @@ export async function deleteArtikel(id: number, gambar_url: string | null) {
 
   const supabase = await createClient();
 
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    throw new Error('Akses ditolak. Silakan login terlebih dahulu.');
+  }
+
   // 1. Hapus gambar dari storage jika ada
   if (gambar_url) {
     // Ekstrak path file dari URL
@@ -272,6 +297,11 @@ export async function signOut() {
 
 export async function addArtikel(prevState: FormState, formData: FormData): Promise<FormState> {
   const supabase = await createClient();
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return { error: 'Akses ditolak. Silakan login terlebih dahulu.' };
+  }
 
   const judul = formData.get('judul') as string;
   const kontenString = formData.get('konten') as string; // Ini adalah string JSON
