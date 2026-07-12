@@ -46,11 +46,11 @@ export default function TemplatePernyataanPekerja({ formData, pernyataanList }: 
                                 <img src="/Image/Logo-jm.webp" alt="Logo Jasa Mandiri" className="w-16 h-16 object-contain shrink-0" />
                                 <div className="flex-1 text-center px-4">
                                     <h1 className="text-2xl font-black text-emerald-800 uppercase tracking-widest mb-0.5 font-['Plus_Jakarta_Sans'] leading-none">CV Jasa Mandiri</h1>
-                                    <p className="text-[11px] font-bold text-slate-800 uppercase tracking-wide mb-0.5 leading-none">Lembaga Penempatan Pekerja Rumah Tangga Indonesia</p>
+                                    <p className="text-[11px] font-bold text-slate-800 uppercase tracking-wide mb-0.5 leading-none">Perusahaan Penempatan Pekerja Rumah Tangga Indonesia</p>
                                     <p className="text-[9.5px] font-bold text-emerald-600 mb-1 leading-none">Baby Sitter - Perawat Lansia - Pekerja Rumah Tangga - OB - Supir - Tukang Kebun - dll</p>
                                     <div className="text-[9.5px] text-slate-600 font-medium leading-tight space-y-0.5">
                                         <p>Jl Gunung Balong III No 78 Rt 11 Rw 04 Kel Lebak Bulus Kec Cilandak Jakarta Selatan 12440</p>
-                                        <p>www.penyalurkerja.com | info@penyalurkerja.com | Tlp: 081808334430 - 082122415552</p>
+                                        <p>www.penyalurkerja.com | info@penyalurkerja.com | Tlp: 081808334430 - 0881-800-9992</p>
                                     </div>
                                 </div>
                                 <img src="/Image/Logo-appsi.png" alt="Logo APPSI" className="w-16 h-16 object-contain shrink-0" />

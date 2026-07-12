@@ -139,7 +139,7 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
               Lihat Katalog Pekerja
             </Link>
             <a 
-              href={`https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Jasa%20Mandiri,%20saya%20butuh%20bantuan%20untuk%20lokasi%20${encodeURIComponent(areaName)}.`}
+              href={`https://api.whatsapp.com/send?phone=628818009992&text=Halo%20Jasa%20Mandiri,%20saya%20butuh%20bantuan%20untuk%20lokasi%20${encodeURIComponent(areaName)}.`}
               target="_blank"
               className="px-8 py-3 bg-emerald-600 text-white font-bold rounded-lg hover:bg-emerald-700 transition flex items-center justify-center gap-2"
             >
@@ -442,7 +442,7 @@ export default async function AreaLandingPage(props: { params: Promise<{ kota: s
             <Star className="fill-current" size={20} /> Pilih Pekerja Sekarang
             </Link>
             <a 
-            href="https://api.whatsapp.com/send?phone=6282122415552"
+            href="https://api.whatsapp.com/send?phone=628818009992"
             target="_blank"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition"
             >

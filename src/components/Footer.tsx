@@ -106,6 +106,18 @@ export default function Footer() {
 
             <div className="space-y-3 pt-2">
               <a
+                href="https://api.whatsapp.com/send?phone=628818009992"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 bg-slate-800/80 hover:bg-emerald-900/40 border border-slate-700/50 hover:border-emerald-500/50 px-4 py-2.5 rounded-xl transition-all duration-300 group"
+              >
+                <MessageCircle size={20} className="text-emerald-400 group-hover:scale-110 transition-transform" />
+                <div>
+                  <div className="text-white font-medium">0881-800-9992</div>
+                  <div className="text-xs text-slate-500 group-hover:text-emerald-300/80">Admin Utama</div>
+                </div>
+              </a>
+              <a
                 href="https://api.whatsapp.com/send?phone=6282122415552"
                 target="_blank"
                 rel="noopener noreferrer"

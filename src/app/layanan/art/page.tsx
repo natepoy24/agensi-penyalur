@@ -240,7 +240,7 @@ export default function LayananARTPage() {
                 Ambil handphone Anda, tuangkan keluhan soal cucian atau setrikaan. Konsultasikan bebas kapan saja dengan Admin spesialis rekrutmen yayasan kami.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-6">
-                <a href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Admin,%20saya%20lagi%20pusing%20nyari%20ART.%20Apa%20ada%20yang%20ready%20untuk%20kerja%20cuci%20gosok%20sapu%20pel?" target="_blank" rel="noreferrer" className="bg-white text-emerald-900 hover:bg-emerald-50 font-black text-lg py-4 px-8 rounded-full shadow-[0_0_30px_rgba(255,255,255,0.3)] transition transform hover:-translate-y-1">
+                <a href="https://api.whatsapp.com/send?phone=628818009992&text=Halo%20Admin,%20saya%20lagi%20pusing%20nyari%20ART.%20Apa%20ada%20yang%20ready%20untuk%20kerja%20cuci%20gosok%20sapu%20pel?" target="_blank" rel="noreferrer" className="bg-white text-emerald-900 hover:bg-emerald-50 font-black text-lg py-4 px-8 rounded-full shadow-[0_0_30px_rgba(255,255,255,0.3)] transition transform hover:-translate-y-1">
                   Tanya Ketersediaan ART
                 </a>
                 <Link href="/pekerja" className="bg-transparent border-2 border-emerald-400/50 hover:bg-emerald-800 hover:border-emerald-800 text-white font-bold text-lg py-4 px-8 rounded-full transition-all duration-300">

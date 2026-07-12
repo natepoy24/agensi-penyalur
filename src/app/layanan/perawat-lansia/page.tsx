@@ -202,7 +202,7 @@ export default function PerawatLansiaPage() {
                 Segera konsultasikan kondisi kesehatan dan kebutuhan pendampingan untuk orang tua Anda kepada tim ahli kami. Kami siap mencarikan kandidat perawat yang paling tepat.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-6">
-                <a href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Admin%20Jasa%20Mandiri,%20saya%20butuh%20info%20ketersediaan%20perawat%20lansia." target="_blank" rel="noreferrer" className="bg-purple-600 hover:bg-purple-500 text-white font-black text-lg py-4 px-8 rounded-full shadow-[0_0_30px_rgba(147,51,234,0.3)] transition transform hover:-translate-y-1">
+                <a href="https://api.whatsapp.com/send?phone=628818009992&text=Halo%20Admin%20Jasa%20Mandiri,%20saya%20butuh%20info%20ketersediaan%20perawat%20lansia." target="_blank" rel="noreferrer" className="bg-purple-600 hover:bg-purple-500 text-white font-black text-lg py-4 px-8 rounded-full shadow-[0_0_30px_rgba(147,51,234,0.3)] transition transform hover:-translate-y-1">
                   Konsultasi & Tanya Ketersediaan
                 </a>
                 <Link href="/pekerja" className="bg-transparent border-2 border-slate-600 hover:border-slate-400 text-white font-bold text-lg py-4 px-8 rounded-full transition-all duration-300">

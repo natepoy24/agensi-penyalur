@@ -184,7 +184,7 @@ export default async function RootLayout({
             {children}
         </main>
         
-        <FloatingWhatsApp phoneNumber="6282122415552" />
+        <FloatingWhatsApp phoneNumber="628818009992" />
         <Footer />
         <SpeedInsights />
       </body>

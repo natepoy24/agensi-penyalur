@@ -228,20 +228,20 @@ export default async function ArtikelDetailPage({ params }: Props) {
             let ctaDesc = "Tak mau pusing mengerjakan urusan bersih-bersih dan mengatur rumah sendiri? Konsultasikan kandidat ART terpercaya Anda pada Admin kami secara gratis.";
             let ctaLink = "/layanan/art";
             let ctaBtn = "Cari Asisten Rumah Tangga (ART)";
-            let waUrl = "https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Admin,%20saya%20butuh%20ART%20sekarang.";
+            let waUrl = "https://api.whatsapp.com/send?phone=628818009992&text=Halo%20Admin,%20saya%20butuh%20ART%20sekarang.";
 
             if (isBaby) {
               ctaTitle = "Masa Tumbuh Kembang Anak Lebih Maksimal Bersama Suster Tersertifikasi";
               ctaDesc = "Beban kerja tinggi namun khawatir buah hati dirawat orang sembarangan? Tenangkan diri, kami memiliki katalog Baby Sitter yang telah lolos 4 lapis seleksi psikologis.";
               ctaLink = "/layanan/baby-sitter";
               ctaBtn = "Pilih Profil Baby Sitter";
-              waUrl = "https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Admin,%20saya%20butuh%20info%20Baby%20Sitter%20sekarang.";
+              waUrl = "https://api.whatsapp.com/send?phone=628818009992&text=Halo%20Admin,%20saya%20butuh%20info%20Baby%20Sitter%20sekarang.";
             } else if (isLansia) {
               ctaTitle = "Perawatan Orang Tua Terkasih Lebih Optimal Tanpa Meninggalkan Karir Anda";
               ctaDesc = "Ciptakan kemandirian dengan mendatangkan perawat lansia profesional untuk menjaga kesehatan dan nutrisi harian di rumah.";
               ctaLink = "/layanan/perawat-lansia";
               ctaBtn = "Lihat Kandidat Perawat Lansia";
-              waUrl = "https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Admin,%20saya%20butuh%20Perawat%20Lansia%20sekarang.";
+              waUrl = "https://api.whatsapp.com/send?phone=628818009992&text=Halo%20Admin,%20saya%20butuh%20Perawat%20Lansia%20sekarang.";
             }
 
             return (

@@ -12,7 +12,7 @@ interface FAQItem {
 const faqData: FAQItem[] = [
   {
     question: "Bagaimana cara menghubungi Jasa Mandiri?",
-    answer: "Anda bisa menghubungi kami melalui WhatsApp di nomor 0821-2241-5552 atau 0813-2333-7872. Anda juga bisa datang langsung ke kantor kami sesuai alamat yang tertera.",
+    answer: "Anda bisa menghubungi kami melalui WhatsApp di nomor 0881-800-9992 (Admin Utama), 0821-2241-5552 atau 0813-2333-7872. Anda juga bisa datang langsung ke kantor kami sesuai alamat yang tertera.",
   },
   {
     question: "Apa jam operasional kantor?",
@@ -80,10 +80,13 @@ export default function KontakContent() {
                 <h3 className="text-xl font-bold text-white mb-2">Telepon / WhatsApp</h3>
                 <div className="space-y-2">
                   <p className="text-slate-300 font-light">
-                    <a href="https://api.whatsapp.com/send?phone=6282122415552" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">0821-2241-5552</a>
+                    <a href="https://api.whatsapp.com/send?phone=628818009992" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">0881-800-9992 (Admin Utama)</a>
                   </p>
                   <p className="text-slate-300 font-light">
-                    <a href="https://api.whatsapp.com/send?phone=6281323337872" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">0813-2333-7872</a>
+                    <a href="https://api.whatsapp.com/send?phone=6282122415552" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">0821-2241-5552 (Admin 1)</a>
+                  </p>
+                  <p className="text-slate-300 font-light">
+                    <a href="https://api.whatsapp.com/send?phone=6281323337872" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">0813-2333-7872 (Admin 2)</a>
                   </p>
                 </div>
               </div>

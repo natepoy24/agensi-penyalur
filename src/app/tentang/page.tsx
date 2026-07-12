@@ -137,7 +137,7 @@ export default function TentangPage() {
                   Legalitas & Keamanan
                 </h2>
                 <p className="mt-6 text-slate-600 leading-relaxed text-lg">
-                  Kepercayaan Anda adalah prioritas kami. PT Jasa Mandiri Agency beroperasi sebagai Lembaga Pelatihan Kerja (LPK) dan Perusahaan Penempatan Pekerja Rumah Tangga (P3RT) yang resmi dan terdaftar.
+                  Kepercayaan Anda adalah prioritas kami. PT Jasa Mandiri Agency beroperasi sebagai Perusahaan Pelatihan Kerja (LPK) dan Perusahaan Penempatan Pekerja Rumah Tangga (P3RT) yang resmi dan terdaftar.
                 </p>
                 <ul className="mt-8 space-y-4 text-slate-700">
                   <li className="flex items-center gap-3"><CheckCircle size={20} className="text-emerald-500" /> Diawasi oleh Disnaker.</li>
@@ -203,7 +203,7 @@ export default function TentangPage() {
               </div>
               <div className="flex-shrink-0">
                 <a
-                  href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20PT%20Jasa%20Mandiri%20Agency,%20saya%20ingin%20berkonsultasi."
+                  href="https://api.whatsapp.com/send?phone=628818009992&text=Halo%20PT%20Jasa%20Mandiri%20Agency,%20saya%20ingin%20berkonsultasi."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block bg-white text-emerald-900 font-black text-lg py-5 px-10 rounded-full shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] hover:-translate-y-1 transition-all duration-300 transform"

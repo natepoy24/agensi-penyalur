@@ -15,7 +15,7 @@ interface FAQItem {
 const faqData: FAQItem[] = [
   {
     question: "Bagaimana cara menghubungi Jasa Mandiri?",
-    answer: "Anda bisa menghubungi kami melalui WhatsApp di nomor 0821-2241-5552 atau 0813-2333-7872. Anda juga bisa datang langsung ke kantor kami sesuai alamat yang tertera.",
+    answer: "Anda bisa menghubungi kami melalui WhatsApp di nomor 0881-800-9992 (Admin Utama), 0821-2241-5552 atau 0813-2333-7872. Anda juga bisa datang langsung ke kantor kami sesuai alamat yang tertera.",
   },
   {
     question: "Apa jam operasional kantor?",

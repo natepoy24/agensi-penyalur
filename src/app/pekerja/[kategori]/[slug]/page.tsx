@@ -82,7 +82,7 @@ export default async function PekerjaDetailPage({ params }: Props) {
   }
 
   const kategoriSlug = slugify(pekerja.kategori, { lower: true, strict: true });
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=6282122415552&text=${encodeURIComponent(`Halo, apakah ${pekerja.kategori} dengan nama ${pekerja.nama} masih tersedia?`)}`;
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=628818009992&text=${encodeURIComponent(`Halo, apakah ${pekerja.kategori} dengan nama ${pekerja.nama} masih tersedia?`)}`;
 
   // Schema Person
   const personSchema = {

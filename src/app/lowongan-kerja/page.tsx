@@ -184,6 +184,7 @@ export default function LowonganKerjaPage() {
                       <div>
                         <p className="font-bold text-lg mb-2">Hubungi kami via WhatsApp:</p>
                         <div className="flex flex-col gap-2">
+                          <a href="https://wa.me/628818009992" className="text-white hover:text-emerald-400 text-lg font-medium transition-colors">0881-800-9992 (Admin Utama)</a>
                           <a href="https://wa.me/628119119996" className="text-white hover:text-emerald-400 text-lg font-medium transition-colors">0811-911-9996</a>
                           <a href="https://wa.me/6282122415552" className="text-white hover:text-emerald-400 text-lg font-medium transition-colors">0821-2241-5552</a>
                         </div>

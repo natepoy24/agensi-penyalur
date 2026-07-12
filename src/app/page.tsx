@@ -17,7 +17,7 @@ const features = [
   { icon: <FileText />, title: "Proses Cepat & Mudah", text: "Kami bantu Anda menemukan kandidat yang tepat dengan proses yang efisien dan transparan." },
   { icon: <Award />, title: "Garansi Penempatan", text: "Kami memberikan garansi penggantian pekerja jika dirasa kurang cocok." },
   { icon: <LifeBuoy />, title: "Dukungan Penuh", text: "Tim kami siap memberikan dukungan dan mediasi selama masa kontrak kerja." },
-  { icon: <Building />, title: "Legalitas Jelas", text: "Sebagai lembaga resmi, kami beroperasi di bawah naungan hukum yang jelas." },
+  { icon: <Building />, title: "Legalitas Jelas", text: "Sebagai Perusahaan resmi, kami beroperasi di bawah naungan hukum yang jelas." },
 ];
 
 const faqData: FAQItem[] = [
@@ -134,7 +134,7 @@ export default function HomePage() {
           <div>
             <h2 className="text-3xl font-bold text-emerald-900 mb-6">Legalitas Resmi & Screening Pekerja yang Ketat</h2>
             <p className="text-slate-700 leading-relaxed mb-4">
-              Sebagai lembaga penyalur tenaga kerja berbadan hukum yang terdaftar di kemenkum, Jasa Mandiri menaruh prioritas tertinggi pada aspek keamanan dan legalitas. Kami diawasi langsung oleh <strong>Kementerian Ketenagakerjaan RI</strong> dan <strong>Disnaker Provinsi DKI Jakarta</strong>. Kepercayaan Anda adalah pilar kami.
+              Sebagai Perusahaan penyalur tenaga kerja berbadan hukum yang terdaftar di kemenkum, Jasa Mandiri menaruh prioritas tertinggi pada aspek keamanan dan legalitas. Kami diawasi langsung oleh <strong>Kementerian Ketenagakerjaan RI</strong> dan <strong>Disnaker Provinsi DKI Jakarta</strong>. Kepercayaan Anda adalah pilar kami.
             </p>
             <p className="text-slate-700 leading-relaxed mb-4">
               Setiap asisten rumah tangga (ART), baby sitter, maupun perawat lansia yang kami salurkan harus melewati prosedur <em>screening</em> hingga 4 tahap wajib. Prosedur ini meliputi pengecekan validitas identitas KTP (Dukcapil), interview psikologis perilaku, verifikasi izin keluarga, hingga serangkaian uji kompetensi bersertifikasi untuk memastikan <em>Hard-Skill</em> yang dapat diandalkan oleh keluarga Anda.
@@ -251,7 +251,7 @@ export default function HomePage() {
         <p className="text-center mt-6 text-slate-600">
           Masih punya pertanyaan?
           <a
-            href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Jasa%20Mandiri,%20saya%20ingin%20bertanya."
+            href="https://api.whatsapp.com/send?phone=628818009992&text=Halo%20Jasa%20Mandiri,%20saya%20ingin%20bertanya."
             className="text-emerald-600 hover:underline font-semibold ml-1"
             target="_blank"
             rel="noreferrer"
@@ -275,7 +275,7 @@ export default function HomePage() {
           </div>
           <div className="flex-shrink-0">
             <a
-              href="https://api.whatsapp.com/send?phone=6282122415552&text=Halo%20Jasa%20Mandiri,%20saya%20sedang%20mencari%20pekerja."
+              href="https://api.whatsapp.com/send?phone=628818009992&text=Halo%20Jasa%20Mandiri,%20saya%20sedang%20mencari%20pekerja."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-white text-emerald-900 font-bold py-4 px-8 rounded-xl shadow-lg hover:bg-gray-100 hover:scale-105 transition transform"
