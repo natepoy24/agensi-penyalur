@@ -70,7 +70,7 @@ export default function TemplatePernyataanPekerja({ formData, pernyataanList }: 
                                 <h2 className="text-[16px] font-bold uppercase underline tracking-wider text-slate-800">Surat Pernyataan Pekerja</h2>
                             </div>
 
-                            <div className="text-[12px] space-y-5 text-slate-800">
+                            <div className="text-[12px] space-y-5 text-slate-800 tracking-tight" style={{ wordSpacing: "-0.05em" }}>
                                 <p>Yang bertanda tangan di bawah ini menyatakan bahwa benar ini data saya dan keluarga saya :</p>
 
                                 {/* I. BIODATA PEKERJA */}

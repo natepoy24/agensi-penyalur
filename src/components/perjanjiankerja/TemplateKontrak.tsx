@@ -89,7 +89,7 @@ export default function TemplateKontrak({ formData, pasalList }: TemplateKontrak
                                 </p>
                             </div>
 
-                            <div className="space-y-4 text-[12.5px] text-slate-800 leading-relaxed text-justify mb-8">
+                            <div className="space-y-4 text-[12.5px] text-slate-800 leading-relaxed text-justify mb-8 tracking-tight" style={{ wordSpacing: "-0.10em" }}>
                                 <div className="mb-4">
                                     <p className="mb-2">Yang bertanda tangan di bawah ini:</p>
                                     <table className="w-full mb-2">
