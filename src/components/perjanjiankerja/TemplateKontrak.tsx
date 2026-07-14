@@ -90,8 +90,8 @@ export default function TemplateKontrak({ formData, pasalList }: TemplateKontrak
                             </div>
 
                             <div className="space-y-4 text-[12.5px] text-slate-800 leading-relaxed text-justify mb-8 tracking-tight" style={{ wordSpacing: "-0.10em" }}>
-                                <div className="mb-4">
-                                    <p className="mb-2">Yang bertanda tangan di bawah ini:</p>
+                                <div className="mb-2">
+                                    <p className="mb-1">Yang bertanda tangan di bawah ini:</p>
                                     <table className="w-full mb-2">
                                         <tbody>
                                             <tr><td className="w-36 align-top">Nama</td><td className="w-3 align-top">:</td><td><strong className="uppercase">{formData.namaMajikan || "..................................................."}</strong></td></tr>
@@ -125,7 +125,7 @@ export default function TemplateKontrak({ formData, pasalList }: TemplateKontrak
                                     </table>
                                 </div>
 
-                                <p className="font-bold mt-6 mb-2">Dengan ini saya (pengguna jasa) mengetahui dan setuju terhadap peraturan penempatan tenaga kerja yang tercantum dibawah ini:</p>
+                                <p className="font-bold mt-1 mb-1">Dengan ini saya (pengguna jasa) mengetahui dan setuju terhadap peraturan penempatan tenaga kerja yang tercantum dibawah ini:</p>
 
                                 <div className="pl-2">
                                     <ol className="list-decimal pl-5 space-y-4 font-semibold text-[12.5px]">
@@ -141,10 +141,10 @@ export default function TemplateKontrak({ formData, pasalList }: TemplateKontrak
                                         ))}
                                     </ol>
                                 </div>
-                                <p className="mt-6 text-center">Demikian surat persetujuan ini saya sepakati dengan sadar dan tanpa paksaan dari pihak manapun.</p>
+                                <p className="mt-2 text-center">Demikian surat persetujuan ini saya sepakati dengan sadar dan tanpa paksaan dari pihak manapun.</p>
 
                                 {/* KETERANGAN TAMBAHAN: MASA BERLAKU */}
-                                <div className="mt-4 font-bold text-[13px] text-slate-800 print:break-inside-avoid">
+                                <div className="mt-2 font-bold text-[13px] text-slate-800 print:break-inside-avoid">
                                     {formData.jenisKontrak === 'permanen'
                                         ? <p>Masa berlaku garansi sampai dengan tanggal : <span className="underline">{formatted90Days}</span></p>
                                         : <p>Masa kontrak kerja sampai dengan tanggal : <span className="underline">{formatted1Year}</span></p>
@@ -154,7 +154,7 @@ export default function TemplateKontrak({ formData, pasalList }: TemplateKontrak
                             </div>
 
                             {/* TANGGAL TANDA TANGAN (Otomatis menyesuaikan Tanggal Masuk Kerja) */}
-                            <div className="mt-6 flex justify-end px-8 print:break-inside-avoid">
+                            <div className="mt-2 flex justify-end px-8 print:break-inside-avoid">
                                 <p className="text-[13px] text-slate-800 font-medium">Jakarta, {formattedTandaTangan}</p>
                             </div>
 

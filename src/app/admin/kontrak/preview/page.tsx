@@ -40,6 +40,7 @@ const mapToCamelCase = (dbRow: any) => {
         kotaAsalPekerja: dbRow.kota_asal_pekerja || "",
         kecamatanPekerja: dbRow.kecamatan_pekerja || "",
         kelurahanPekerja: dbRow.kelurahan_pekerja || "",
+        alamatJalanPekerja: dbRow.alamat_jalan_pekerja || "",
         namaAyah: dbRow.nama_ayah || "",
         namaIbu: dbRow.nama_ibu || "",
         namaKakak: dbRow.nama_kakak || "",
@@ -60,7 +61,7 @@ const mapToCamelCase = (dbRow: any) => {
         biayaAdmin: dbRow.biaya_admin || "",
         tanggalMasuk: dbRow.tanggal_masuk || "",
         potonganBulanPertama: dbRow.potongan_bulan_pertama || "",
-        biayaOngkir: dbRow.biaya_ongkir || ""
+        biayaOngkir: dbRow.biaya_ongkir || dbRow.Biaya_Ongkir || ""
     };
 };
 
@@ -92,6 +93,7 @@ const mapToSnakeCase = (form: any) => {
         kota_asal_pekerja: form.kotaAsalPekerja,
         kecamatan_pekerja: form.kecamatanPekerja,
         kelurahan_pekerja: form.kelurahanPekerja,
+        alamat_jalan_pekerja: form.alamatJalanPekerja,
         nama_ayah: form.namaAyah,
         nama_ibu: form.namaIbu,
         nama_kakak: form.namaKakak,
@@ -112,7 +114,8 @@ const mapToSnakeCase = (form: any) => {
         biaya_admin: form.biayaAdmin,
         tanggal_masuk: form.tanggalMasuk,
         potongan_bulan_pertama: form.potonganBulanPertama,
-        biaya_ongkir: form.biayaOngkir
+        biaya_ongkir: form.biayaOngkir,
+        Biaya_Ongkir: form.biayaOngkir
     };
 };
 
@@ -148,7 +151,7 @@ function BuatKontrakContent() {
         pekerja_id: "", namaPekerja: "", namaPanggilan: "", nikPekerja: "", noHpPekerja: "",
         umurPekerja: "", tinggiBadan: "", beratBadan: "", jenisKelamin: "", pendidikan: "",
         agama: "", statusPerkawinan: "", tempatLahir: "", tglLahir: "",
-        provinsiPekerja: "", kotaAsalPekerja: "", kecamatanPekerja: "", kelurahanPekerja: "",
+        provinsiPekerja: "", kotaAsalPekerja: "", kecamatanPekerja: "", kelurahanPekerja: "", alamatJalanPekerja: "",
         namaAyah: "", namaIbu: "", namaKakak: "", namaAdik: "",
         anakKe: "", jumlahSaudara: "", alamatJalanKeluarga: "",
         provinsiKeluarga: "", kotaKeluarga: "", kontakDarurat: "", ijinKerja: "",

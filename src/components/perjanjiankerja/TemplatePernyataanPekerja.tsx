@@ -155,15 +155,18 @@ export default function TemplatePernyataanPekerja({ formData, pernyataanList }: 
 
                                 <p className="pt-0 text-center italic">Demikian Surat pernyataan ini Saya Mengerti dan paham serta membacanya dalam keadaan sadar sehat jasmani dan rohani tanpa ada paksaan dari pihak manapun.</p>
 
-                                <div className="mt-12 flex justify-between px-10 print:break-inside-avoid">
+                                <div className="mt-6 flex justify-end px-8 print:break-inside-avoid">
+                                    <p className="text-[13px] text-slate-800 font-medium">Jakarta, {formattedTanggalMasuk}</p>
+                                </div>
+
+                                <div className="mt-6 mb-2 flex justify-between px-10 print:break-inside-avoid">
                                     <div className="text-center">
                                         <p className="mb-20 font-bold">CV JASA MANDIRI</p>
                                         <p className="font-bold underline uppercase">( ATEP JAENUDIN )</p>
                                     </div>
                                     <div className="text-center">
-                                        <p className="mb-20 font-medium text-slate-600">Jakarta, {formattedTanggalMasuk}</p>
+                                        <p className="mb-20 font-bold">Tenaga Kerja</p>
                                         <p className="font-bold underline uppercase">( {formData.namaPekerja || "________________"} )</p>
-                                        <p className="font-bold text-[10px] mt-1 uppercase text-slate-500">Tenaga Kerja</p>
                                     </div>
                                 </div>
                             </div>
