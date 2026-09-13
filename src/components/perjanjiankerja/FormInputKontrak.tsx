@@ -76,7 +76,7 @@ export default function FormInputKontrak({
                 <div className="grid grid-cols-2 gap-3">
                     <div>
                         <label className="text-xs font-bold text-slate-700">NIK Majikan</label>
-                        <input type="number" name="nikMajikan" value={formData.nikMajikan || ""} onChange={handleChange} className="w-full p-2 bg-slate-50 border rounded-lg outline-none" />
+                        <input name="nikMajikan" value={formData.nikMajikan || ""} onChange={handleChange} className="w-full p-2 bg-slate-50 border rounded-lg outline-none" />
                     </div>
                     <div>
                         <label className="text-xs font-bold text-slate-700">No. HP / WA</label>
