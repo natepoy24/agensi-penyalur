@@ -10,7 +10,7 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
   const pathname = usePathname();
 
   // 1. Cek apakah ini halaman preview kontrak yang butuh layar penuh
-  const isFullscreenPage = pathname?.includes("/kontrak/preview");
+  const isFullscreenPage = pathname?.includes("/kontrak/preview") || pathname?.includes("/invoice/preview");
 
   // State untuk kontrol Sidebar (Default: Terbuka / false)
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -170,6 +170,15 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
           >
             <span className="material-symbols-outlined text-2xl">table_chart</span>
             {!isCollapsed && <span className="whitespace-nowrap">Data Laporan</span>}
+          </Link>
+
+          <Link
+            href="/admin/dashboard/invoice"
+            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 ${pathname?.includes("/invoice") ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-slate-500 hover:bg-slate-100 hover:text-emerald-700"}`}
+            title="Invoice"
+          >
+            <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>receipt_long</span>
+            {!isCollapsed && <span className="whitespace-nowrap">Invoice</span>}
           </Link>
         </nav>
 
