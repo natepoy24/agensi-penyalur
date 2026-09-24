@@ -69,10 +69,81 @@ export default function FormInputKontrak({
                 <h2 className="font-bold border-b pb-2 flex items-center gap-2 text-slate-800">
                     <span className="material-symbols-outlined text-emerald-600">apartment</span> Data Majikan & Lokasi
                 </h2>
+                {/* Pilihan Tipe Majikan */}
                 <div>
-                    <label className="text-xs font-bold text-slate-700">Nama Perusahaan/Majikan</label>
-                    <input name="namaMajikan" value={formData.namaMajikan || ""} onChange={handleChange} className="w-full p-2 bg-slate-50 border rounded-lg outline-none" />
+                    <label className="text-xs font-bold text-slate-700 mb-1.5 block">
+                        Tipe Majikan <span className="text-red-500">*</span>
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                        <label
+                            className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all ${
+                                (!formData.tipeMajikan || formData.tipeMajikan === "perorangan")
+                                    ? "border-emerald-500 bg-emerald-50/60 text-emerald-900 font-bold ring-1 ring-emerald-500/30"
+                                    : "border-slate-200 hover:bg-slate-50 text-slate-700"
+                            }`}
+                        >
+                            <input
+                                type="radio"
+                                name="tipeMajikan"
+                                value="perorangan"
+                                checked={!formData.tipeMajikan || formData.tipeMajikan === "perorangan"}
+                                onChange={handleChange}
+                                className="text-emerald-600 focus:ring-emerald-500 w-4 h-4"
+                            />
+                            <span className="material-symbols-outlined text-[20px] text-emerald-600">person</span>
+                            <span className="text-sm">Perorangan</span>
+                        </label>
+                        <label
+                            className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all ${
+                                formData.tipeMajikan === "perusahaan"
+                                    ? "border-emerald-500 bg-emerald-50/60 text-emerald-900 font-bold ring-1 ring-emerald-500/30"
+                                    : "border-slate-200 hover:bg-slate-50 text-slate-700"
+                            }`}
+                        >
+                            <input
+                                type="radio"
+                                name="tipeMajikan"
+                                value="perusahaan"
+                                checked={formData.tipeMajikan === "perusahaan"}
+                                onChange={handleChange}
+                                className="text-emerald-600 focus:ring-emerald-500 w-4 h-4"
+                            />
+                            <span className="material-symbols-outlined text-[20px] text-emerald-600">domain</span>
+                            <span className="text-sm">Perusahaan</span>
+                        </label>
+                    </div>
                 </div>
+
+                <div>
+                    <label className="text-xs font-bold text-slate-700">
+                        {formData.tipeMajikan === "perusahaan" ? "Nama Penanggung Jawab / Majikan" : "Nama Majikan"}
+                    </label>
+                    <input
+                        name="namaMajikan"
+                        placeholder="Contoh: Budi Santoso"
+                        value={formData.namaMajikan || ""}
+                        onChange={handleChange}
+                        className="w-full p-2.5 bg-slate-50 border rounded-lg outline-none text-sm focus:border-emerald-500 focus:bg-white transition-all mt-1"
+                    />
+                </div>
+
+                {/* Kolom Nama Instansi jika tipe majikan = perusahaan */}
+                {formData.tipeMajikan === "perusahaan" && (
+                    <div className="animate-in fade-in slide-in-from-top-1 duration-200">
+                        <label className="text-xs font-bold text-slate-700">
+                            Nama Instansi <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            name="namaInstansi"
+                            placeholder="Contoh: PT. Sumber Makmur Abadi / Yayasan Berkah"
+                            value={formData.namaInstansi || ""}
+                            onChange={handleChange}
+                            className="w-full p-2.5 bg-slate-50 border border-emerald-300 rounded-lg outline-none text-sm focus:border-emerald-500 focus:bg-white transition-all mt-1"
+                        />
+                        <p className="text-[11px] text-slate-400 mt-1">Nama instansi ini akan dicantumkan di bawah nama majikan pada surat kontrak.</p>
+                    </div>
+                )}
+
                 <div className="grid grid-cols-2 gap-3">
                     <div>
                         <label className="text-xs font-bold text-slate-700">NIK Majikan</label>

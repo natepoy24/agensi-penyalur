@@ -16,6 +16,7 @@
     "@types/html2pdf.js": "^0.10.0",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
+    "html2canvas-pro": "^2.4.5",
     "html2pdf.js": "^0.14.0",
     "lexical": "^0.37.0",
     "lucide-react": "^0.544.0",
@@ -40,5 +41,11 @@
     "eslint-config-next": "^16.0.7",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "html2pdf.js": {
+      "html2canvas": "npm:html2canvas-pro@^2.4.5"
+    },
+    "html2canvas": "npm:html2canvas-pro@^2.4.5"
   }
 }

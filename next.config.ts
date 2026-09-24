@@ -7,6 +7,18 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '5mb', // Menjaga agar upload foto artikel tidak error
     },
   },
+  turbopack: {
+    resolveAlias: {
+      html2canvas: 'html2canvas-pro',
+    },
+  },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      html2canvas: 'html2canvas-pro',
+    };
+    return config;
+  },
   images: {
     unoptimized: true, // SOLUSI VERCEL 100%: Mematikan optimasi gambar
     remotePatterns: [

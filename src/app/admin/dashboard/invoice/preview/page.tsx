@@ -131,6 +131,19 @@ export default function InvoicePreviewPage() {
           scrollY: 0,
           scrollX: 0,
           onclone: (clonedDoc: Document) => {
+            // 1. Bersihkan fungsi warna lab(...) dan oklch(...) dari seluruh tag <style>
+            try {
+              const styleTags = clonedDoc.querySelectorAll("style");
+              styleTags.forEach((styleTag) => {
+                if (styleTag.textContent && (styleTag.textContent.includes("lab(") || styleTag.textContent.includes("oklch("))) {
+                  styleTag.textContent = styleTag.textContent
+                    .replace(/lab\([^)]+\)/g, "#000000")
+                    .replace(/oklch\([^)]+\)/g, "#000000");
+                }
+              });
+            } catch {}
+
+            // 2. Bersihkan computed colors pada elemen di dalam area render
             const area = clonedDoc.getElementById("invoice-render-area");
             if (!area) return;
             const allElements = [area, ...Array.from(area.querySelectorAll("*"))] as HTMLElement[];
@@ -144,6 +157,9 @@ export default function InvoicePreviewPage() {
               }
               if (cs.borderColor && (cs.borderColor.includes("lab") || cs.borderColor.includes("oklch"))) {
                 el.style.borderColor = "#cbd5e1";
+              }
+              if (cs.outlineColor && (cs.outlineColor.includes("lab") || cs.outlineColor.includes("oklch"))) {
+                el.style.outlineColor = "transparent";
               }
             });
           },

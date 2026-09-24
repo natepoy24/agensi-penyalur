@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+.agents
 
 # debug
 npm-debug.log*
@@ -41,4 +42,4 @@ yarn-error.log*
 next-env.d.ts
 .agent/
 gsc bot.json
-mcp_config.json
+mcp_config.json

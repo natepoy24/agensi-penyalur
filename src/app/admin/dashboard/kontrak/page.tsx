@@ -73,14 +73,14 @@ export default function DaftarKontrakPage() {
 
                 <div className="flex items-center gap-2">
                     <Link
-                        href="/admin/dashboard/kontrak/preview?type=1_tahun"
+                        href="/admin/dashboard/kontrak/buat?type=1_tahun"
                         className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 shadow-sm transition-all"
                     >
                         <span className="material-symbols-outlined text-[18px]">add</span>
                         Kontrak 1 Tahun Baru
                     </Link>
                     <Link
-                        href="/admin/dashboard/kontrak/preview?type=permanen"
+                        href="/admin/dashboard/kontrak/buat?type=permanen"
                         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 shadow-sm transition-all"
                     >
                         <span className="material-symbols-outlined text-[18px]">add</span>
@@ -142,65 +142,93 @@ export default function DaftarKontrakPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                filteredKontrak.map((item, index) => (
-                                    <tr key={item.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                        <td className="px-5 py-4 text-center font-medium text-slate-400">{index + 1}</td>
-                                        <td className="px-5 py-4 font-bold text-slate-700">{item.nomor_kontrak}</td>
-                                        <td className="px-5 py-4">
-                                            <p className="font-semibold text-slate-800">{item.nama_majikan}</p>
-                                            <p className="text-xs text-slate-400">HP: {item.no_hp_majikan || "-"}</p>
-                                        </td>
-                                        <td className="px-5 py-4">
-                                            <p className="font-semibold text-slate-800">{item.nama_pekerja}</p>
-                                            <p className="text-xs text-slate-400">{item.pekerjaan_pokok || "-"}</p>
-                                        </td>
-                                        <td className="px-5 py-4">
-                                            {item.jenis_kontrak === "permanen" ? (
-                                                <span className="bg-blue-50 text-blue-700 border border-blue-100 px-2.5 py-1 rounded-full text-xs font-bold shadow-sm">
-                                                    Permanen 3 Bulan
-                                                </span>
-                                            ) : (
-                                                <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-1 rounded-full text-xs font-bold shadow-sm">
-                                                    Kontrak 1 Tahun
-                                                </span>
-                                            )}
-                                        </td>
-                                        <td className="px-5 py-4 font-medium text-slate-600">
-                                            {item.tanggal_masuk ? (
-                                                new Date(item.tanggal_masuk).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-                                            ) : (
-                                                "-"
-                                            )}
-                                        </td>
-                                        <td className="px-5 py-4 text-xs text-slate-400">
-                                            {new Date(item.created_at).toLocaleDateString('id-ID', {
-                                                day: 'numeric',
-                                                month: 'short',
-                                                year: 'numeric',
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            })}
-                                        </td>
-                                        <td className="px-5 py-4">
-                                            <div className="flex justify-center gap-2">
-                                                <Link
-                                                    href={`/admin/dashboard/kontrak/preview?id=${item.id}`}
-                                                    className="p-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 hover:text-emerald-700 transition-all flex items-center justify-center shadow-sm"
-                                                    title="Edit / Cetak Ulang"
-                                                >
-                                                    <span className="material-symbols-outlined text-[20px]">print</span>
-                                                </Link>
-                                                <button
-                                                    onClick={() => handleDelete(item.id, item.nomor_kontrak)}
-                                                    className="p-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 hover:text-red-700 transition-all flex items-center justify-center shadow-sm"
-                                                    title="Hapus Kontrak"
-                                                >
-                                                    <span className="material-symbols-outlined text-[20px]">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
+                                filteredKontrak.map((item, index) => {
+                                    // Parse data majikan dan nama instansi
+                                    let cleanNamaMajikan = item.nama_majikan || "-";
+                                    let namaInstansi = item.nama_instansi || "";
+
+                                    if (cleanNamaMajikan.includes("|||")) {
+                                        const parts = cleanNamaMajikan.split("|||");
+                                        cleanNamaMajikan = parts[0].trim();
+                                        try {
+                                            const meta = JSON.parse(parts[1]);
+                                            if (meta.namaInstansi) namaInstansi = meta.namaInstansi;
+                                        } catch {}
+                                    }
+
+                                    return (
+                                        <tr key={item.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                                            <td className="px-5 py-4 text-center font-medium text-slate-400">{index + 1}</td>
+                                            <td className="px-5 py-4 font-bold text-slate-700">{item.nomor_kontrak}</td>
+                                            <td className="px-5 py-4">
+                                                <p className="font-semibold text-slate-800">{cleanNamaMajikan}</p>
+                                                {namaInstansi && (
+                                                    <p className="text-xs font-semibold text-emerald-700 flex items-center gap-1 mt-0.5">
+                                                        <span className="material-symbols-outlined text-[14px]">apartment</span>
+                                                        {namaInstansi}
+                                                    </p>
+                                                )}
+                                                <p className="text-xs text-slate-400">HP: {item.no_hp_majikan || "-"}</p>
+                                            </td>
+                                            <td className="px-5 py-4">
+                                                <p className="font-semibold text-slate-800">{item.nama_pekerja}</p>
+                                                <p className="text-xs text-slate-400">{item.pekerjaan_pokok || "-"}</p>
+                                            </td>
+                                            <td className="px-5 py-4">
+                                                {item.jenis_kontrak === "permanen" ? (
+                                                    <span className="bg-blue-50 text-blue-700 border border-blue-100 px-2.5 py-1 rounded-full text-xs font-bold shadow-sm">
+                                                        Permanen 3 Bulan
+                                                    </span>
+                                                ) : (
+                                                    <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-1 rounded-full text-xs font-bold shadow-sm">
+                                                        Kontrak 1 Tahun
+                                                    </span>
+                                                )}
+                                            </td>
+                                            <td className="px-5 py-4 font-medium text-slate-600">
+                                                {item.tanggal_masuk ? (
+                                                    new Date(item.tanggal_masuk).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                                                ) : (
+                                                    "-"
+                                                )}
+                                            </td>
+                                            <td className="px-5 py-4 text-xs text-slate-400">
+                                                {new Date(item.created_at).toLocaleDateString('id-ID', {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                            </td>
+                                            <td className="px-5 py-4">
+                                                <div className="flex justify-center gap-2">
+                                                    <Link
+                                                        href={`/admin/dashboard/kontrak/preview?id=${item.id}`}
+                                                        className="p-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 hover:text-emerald-700 transition-all flex items-center justify-center shadow-sm"
+                                                        title="Lihat / Cetak PDF"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[20px]">visibility</span>
+                                                    </Link>
+                                                    <Link
+                                                        href={`/admin/dashboard/kontrak/buat?id=${item.id}`}
+                                                        className="p-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 hover:text-blue-700 transition-all flex items-center justify-center shadow-sm"
+                                                        title="Edit Kontrak"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[20px]">edit</span>
+                                                    </Link>
+                                                    <button
+                                                        onClick={() => handleDelete(item.id, item.nomor_kontrak)}
+                                                        className="p-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 hover:text-red-700 transition-all flex items-center justify-center shadow-sm"
+                                                        title="Hapus Kontrak"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[20px]">delete</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                             )}
                         </tbody>
                     </table>
