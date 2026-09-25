@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     payment_method_id,
   } = body;
 
-  if (!invoice_number || !invoice_date || !customer_name || !customer_address || !item_type || !worker_name || !price) {
+  if (!invoice_number || !invoice_date || !customer_name || price === undefined || price === null) {
     return NextResponse.json({ error: 'Field wajib tidak lengkap' }, { status: 400 });
   }
 
@@ -70,9 +70,9 @@ export async function POST(request: Request) {
     invoice_date,
     due_date,
     customer_name,
-    customer_address,
-    item_type: storedItemType,
-    worker_name,
+    customer_address: customer_address || "-",
+    item_type: storedItemType || "Umum",
+    worker_name: worker_name || "-",
     price: adminPrice,
     subtotal: adminPrice,
     total: grandTotal,
@@ -94,9 +94,9 @@ export async function POST(request: Request) {
       invoice_date,
       due_date,
       customer_name,
-      customer_address,
-      item_type: storedItemType,
-      worker_name,
+      customer_address: customer_address || "-",
+      item_type: storedItemType || "Umum",
+      worker_name: worker_name || "-",
       price: adminPrice,
       subtotal: adminPrice,
       total: grandTotal,

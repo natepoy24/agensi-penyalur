@@ -4,6 +4,7 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface InvoicePreviewData {
   invoiceNumber: string;
@@ -105,6 +106,7 @@ export default function InvoicePreviewPage() {
         const json = await res.json();
         if (!res.ok) throw new Error(json.error || "Gagal menyimpan invoice ke database");
         setSaved(true);
+        toast.success("Invoice berhasil disimpan ke database!");
         // Simpan cache rincian invoice ke localStorage
         try {
           localStorage.setItem("invoice_items_" + data.invoiceNumber, JSON.stringify(data));
@@ -183,8 +185,11 @@ export default function InvoicePreviewPage() {
       link.click();
       document.body.removeChild(link);
       setTimeout(() => URL.revokeObjectURL(url), 2000);
+      toast.success("PDF Invoice berhasil diunduh!");
     } catch (err: unknown) {
-      setErrorMessage(err instanceof Error ? err.message : "Gagal mengunduh PDF");
+      const errText = err instanceof Error ? err.message : "Gagal mengunduh PDF";
+      setErrorMessage(errText);
+      toast.error(errText);
     } finally {
       setIsDownloading(false);
     }
@@ -422,19 +427,21 @@ export default function InvoicePreviewPage() {
                 </tr>
               </thead>
               <tbody>
-                {/* 1. Administrasi Pengambilan */}
-                <tr style={{ borderBottom: "1px solid #e2e8f0" }}>
-                  <td style={{ padding: "10px 8px", fontSize: "12px", color: "#000000" }}>
-                    Administrasi Pengambilan {data.itemType} ({data.workerName})
-                  </td>
-                  <td style={{ padding: "10px 8px", textAlign: "right", fontSize: "12px", color: "#000000", whiteSpace: "nowrap", verticalAlign: "middle" }}>
-                    <div style={{ fontSize: "9px", color: "#64748b", lineHeight: 1, marginBottom: "2px" }}>Rp</div>
-                    <div>{formatNumber(data.price)}</div>
-                  </td>
-                  <td style={{ padding: "10px 8px", textAlign: "right", fontSize: "12px", color: "#000000", fontWeight: 600, whiteSpace: "nowrap", verticalAlign: "middle" }}>
-                    {formatRupiah(data.price)}
-                  </td>
-                </tr>
+                {/* 1. Administrasi Pengambilan (Hanya ditampilkan jika nominal > 0) */}
+                {Number(data.price || 0) > 0 && (
+                  <tr style={{ borderBottom: "1px solid #e2e8f0" }}>
+                    <td style={{ padding: "10px 8px", fontSize: "12px", color: "#000000" }}>
+                      Administrasi Pengambilan {data.itemType} {data.workerName && data.workerName !== "-" ? `(${data.workerName})` : ""}
+                    </td>
+                    <td style={{ padding: "10px 8px", textAlign: "right", fontSize: "12px", color: "#000000", whiteSpace: "nowrap", verticalAlign: "middle" }}>
+                      <div style={{ fontSize: "9px", color: "#64748b", lineHeight: 1, marginBottom: "2px" }}>Rp</div>
+                      <div>{formatNumber(data.price)}</div>
+                    </td>
+                    <td style={{ padding: "10px 8px", textAlign: "right", fontSize: "12px", color: "#000000", fontWeight: 600, whiteSpace: "nowrap", verticalAlign: "middle" }}>
+                      {formatRupiah(data.price)}
+                    </td>
+                  </tr>
+                )}
 
                 {/* 2. Ongkos Kirim (bila ada) */}
                 {data.ongkosKirim > 0 && (

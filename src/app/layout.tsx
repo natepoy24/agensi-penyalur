@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -7,6 +8,8 @@ import Footer from '@/components/layout/Footer';
 import { Toaster } from 'react-hot-toast';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NotificationHandler from '@/components/layout/NotificationHandler';
+import NavigationLoader from '@/components/layout/NavigationLoader';
+import DisableNumberInputScroll from '@/components/layout/DisableNumberInputScroll';
 import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
 import { Analytics } from "@vercel/analytics/next"
 import dynamic from 'next/dynamic';
@@ -176,8 +179,39 @@ export default async function RootLayout({
         <GoogleAnalytics />
         <Analytics/>
         
-        <Toaster position="top-center" />
-        <NotificationHandler />
+        <Toaster
+          position="top-center"
+          containerStyle={{ zIndex: 99999 }}
+          toastOptions={{
+            duration: 4000,
+            style: {
+              borderRadius: '14px',
+              background: '#0f172a',
+              color: '#ffffff',
+              fontSize: '14px',
+              fontWeight: '600',
+              padding: '12px 20px',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2)',
+            },
+            success: {
+              iconTheme: {
+                primary: '#10b981',
+                secondary: '#ffffff',
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: '#ef4444',
+                secondary: '#ffffff',
+              },
+            },
+          }}
+        />
+        <DisableNumberInputScroll />
+        <Suspense fallback={null}>
+          <NavigationLoader />
+          <NotificationHandler />
+        </Suspense>
         <Header user={user} />
         
         <main className="min-h-screen">

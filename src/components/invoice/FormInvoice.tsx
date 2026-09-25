@@ -3,6 +3,7 @@
 // src/components/invoice/FormInvoice.tsx
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface PaymentMethod {
   id: number;
@@ -49,7 +50,7 @@ function addDays(dateStr: string, days: number): string {
   return d.toISOString().split("T")[0];
 }
 
-const PRICE_OPTIONS = [2200000, 2500000, 2700000];
+const PRICE_OPTIONS = [0, 2200000, 2500000, 2700000];
 const ONGKIR_OPTIONS = [0, 100000, 150000, 200000, 250000];
 
 export default function FormInvoice() {
@@ -151,7 +152,9 @@ export default function FormInvoice() {
 
   const handleAddPaymentMethod = async () => {
     if (!newPayment.bank_name || !newPayment.account_name || !newPayment.account_number) {
-      setMessage({ type: "error", text: "Semua field rekening wajib diisi" });
+      const errText = "Semua field rekening wajib diisi";
+      setMessage({ type: "error", text: errText });
+      toast.error(errText);
       return;
     }
     setIsSavingPayment(true);
@@ -168,20 +171,34 @@ export default function FormInvoice() {
       setNewPayment({ bank_name: "", account_name: "", account_number: "" });
       setShowAddPayment(false);
       setMessage({ type: "success", text: "Rekening berhasil ditambahkan!" });
+      toast.success("Rekening berhasil ditambahkan!");
     } catch (err: unknown) {
-      setMessage({ type: "error", text: err instanceof Error ? err.message : "Gagal menyimpan rekening" });
+      const errText = err instanceof Error ? err.message : "Gagal menyimpan rekening";
+      setMessage({ type: "error", text: errText });
+      toast.error(errText);
     } finally {
       setIsSavingPayment(false);
     }
   };
 
   const handleDownloadPDF = useCallback(() => {
-    if (!form.customerName || !form.workerName || !form.invoiceDate) {
-      setMessage({ type: "error", text: "Nama customer, nama pekerja, dan tanggal invoice wajib diisi!" });
+    if (!form.customerName.trim() || !form.invoiceDate) {
+      const errText = "Nama customer dan tanggal invoice wajib diisi!";
+      setMessage({ type: "error", text: errText });
+      toast.error(errText);
       return;
     }
-    if (form.itemType === "Lainnya" && !form.itemTypeLainnya.trim()) {
-      setMessage({ type: "error", text: "Harap isi jenis pekerjaan lainnya!" });
+    // Jika biaya administrasi > 0, nama pekerja wajib diisi
+    if (form.price > 0 && !form.workerName.trim()) {
+      const errText = "Nama pekerja wajib diisi jika terdapat biaya administrasi pengambilan!";
+      setMessage({ type: "error", text: errText });
+      toast.error(errText);
+      return;
+    }
+    if (form.price > 0 && form.itemType === "Lainnya" && !form.itemTypeLainnya.trim()) {
+      const errText = "Harap isi jenis pekerjaan lainnya!";
+      setMessage({ type: "error", text: errText });
+      toast.error(errText);
       return;
     }
 
@@ -195,7 +212,7 @@ export default function FormInvoice() {
       customerName: form.customerName,
       customerAddress: form.customerAddress,
       itemType: itemLabel,
-      workerName: form.workerName,
+      workerName: form.workerName || "-",
       price: form.price,
       ongkosKirim,
       customItems: customItems.map((ci) => ({ name: ci.name, price: ci.price || 0 })),
@@ -299,21 +316,26 @@ export default function FormInvoice() {
 
         {/* Nama Pekerja */}
         <div>
-          <label className="text-xs font-bold text-slate-600 mb-1 block">Nama Pekerja <span className="text-red-500">*</span></label>
+          <label className="text-xs font-bold text-slate-600 mb-1 block">
+            Nama Pekerja {form.price > 0 ? <span className="text-red-500">*</span> : <span className="text-slate-400 font-normal">(opsional jika Rp 0)</span>}
+          </label>
           <input name="workerName" value={form.workerName} onChange={handleChange}
             className="w-full p-2.5 border rounded-xl outline-none focus:border-amber-400 text-sm"
-            placeholder="Nama lengkap pekerja" />
+            placeholder={form.price > 0 ? "Nama lengkap pekerja" : "Nama pekerja (opsional)"} />
         </div>
 
         {/* Harga Administrasi */}
         <div>
-          <label className="text-xs font-bold text-slate-600 mb-1 block">Harga / Biaya Administrasi <span className="text-red-500">*</span></label>
+          <label className="text-xs font-bold text-slate-600 mb-1 block">
+            Harga / Biaya Administrasi Pengambilan
+            <span className="text-slate-400 font-normal ml-1">(Pilih Rp 0 jika non-administrasi)</span>
+          </label>
           <div className="flex flex-wrap gap-2 mb-2">
             {PRICE_OPTIONS.map((p) => (
               <button key={p} type="button"
                 onClick={() => setForm((prev) => ({ ...prev, price: p, priceCustom: false }))}
                 className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${form.price === p && !form.priceCustom ? "bg-emerald-600 text-white border-emerald-600" : "bg-white text-slate-600 border-slate-200 hover:border-emerald-400"}`}>
-                {formatRupiah(p)}
+                {p === 0 ? "Rp 0 (Tanpa Biaya Admin)" : formatRupiah(p)}
               </button>
             ))}
             <button type="button" onClick={() => setForm((prev) => ({ ...prev, priceCustom: true }))}
@@ -324,9 +346,10 @@ export default function FormInvoice() {
           {form.priceCustom && (
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">Rp</span>
-              <input type="number" name="price" value={form.price} onChange={handleChange}
-                className="w-full pl-10 p-2.5 border rounded-xl outline-none focus:border-emerald-400 text-sm"
-                placeholder="Masukkan nominal" />
+              <input type="number" name="price" value={form.price} onChange={handleChange} min={0}
+                onWheel={(e) => e.currentTarget.blur()}
+                className="w-full pl-10 p-2.5 border rounded-xl outline-none focus:border-emerald-400 text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                placeholder="Masukkan nominal (bisa 0)" />
             </div>
           )}
         </div>
@@ -355,7 +378,8 @@ export default function FormInvoice() {
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">Rp</span>
               <input type="number" value={ongkosKirim}
                 onChange={(e) => setOngkosKirim(Number(e.target.value))}
-                className="w-full pl-10 p-2.5 border rounded-xl outline-none focus:border-orange-400 text-sm"
+                onWheel={(e) => e.currentTarget.blur()}
+                className="w-full pl-10 p-2.5 border rounded-xl outline-none focus:border-orange-400 text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 placeholder="Masukkan ongkos kirim" />
             </div>
           )}
@@ -414,7 +438,8 @@ export default function FormInvoice() {
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold">Rp</span>
                       <input type="number" value={ci.price}
                         onChange={(e) => updateCustomItem(idx, "price", Number(e.target.value))}
-                        className="w-full pl-8 p-2 border rounded-lg text-sm outline-none focus:border-slate-400 bg-white"
+                        onWheel={(e) => e.currentTarget.blur()}
+                        className="w-full pl-8 p-2 border rounded-lg text-sm outline-none focus:border-slate-400 bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         placeholder="Nominal" />
                     </div>
                   )}

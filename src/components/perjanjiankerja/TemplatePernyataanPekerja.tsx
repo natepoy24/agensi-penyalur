@@ -5,14 +5,17 @@ interface TemplatePernyataanProps {
     formData: any;
     pernyataanList: any[];
     paperSize?: "f4" | "a4";
+    includeTtd?: boolean;
 }
 
 export default function TemplatePernyataanPekerja({
     formData,
     pernyataanList,
     paperSize = "f4",
+    includeTtd,
 }: TemplatePernyataanProps) {
     const isA4 = paperSize === "a4";
+    const showTtd = includeTtd !== undefined ? includeTtd : (formData?.includeTtd ?? true);
 
     // Helper Format Rupiah
     const formatRupiah = (angka: string) => {
@@ -43,10 +46,10 @@ export default function TemplatePernyataanPekerja({
     };
 
     const paddingYStyle = isA4 ? "py-6 px-10" : "py-8 px-10";
-    const sectionSpacing = isA4 ? "space-y-3.5" : "space-y-4";
-    const textSize = isA4 ? "text-[10.5px]" : "text-[11.5px]";
-    const smallTextSize = isA4 ? "text-[10px]" : "text-[11px]";
-    const statementTextSize = isA4 ? "text-[10px]" : "text-[10.5px]";
+    const sectionSpacing = isA4 ? "space-y-3" : "space-y-3.5";
+    const textSize = isA4 ? "text-[11.5px]" : "text-[12.5px]";
+    const smallTextSize = isA4 ? "text-[11px]" : "text-[12px]";
+    const statementTextSize = isA4 ? "text-[11px]" : "text-[11.5px]";
 
     const poinList = pernyataanList[0]?.poin || [];
 
@@ -63,28 +66,24 @@ export default function TemplatePernyataanPekerja({
                 <div>
                     {/* KOP SURAT */}
                     <div className="flex items-center justify-between border-b-[3px] border-emerald-800 pb-2 mb-2" style={{ borderBottomStyle: "double" }}>
-                        <img src="/Image/Logo-jm.webp" alt="Logo Jasa Mandiri" className="w-14 h-14 object-contain shrink-0" />
-                        <div className="flex-1 text-center px-3">
-                            <h1 className="text-xl font-black text-emerald-800 uppercase tracking-widest mb-0.5 font-['Plus_Jakarta_Sans'] leading-none">
+                        <img src="/Image/Logo-jm.webp" alt="Logo Jasa Mandiri" className="w-16 h-16 object-contain shrink-0" />
+                        <div className="flex-1 text-center px-1.5">
+                            <h1 className="text-2xl font-black text-emerald-800 uppercase tracking-wider mb-1 font-['Plus_Jakarta_Sans'] leading-none">
                                 CV JASA MANDIRI
                             </h1>
-                            <p className="text-[10px] font-bold text-slate-800 uppercase tracking-wide mb-0.5 leading-none">
+                            <p className="text-[11.5px] font-bold text-slate-800 uppercase tracking-wide mb-1 leading-none">
                                 Perusahaan Penempatan Pekerja Rumah Tangga Indonesia
                             </p>
-                            <p className="text-[8.5px] font-bold text-emerald-600 mb-0.5 leading-none">
-                                Baby Sitter - Perawat Lansia - Pekerja Rumah Tangga - OB - Supir - Tukang Kebun - dll
+                            <p className="text-[9.5px] text-slate-600 font-medium leading-tight">
+                                Jl. Gunung Balong III No. 78 RT 11/RW 04, Lebak Bulus, Cilandak, Jakarta Selatan 12440 | www.penyalurkerja.com | info@penyalurkerja.com | Tlp: 081808334430 - 0881-800-9992
                             </p>
-                            <div className="text-[8.5px] text-slate-600 font-medium leading-tight">
-                                <p>Jl Gunung Balong III No 78 Rt 11 Rw 04 Kel Lebak Bulus Kec Cilandak Jakarta Selatan 12440</p>
-                                <p>www.penyalurkerja.com | info@penyalurkerja.com | Tlp: 081808334430 - 0881-800-9992</p>
-                            </div>
                         </div>
-                        <img src="/Image/Logo-appsi.png" alt="Logo APPSI" className="w-14 h-14 object-contain shrink-0" />
+                        <img src="/Image/Logo-appsi.png" alt="Logo APPSI" className="w-16 h-16 object-contain shrink-0" />
                     </div>
 
                     {/* JUDUL SURAT */}
                     <div className="text-center mb-2.5">
-                        <h2 className="text-base font-bold uppercase underline underline-offset-4 tracking-wider text-slate-900">
+                        <h2 className="text-lg font-bold uppercase underline underline-offset-4 tracking-wider text-slate-900">
                             Surat Pernyataan Pekerja
                         </h2>
                     </div>
@@ -96,7 +95,7 @@ export default function TemplatePernyataanPekerja({
                     <div className={sectionSpacing}>
                         {/* I. BIODATA PEKERJA */}
                         <div>
-                            <h3 className="font-bold border-b border-slate-800 w-fit mb-1.5 uppercase text-[11px] text-slate-900 tracking-wide">
+                            <h3 className="font-bold border-b border-slate-800 w-fit mb-1.5 uppercase text-xs text-slate-900 tracking-wide">
                                 I. Biodata Pekerja
                             </h3>
                             <div className="grid grid-cols-2 gap-x-6">
@@ -179,7 +178,7 @@ export default function TemplatePernyataanPekerja({
 
                         {/* II. KELUARGA */}
                         <div>
-                            <h3 className="font-bold border-b border-slate-800 w-fit mb-1.5 uppercase text-[11px] text-slate-900 tracking-wide">
+                            <h3 className="font-bold border-b border-slate-800 w-fit mb-1.5 uppercase text-xs text-slate-900 tracking-wide">
                                 II. Data Keluarga
                             </h3>
                             <div className="grid grid-cols-2 gap-x-6">
@@ -227,7 +226,7 @@ export default function TemplatePernyataanPekerja({
 
                         {/* III. PENGALAMAN KERJA TERAKHIR */}
                         <div>
-                            <h3 className="font-bold border-b border-slate-800 w-fit mb-1.5 uppercase text-[11px] text-slate-900 tracking-wide">
+                            <h3 className="font-bold border-b border-slate-800 w-fit mb-1.5 uppercase text-xs text-slate-900 tracking-wide">
                                 III. Pengalaman Kerja Terakhir
                             </h3>
                             <table className={`w-full border-collapse border border-slate-400 text-center ${smallTextSize}`}>
@@ -252,7 +251,7 @@ export default function TemplatePernyataanPekerja({
 
                         {/* IV. PERNYATAAN PEKERJA (FLEX ITEMS - TIDAK ADA MASALAH OVERLAP ANGKA) */}
                         <div>
-                            <h3 className="font-bold border-b border-slate-800 w-fit mb-1.5 uppercase text-[11px] text-slate-900 tracking-wide">
+                            <h3 className="font-bold border-b border-slate-800 w-fit mb-1.5 uppercase text-xs text-slate-900 tracking-wide">
                                 IV. Pernyataan Pekerja
                             </h3>
                             <div className="space-y-1">
@@ -270,25 +269,42 @@ export default function TemplatePernyataanPekerja({
                         </div>
 
                         {/* KALIMAT PENUTUP DIBERI JARAK LEGA */}
-                        <p className={`text-center italic ${statementTextSize} text-slate-700 leading-relaxed my-6 px-4`}>
+                        <p className={`text-center italic ${statementTextSize} text-slate-700 leading-relaxed my-3 px-4`}>
                             Demikian Surat pernyataan ini Saya Mengerti dan paham serta membacanya dalam keadaan sadar sehat jasmani dan rohani tanpa ada paksaan dari pihak manapun.
                         </p>
                     </div>
                 </div>
 
                 {/* BAGIAN TANDA TANGAN DIBERI JARAK LEGA DENGAN TINGGI CUKUP UNTUK TTD / MATERAI */}
-                <div className="mt-8">
-                    <div className="flex justify-end px-12 mb-4">
+                <div className="mt-4">
+                    <div className="flex justify-end px-12 mb-2">
                         <p className={`${smallTextSize} text-slate-800 font-medium`}>Jakarta, {formattedTanggalMasuk}</p>
                     </div>
 
-                    <div className="flex justify-between px-16 mb-8">
-                        <div className="text-center w-56">
-                            <p className={`${smallTextSize} mb-24 font-bold text-slate-900`}>CV JASA MANDIRI</p>
+                    <div className="flex justify-between px-16 mb-4">
+                        <div className="text-center w-56 flex flex-col items-center">
+                            <p className={`${smallTextSize} font-bold text-slate-900`}>CV JASA MANDIRI</p>
+                            {showTtd ? (
+                                <div className="relative w-36 h-20 flex items-center justify-center my-0.5">
+                                    <img
+                                        src="/Image/Logo-jm.png"
+                                        alt="Stempel Jasa Mandiri"
+                                        className="absolute w-20 h-20 object-contain opacity-40 pointer-events-none select-none"
+                                    />
+                                    <img
+                                        src="/Image/ttd-atep.png"
+                                        alt="Tanda Tangan Atep Jaenudin"
+                                        className="absolute w-28 h-16 object-contain z-10 pointer-events-none select-none"
+                                    />
+                                </div>
+                            ) : (
+                                <div className="h-20" />
+                            )}
                             <p className={`${smallTextSize} font-bold underline uppercase text-slate-900`}>( ATEP JAENUDIN )</p>
                         </div>
-                        <div className="text-center w-56">
-                            <p className={`${smallTextSize} mb-24 font-bold text-slate-900`}>Tenaga Kerja</p>
+                        <div className="text-center w-56 flex flex-col items-center">
+                            <p className={`${smallTextSize} font-bold text-slate-900`}>Tenaga Kerja</p>
+                            <div className="h-20" />
                             <p className={`${smallTextSize} font-bold underline uppercase text-slate-900`}>
                                 ( {formData.namaPekerja || "________________"} )
                             </p>

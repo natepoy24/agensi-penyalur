@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import FormInputKontrak from "@/components/perjanjiankerja/FormInputKontrak";
+import toast from "react-hot-toast";
 
 // Helper Mappings
 const mapToCamelCase = (dbRow: any) => {
@@ -86,7 +87,8 @@ const mapToCamelCase = (dbRow: any) => {
         biayaAdmin: dbRow.biaya_admin || "",
         tanggalMasuk: dbRow.tanggal_masuk || "",
         potonganBulanPertama: dbRow.potongan_bulan_pertama || "",
-        biayaOngkir: dbRow.biaya_ongkir || dbRow.Biaya_Ongkir || ""
+        biayaOngkir: dbRow.biaya_ongkir || dbRow.Biaya_Ongkir || "",
+        includeTtd: dbRow.include_ttd ?? true
     };
 };
 
@@ -115,7 +117,9 @@ function BuatKontrakContent() {
     const [pernyataanList, setPernyataanList] = useState<any[]>([]);
 
     const [isSavingTemplate, setIsSavingTemplate] = useState(false);
+    const [isSavingDirect, setIsSavingDirect] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
     const [formData, setFormData] = useState({
         nomorKontrak: "",
@@ -167,7 +171,8 @@ function BuatKontrakContent() {
         biayaAdmin: "",
         tanggalMasuk: new Date().toISOString().split("T")[0],
         potonganBulanPertama: "",
-        biayaOngkir: ""
+        biayaOngkir: "",
+        includeTtd: true
     });
 
     // Fetch initial data: daftar pekerja & template pernyataan
@@ -224,6 +229,29 @@ function BuatKontrakContent() {
     useEffect(() => {
         if (!idParam) return;
         const loadSavedKontrak = async () => {
+            const isFresh = searchParams.get("fresh") === "true";
+
+            // Jika fresh, bersihkan draft lokal yang lama
+            if (isFresh) {
+                try {
+                    localStorage.removeItem("kontrak_preview_data");
+                } catch {}
+            } else {
+                // Jika bukan fresh (misal kembali dari preview lewat Edit Form), cek apakah ada draft lokal yang cocok
+                try {
+                    const rawPreview = localStorage.getItem("kontrak_preview_data");
+                    if (rawPreview) {
+                        const parsed = JSON.parse(rawPreview);
+                        if (String(parsed.existingId) === String(idParam)) {
+                            setFormData(parsed);
+                            if (parsed.pasalList && Array.isArray(parsed.pasalList)) setPasalList(parsed.pasalList);
+                            if (parsed.pernyataanList && Array.isArray(parsed.pernyataanList)) setPernyataanList(parsed.pernyataanList);
+                            return;
+                        }
+                    }
+                } catch {}
+            }
+
             const { data, error } = await supabase
                 .from("kontrak_kerja")
                 .select("*")
@@ -242,7 +270,7 @@ function BuatKontrakContent() {
             }
         };
         loadSavedKontrak();
-    }, [idParam, supabase]);
+    }, [idParam, supabase, searchParams]);
 
     // Sinkronkan jenis kontrak jika type query berubah dan bukan edit
     useEffect(() => {
@@ -266,8 +294,8 @@ function BuatKontrakContent() {
     }, [supabase, formData.jenisKontrak, idParam]);
 
     const handleChange = (e: any) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
     };
 
     const handleJenisKontrakChange = (newType: string) => {
@@ -317,11 +345,137 @@ function BuatKontrakContent() {
             const allTemplates = [...pasalList, ...pernyataanList];
             const { error } = await supabase.from('template_pasal').upsert(allTemplates);
             if (error) throw error;
-            alert("Seluruh perubahan pasal & pernyataan berhasil disimpan ke database!");
+            toast.success("Seluruh perubahan pasal & pernyataan berhasil disimpan ke database!");
         } catch (err: any) {
-            alert("Gagal simpan template: " + err.message);
+            toast.error("Gagal simpan template: " + err.message);
         } finally {
             setIsSavingTemplate(false);
+        }
+    };
+
+    const handleSaveDirect = async () => {
+        setErrorMessage("");
+        setSuccessMessage("");
+
+        if (!formData.nomorKontrak.trim()) {
+            const err = "Nomor kontrak tidak boleh kosong.";
+            setErrorMessage(err);
+            toast.error(err);
+            return;
+        }
+
+        if (!formData.namaMajikan.trim()) {
+            const err = "Nama Majikan / Penanggung Jawab wajib diisi.";
+            setErrorMessage(err);
+            toast.error(err);
+            return;
+        }
+
+        if (formData.tipeMajikan === "perusahaan" && !formData.namaInstansi.trim()) {
+            const err = "Nama Instansi wajib diisi karena Anda memilih tipe majikan Perusahaan.";
+            setErrorMessage(err);
+            toast.error(err);
+            return;
+        }
+
+        if (!formData.namaPekerja.trim()) {
+            const err = "Nama Tenaga Kerja wajib diisi (Pilih pekerja atau input manual).";
+            setErrorMessage(err);
+            toast.error(err);
+            return;
+        }
+
+        setIsSavingDirect(true);
+        try {
+            const dataToSave = {
+                nomor_kontrak: formData.nomorKontrak,
+                jenis_kontrak: formData.jenisKontrak,
+                nama_majikan: formData.namaMajikan.split("|||")[0].trim(),
+                nik_majikan: formData.nikMajikan,
+                no_hp_majikan: formData.noHpMajikan,
+                alamat_majikan: formData.alamatMajikan,
+                provinsi_lokasi_kerja: formData.provinsiLokasiKerja,
+                kota_lokasi_kerja: formData.kotaLokasiKerja,
+                pekerja_id: formData.pekerja_id === "manual" || !formData.pekerja_id ? null : parseInt(formData.pekerja_id),
+                nama_pekerja: formData.namaPekerja,
+                nama_panggilan: formData.namaPanggilan,
+                nik_pekerja: formData.nikPekerja,
+                no_hp_pekerja: formData.noHpPekerja,
+                umur_pekerja: formData.umurPekerja,
+                tinggi_badan: formData.tinggiBadan,
+                berat_badan: formData.beratBadan,
+                jenis_kelamin: formData.jenisKelamin,
+                pendidikan: formData.pendidikan,
+                agama: formData.agama,
+                status_perkawinan: formData.statusPerkawinan,
+                tempat_lahir: formData.tempatLahir,
+                tgl_lahir: formData.tglLahir,
+                provinsi_pekerja: formData.provinsiPekerja,
+                kota_asal_pekerja: formData.kotaAsalPekerja,
+                kecamatan_pekerja: formData.kecamatanPekerja,
+                kelurahan_pekerja: formData.kelurahanPekerja,
+                alamat_jalan_pekerja: formData.alamatJalanPekerja,
+                nama_ayah: formData.namaAyah,
+                nama_ibu: formData.namaIbu,
+                nama_kakak: formData.namaKakak,
+                nama_adik: formData.namaAdik,
+                anak_ke: formData.anakKe,
+                jumlah_saudara: formData.jumlahSaudara,
+                alamat_jalan_keluarga: formData.alamatJalanKeluarga,
+                provinsi_keluarga: formData.provinsiKeluarga,
+                kota_keluarga: formData.kotaKeluarga,
+                kontak_darurat: formData.kontakDarurat,
+                ijin_kerja: formData.ijinKerja,
+                pengalaman_kerja: formData.pengalamanKerja,
+                lama_kerja: formData.lamaKerja,
+                gaji_terakhir: formData.gajiTerakhir,
+                alamat_kerja_sebelumnya: formData.alamatKerjaSebelumnya,
+                pekerjaan_pokok: formData.pekerjaanPokok,
+                gaji_pekerja: formData.gajiPekerja,
+                biaya_admin: formData.biayaAdmin,
+                tanggal_masuk: formData.tanggalMasuk,
+                potongan_bulan_pertama: formData.potonganBulanPertama,
+                biaya_ongkir: formData.biayaOngkir,
+                Biaya_Ongkir: formData.biayaOngkir,
+                tipe_majikan: formData.tipeMajikan || "perorangan",
+                nama_instansi: formData.tipeMajikan === "perusahaan" ? (formData.namaInstansi || "") : "",
+                pasal_list: pasalList || [],
+                pernyataan_list: pernyataanList || [],
+            };
+
+            let currentId = idParam;
+            if (currentId) {
+                const { error: updErr } = await supabase.from("kontrak_kerja").update(dataToSave).eq("id", currentId);
+                if (updErr) throw updErr;
+            } else {
+                const { data: insData, error: insErr } = await supabase.from("kontrak_kerja").insert([dataToSave]).select("id").single();
+                if (insErr) throw insErr;
+                if (insData?.id) currentId = insData.id;
+            }
+
+            // Sync cache local
+            const savedPreview = {
+                ...formData,
+                tipeMajikan: formData.tipeMajikan || "perorangan",
+                namaInstansi: formData.tipeMajikan === "perusahaan" ? (formData.namaInstansi || "") : "",
+                pasalList,
+                pernyataanList,
+                isExisting: true,
+                existingId: currentId,
+                isEdited: false
+            };
+            localStorage.setItem("kontrak_preview_data", JSON.stringify(savedPreview));
+            localStorage.setItem("kontrak_items_" + formData.nomorKontrak, JSON.stringify(savedPreview));
+
+            const succMsg = "Perubahan kontrak kerja berhasil disimpan ke database!";
+            setSuccessMessage(succMsg);
+            toast.success(succMsg);
+        } catch (err: any) {
+            const errMsg = "Gagal menyimpan: " + err.message;
+            setErrorMessage(errMsg);
+            toast.error(errMsg);
+        } finally {
+            setIsSavingDirect(false);
         }
     };
 
@@ -329,26 +483,30 @@ function BuatKontrakContent() {
         setErrorMessage("");
 
         if (!formData.nomorKontrak.trim()) {
-            setErrorMessage("Nomor kontrak tidak boleh kosong.");
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            const err = "Nomor kontrak tidak boleh kosong.";
+            setErrorMessage(err);
+            toast.error(err);
             return;
         }
 
         if (!formData.namaMajikan.trim()) {
-            setErrorMessage("Nama Majikan / Penanggung Jawab wajib diisi.");
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            const err = "Nama Majikan / Penanggung Jawab wajib diisi.";
+            setErrorMessage(err);
+            toast.error(err);
             return;
         }
 
         if (formData.tipeMajikan === "perusahaan" && !formData.namaInstansi.trim()) {
-            setErrorMessage("Nama Instansi wajib diisi karena Anda memilih tipe majikan Perusahaan.");
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            const err = "Nama Instansi wajib diisi karena Anda memilih tipe majikan Perusahaan.";
+            setErrorMessage(err);
+            toast.error(err);
             return;
         }
 
         if (!formData.namaPekerja.trim()) {
-            setErrorMessage("Nama Tenaga Kerja wajib diisi (Pilih pekerja atau input manual).");
-            window.scrollTo({ top: 250, behavior: "smooth" });
+            const err = "Nama Tenaga Kerja wajib diisi (Pilih pekerja atau input manual).";
+            setErrorMessage(err);
+            toast.error(err);
             return;
         }
 
@@ -360,6 +518,7 @@ function BuatKontrakContent() {
             pernyataanList,
             isExisting: !!idParam,
             existingId: idParam || null,
+            isEdited: true, // Marker penting: perubahan baru belum disinkronkan ke DB
         };
 
         localStorage.setItem("kontrak_preview_data", JSON.stringify(previewData));
@@ -422,6 +581,23 @@ function BuatKontrakContent() {
                     </div>
                 </div>
             </div>
+
+            {/* Notifikasi Sukses */}
+            {successMessage && (
+                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between gap-3 text-sm text-emerald-800 font-semibold animate-in fade-in slide-in-from-top-2 duration-300">
+                    <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-emerald-600">check_circle</span>
+                        <span>{successMessage}</span>
+                    </div>
+                    <Link
+                        href={`/admin/dashboard/kontrak/preview?id=${idParam}`}
+                        className="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg font-bold flex items-center gap-1 transition-all shadow-sm"
+                    >
+                        <span>Lihat Preview</span>
+                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                    </Link>
+                </div>
+            )}
 
             {/* Notifikasi Error jika validasi gagal */}
             {errorMessage && (
@@ -501,19 +677,41 @@ function BuatKontrakContent() {
                 isSavingTemplate={isSavingTemplate}
             />
 
-            {/* Tombol Lanjut ke Preview (Bawah Halaman) */}
+            {/* Tombol Aksi (Bawah Halaman) */}
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4 sticky bottom-4 z-40">
                 <div className="text-xs text-slate-500">
                     Pastikan seluruh data majikan dan tenaga kerja telah terisi dengan benar sebelum mencetak.
                 </div>
-                <button
-                    type="button"
-                    onClick={handleLanjutKePreview}
-                    className="w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 transition-all cursor-pointer"
-                >
-                    <span>Lanjut ke Preview Dokumen</span>
-                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                </button>
+                <div className="flex items-center gap-3 w-full sm:w-auto">
+                    {idParam && (
+                        <button
+                            type="button"
+                            onClick={handleSaveDirect}
+                            disabled={isSavingDirect}
+                            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm flex items-center justify-center gap-2 border border-slate-300 transition-all cursor-pointer disabled:opacity-50"
+                        >
+                            {isSavingDirect ? (
+                                <>
+                                    <span className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+                                    <span>Menyimpan...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="material-symbols-outlined text-[18px]">save</span>
+                                    <span>Simpan Perubahan</span>
+                                </>
+                            )}
+                        </button>
+                    )}
+                    <button
+                        type="button"
+                        onClick={handleLanjutKePreview}
+                        className="w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 transition-all cursor-pointer"
+                    >
+                        <span>Lanjut ke Preview Dokumen</span>
+                        <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </button>
+                </div>
             </div>
         </div>
     );

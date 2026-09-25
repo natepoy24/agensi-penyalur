@@ -108,7 +108,7 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
             <div className="col-span-12 md:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
               <label className="block text-sm font-semibold text-slate-600 mb-2">Umur</label>
               <div className="relative">
-                <input type="number" name="umur" required defaultValue={pekerja.umur} className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800" placeholder="00" />
+                <input type="number" name="umur" required defaultValue={pekerja.umur} onWheel={(e) => e.currentTarget.blur()} className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="00" />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Tahun</span>
               </div>
             </div>
@@ -136,7 +136,7 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
               <label className="block text-sm font-semibold text-slate-600 mb-2">Ekspektasi Gaji (Bulanan)</label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600 font-bold">Rp</span>
-                <input type="number" name="gaji" required defaultValue={pekerja.gaji} className="w-full bg-slate-50 border-none rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-emerald-500/20 font-medium text-slate-800" placeholder="2500000" />
+                <input type="number" name="gaji" required defaultValue={pekerja.gaji} onWheel={(e) => e.currentTarget.blur()} className="w-full bg-slate-50 border-none rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-emerald-500/20 font-medium text-slate-800 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="2500000" />
               </div>
             </div>
           </div>
@@ -174,7 +174,7 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
             <div className="col-span-12 md:col-span-4">
               <label className="block text-sm font-semibold text-slate-600 mb-2">Tinggi Badan</label>
               <div className="relative">
-                <input type="number" name="tinggi_badan" defaultValue={pekerja.tinggi_badan || ""} className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800" placeholder="160" />
+                <input type="number" name="tinggi_badan" defaultValue={pekerja.tinggi_badan || ""} onWheel={(e) => e.currentTarget.blur()} className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="160" />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">cm</span>
               </div>
             </div>
@@ -182,7 +182,7 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
             <div className="col-span-12 md:col-span-4">
               <label className="block text-sm font-semibold text-slate-600 mb-2">Berat Badan</label>
               <div className="relative">
-                <input type="number" name="berat_badan" defaultValue={pekerja.berat_badan || ""} className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800" placeholder="55" />
+                <input type="number" name="berat_badan" defaultValue={pekerja.berat_badan || ""} onWheel={(e) => e.currentTarget.blur()} className="w-full bg-white border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="55" />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">kg</span>
               </div>
             </div>
@@ -224,7 +224,7 @@ export default function EditPekerjaForm({ pekerja }: { pekerja: PekerjaProps }) 
             <div className="col-span-12 md:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
               <label className="block text-sm font-semibold text-slate-600 mb-2">Pengalaman Kerja</label>
               <div className="relative">
-                <input type="number" name="pengalaman" required defaultValue={pekerja.pengalaman} className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800" />
+                <input type="number" name="pengalaman" required defaultValue={pekerja.pengalaman} onWheel={(e) => e.currentTarget.blur()} className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500/20 text-slate-800 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Tahun</span>
               </div>
             </div>

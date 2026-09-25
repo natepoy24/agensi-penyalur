@@ -372,7 +372,7 @@ export default function LaporanKemnakerPage() {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div><label className="text-xs font-bold text-slate-700">Tanggal Masuk</label><input type="date" required value={editData.tanggal_mulai_bekerja || ""} onChange={e => setEditData({ ...editData, tanggal_mulai_bekerja: e.target.value })} className="w-full p-2 border rounded-lg outline-none bg-slate-50" /></div>
-                                <div><label className="text-xs font-bold text-slate-700">Upah Diterima (Rp)</label><input type="number" required value={editData.upah_diterima || ""} onChange={e => setEditData({ ...editData, upah_diterima: e.target.value })} className="w-full p-2 border rounded-lg outline-none bg-slate-50" /></div>
+                                <div><label className="text-xs font-bold text-slate-700">Upah Diterima (Rp)</label><input type="number" required value={editData.upah_diterima || ""} onChange={e => setEditData({ ...editData, upah_diterima: e.target.value })} onWheel={(e) => e.currentTarget.blur()} className="w-full p-2 border rounded-lg outline-none bg-slate-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" /></div>
                             </div>
 
                             <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">

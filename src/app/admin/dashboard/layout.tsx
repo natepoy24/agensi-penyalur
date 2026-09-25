@@ -198,8 +198,21 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
 
           {/* Tombol Logout */}
           <button
-            onClick={() => signOut()}
-            className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-start px-4 gap-2'} py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors font-semibold w-full`}
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(
+                  new CustomEvent("app:loading:start", {
+                    detail: {
+                      target: "admin",
+                      title: "Sedang Keluar...",
+                      description: "Memproses logout akun, mohon tunggu sebentar...",
+                    },
+                  })
+                );
+              }
+              signOut();
+            }}
+            className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-start px-4 gap-2'} py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors font-semibold w-full cursor-pointer`}
             title="Logout Akun"
           >
             <span className="material-symbols-outlined text-[20px]">power_settings_new</span>

@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
+import toast from "react-hot-toast";
 
 export default function DaftarKontrakPage() {
     const supabase = createClient();
@@ -23,7 +24,7 @@ export default function DaftarKontrakPage() {
             if (error) throw error;
             setKontrakList(data || []);
         } catch (error: any) {
-            alert("Gagal memuat daftar kontrak: " + error.message);
+            toast.error("Gagal memuat daftar kontrak: " + error.message);
         } finally {
             setIsLoading(false);
         }
@@ -44,11 +45,11 @@ export default function DaftarKontrakPage() {
                 .eq("id", id);
 
             if (error) throw error;
-            alert("Kontrak berhasil dihapus!");
+            toast.success("Kontrak berhasil dihapus!");
             // Refresh data
             setKontrakList(prev => prev.filter(item => item.id !== id));
         } catch (error: any) {
-            alert("Gagal menghapus kontrak: " + error.message);
+            toast.error("Gagal menghapus kontrak: " + error.message);
         }
     };
 
@@ -204,14 +205,14 @@ export default function DaftarKontrakPage() {
                                             <td className="px-5 py-4">
                                                 <div className="flex justify-center gap-2">
                                                     <Link
-                                                        href={`/admin/dashboard/kontrak/preview?id=${item.id}`}
+                                                        href={`/admin/dashboard/kontrak/preview?id=${item.id}&mode=view`}
                                                         className="p-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 hover:text-emerald-700 transition-all flex items-center justify-center shadow-sm"
                                                         title="Lihat / Cetak PDF"
                                                     >
                                                         <span className="material-symbols-outlined text-[20px]">visibility</span>
                                                     </Link>
                                                     <Link
-                                                        href={`/admin/dashboard/kontrak/buat?id=${item.id}`}
+                                                        href={`/admin/dashboard/kontrak/buat?id=${item.id}&fresh=true`}
                                                         className="p-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 hover:text-blue-700 transition-all flex items-center justify-center shadow-sm"
                                                         title="Edit Kontrak"
                                                     >

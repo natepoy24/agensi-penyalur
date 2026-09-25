@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface PaymentMethod {
   bank_name: string;
@@ -128,9 +129,12 @@ export default function InvoiceListPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setMessage({ type: "success", text: `Invoice ${invNum} berhasil dihapus.` });
+      toast.success(`Invoice ${invNum} berhasil dihapus.`);
       loadInvoices();
     } catch (err: unknown) {
-      setMessage({ type: "error", text: err instanceof Error ? err.message : "Gagal menghapus invoice" });
+      const errText = err instanceof Error ? err.message : "Gagal menghapus invoice";
+      setMessage({ type: "error", text: errText });
+      toast.error(errText);
     } finally {
       setDeletingId(null);
     }
@@ -248,9 +252,15 @@ export default function InvoiceListPage() {
                       <div className="font-bold text-slate-800 uppercase">{inv.customer_name}</div>
                       <div className="text-xs text-slate-400 truncate max-w-[150px]">{inv.customer_address}</div>
                     </td>
-                    <td className="px-4 py-4 text-slate-700 font-medium">{inv.worker_name}</td>
+                    <td className="px-4 py-4 text-slate-700 font-medium">
+                      {inv.worker_name && inv.worker_name !== "-" ? inv.worker_name : "-"}
+                    </td>
                     <td className="px-4 py-4 text-slate-600">
-                      Adm. {inv.item_type.split("|||")[0]}
+                      {(inv.price || 0) > 0
+                        ? `Adm. ${inv.item_type.split("|||")[0]}`
+                        : (inv.custom_items && inv.custom_items.length > 0
+                          ? inv.custom_items[0].name + (inv.custom_items.length > 1 ? ` (+${inv.custom_items.length - 1})` : "")
+                          : (inv.item_type.split("|||")[0] || "Non-Adm"))}
                     </td>
                     <td className="px-4 py-4 text-right font-bold text-slate-800">
                       {formatRupiah(inv.total)}

@@ -4,6 +4,7 @@
 import { useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import toast from "react-hot-toast";
 import TemplateKontrak from "@/components/perjanjiankerja/TemplateKontrak";
 import TemplatePernyataanPekerja from "@/components/perjanjiankerja/TemplatePernyataanPekerja";
 
@@ -58,6 +59,7 @@ interface KontrakPreviewData {
     tanggalMasuk: string;
     potonganBulanPertama: string;
     biayaOngkir: string;
+    includeTtd?: boolean;
     pasalList: any[];
     pernyataanList: any[];
     isExisting?: boolean;
@@ -228,13 +230,41 @@ function KontrakPreviewContent() {
     const kontrakRef = useRef<HTMLDivElement>(null);
     const [data, setData] = useState<KontrakPreviewData | null>(null);
     const [paperSize, setPaperSize] = useState<"f4" | "a4">("f4");
+    const [includeTtd, setIncludeTtd] = useState<boolean>(true);
     const [isDownloading, setIsDownloading] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const [saved, setSaved] = useState(false);
+    const [saveSuccessMessage, setSaveSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
     // Load preview data from localStorage or Database if idParam is given
     useEffect(() => {
         const loadData = async () => {
+            const mode = searchParams.get("mode");
+            const raw = typeof window !== "undefined" ? localStorage.getItem("kontrak_preview_data") : null;
+
+            // Jika ada draft editan/baru di localStorage dan bukan mode=view:
+            if (raw && mode !== "view") {
+                try {
+                    const parsed = JSON.parse(raw);
+                    if (parsed.includeTtd !== undefined) setIncludeTtd(parsed.includeTtd);
+                    // Cocokkan draft: baik kontrak baru (!idParam && !parsed.existingId) maupun edit (idParam cocok)
+                    const isMatchingDraft =
+                        (!idParam && !parsed.existingId) ||
+                        (idParam && String(parsed.existingId) === String(idParam));
+
+                    if (isMatchingDraft) {
+                        setData(parsed);
+                        // Jika ada flag isEdited bernilai true, berarti baru saja diedit dan belum disimpan ke DB
+                        setSaved(!parsed.isEdited && !!parsed.isExisting);
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Gagal parse preview data dari localStorage", e);
+                }
+            }
+
+            // Fallback: Jika mode=view atau tidak ada draft lokal yang cocok, load dari DB jika ada idParam
             if (idParam) {
                 const { data: dbData, error } = await supabase
                     .from("kontrak_kerja")
@@ -253,114 +283,117 @@ function KontrakPreviewContent() {
                 return;
             }
 
-            const raw = localStorage.getItem("kontrak_preview_data");
-            if (!raw) {
-                router.replace("/admin/dashboard/kontrak/buat");
-                return;
-            }
-
-            try {
-                const parsed = JSON.parse(raw);
-                setData(parsed);
-                if (parsed.isExisting) {
-                    setSaved(true);
-                }
-            } catch {
-                router.replace("/admin/dashboard/kontrak/buat");
-            }
+            // Jika tidak ada data sama sekali, kembalikan ke form
+            router.replace("/admin/dashboard/kontrak/buat");
         };
 
         loadData();
-    }, [idParam, router, supabase]);
+    }, [idParam, router, supabase, searchParams]);
 
     // Simpan ke database Supabase (kontrak_kerja + laporan_kemnaker)
     const saveToDatabase = async (currentData: KontrakPreviewData) => {
-        const basePayload = mapToSnakeCase(currentData);
-        const dataToSave = {
-            ...basePayload,
-            pasal_list: currentData.pasalList || [],
-            pernyataan_list: currentData.pernyataanList || [],
-        };
+        setIsSaving(true);
+        setErrorMessage("");
 
-        // Siapkan bridge metadata jika kolom tipe_majikan / nama_instansi belum ada di tabel Supabase
-        const bridgeNama = (currentData.tipeMajikan === "perusahaan" && currentData.namaInstansi)
-            ? `${(currentData.namaMajikan || "").split("|||")[0].trim()}|||${JSON.stringify({
-                tipeMajikan: "perusahaan",
-                namaInstansi: currentData.namaInstansi
-            })}`
-            : (currentData.namaMajikan || "").split("|||")[0].trim();
-
-        // 1. Coba update/insert dengan kolom native tipe_majikan & nama_instansi
-        const payloadWithColumns = {
-            ...dataToSave,
-            nama_majikan: currentData.namaMajikan.split("|||")[0].trim(),
-            tipe_majikan: currentData.tipeMajikan || "perorangan",
-            nama_instansi: currentData.tipeMajikan === "perusahaan" ? (currentData.namaInstansi || "") : "",
-        };
-
-        let currentId = currentData.existingId || idParam;
-
-        if (currentId) {
-            // Update
-            let res = await supabase.from("kontrak_kerja").update(payloadWithColumns).eq("id", currentId);
-            if (res.error && (res.error.code === "PGRST204" || res.error.code === "42703")) {
-                // Fallback ke schema default tanpa kolom tipe_majikan / nama_instansi
-                res = await supabase.from("kontrak_kerja").update({
-                    ...dataToSave,
-                    nama_majikan: bridgeNama
-                }).eq("id", currentId);
-            }
-            if (res.error) throw new Error(res.error.message);
-        } else {
-            // Insert
-            let res = await supabase.from("kontrak_kerja").insert([payloadWithColumns]).select("id").single();
-            if (res.error && (res.error.code === "PGRST204" || res.error.code === "42703")) {
-                // Fallback
-                res = await supabase.from("kontrak_kerja").insert([{
-                    ...dataToSave,
-                    nama_majikan: bridgeNama
-                }]).select("id").single();
-            }
-            if (res.error) throw new Error(res.error.message);
-            if (res.data?.id) currentId = res.data.id;
-        }
-
-        // 2. Simpan atau perbarui Laporan Kemnaker secara otomatis
         try {
-            const pemberiKerjaLabel = currentData.tipeMajikan === "perusahaan" && currentData.namaInstansi
-                ? `${currentData.namaMajikan.split("|||")[0].trim()} (${currentData.namaInstansi})`
-                : currentData.namaMajikan.split("|||")[0].trim();
+            const basePayload = mapToSnakeCase(currentData);
+            const dataToSave = {
+                ...basePayload,
+                tipe_majikan: currentData.tipeMajikan || "perorangan",
+                nama_instansi: currentData.tipeMajikan === "perusahaan" ? (currentData.namaInstansi || "") : "",
+                pasal_list: currentData.pasalList || [],
+                pernyataan_list: currentData.pernyataanList || [],
+            };
 
-            await supabase.from("laporan_kemnaker").insert([{
-                nik_tenaga_kerja: currentData.nikPekerja,
-                nama_tenaga_kerja: currentData.namaPekerja,
-                kabupaten_domisili: currentData.kotaAsalPekerja,
-                provinsi_domisili: currentData.provinsiPekerja,
-                no_hp: currentData.noHpPekerja,
-                jenis_kelamin: currentData.jenisKelamin,
-                pendidikan: currentData.pendidikan,
-                nama_pemberi_kerja: pemberiKerjaLabel,
-                nama_jabatan: currentData.pekerjaanPokok,
-                kabupaten_lokasi_kerja: currentData.kotaLokasiKerja,
-                provinsi_lokasi_kerja: currentData.provinsiLokasiKerja,
-                tanggal_mulai_bekerja: currentData.tanggalMasuk,
-                upah_diterima: parseFloat(currentData.gajiPekerja || "0")
-            }]);
-        } catch (laporanErr) {
-            console.error("Gagal menyimpan Laporan Kemnaker:", laporanErr);
-        }
+            let currentId = currentData.existingId || idParam;
 
-        // Cache rincian kontrak ke localStorage
-        try {
-            localStorage.setItem("kontrak_items_" + currentData.nomorKontrak, JSON.stringify({
+            if (currentId) {
+                // Update
+                const { error: updateError } = await supabase
+                    .from("kontrak_kerja")
+                    .update(dataToSave)
+                    .eq("id", currentId);
+
+                if (updateError) throw new Error(updateError.message);
+            } else {
+                // Insert
+                const { data: insertData, error: insertError } = await supabase
+                    .from("kontrak_kerja")
+                    .insert([dataToSave])
+                    .select("id")
+                    .single();
+
+                if (insertError) throw new Error(insertError.message);
+                if (insertData?.id) currentId = insertData.id;
+            }
+
+            // 2. Simpan atau perbarui Laporan Kemnaker secara otomatis
+            try {
+                const pemberiKerjaLabel = currentData.tipeMajikan === "perusahaan" && currentData.namaInstansi
+                    ? `${(currentData.namaMajikan || "").split("|||")[0].trim()} (${currentData.namaInstansi})`
+                    : (currentData.namaMajikan || "").split("|||")[0].trim();
+
+                const cleanGaji = parseFloat((currentData.gajiPekerja || "").toString().replace(/[^0-9]/g, "")) || 0;
+
+                if (currentId && currentData.isExisting) {
+                    if (currentData.namaPekerja) {
+                        await supabase.from("laporan_kemnaker").update({
+                            nama_pemberi_kerja: pemberiKerjaLabel,
+                            nama_jabatan: currentData.pekerjaanPokok || "",
+                            kabupaten_lokasi_kerja: currentData.kotaLokasiKerja || "",
+                            provinsi_lokasi_kerja: currentData.provinsiLokasiKerja || "",
+                            tanggal_mulai_bekerja: currentData.tanggalMasuk || null,
+                            upah_diterima: cleanGaji
+                        }).eq("nama_tenaga_kerja", currentData.namaPekerja);
+                    }
+                } else {
+                    await supabase.from("laporan_kemnaker").insert([{
+                        nik_tenaga_kerja: currentData.nikPekerja || "",
+                        nama_tenaga_kerja: currentData.namaPekerja || "",
+                        kabupaten_domisili: currentData.kotaAsalPekerja || "",
+                        provinsi_domisili: currentData.provinsiPekerja || "",
+                        no_hp: currentData.noHpPekerja || "",
+                        jenis_kelamin: currentData.jenisKelamin || "",
+                        pendidikan: currentData.pendidikan || "",
+                        nama_pemberi_kerja: pemberiKerjaLabel,
+                        nama_jabatan: currentData.pekerjaanPokok || "",
+                        kabupaten_lokasi_kerja: currentData.kotaLokasiKerja || "",
+                        provinsi_lokasi_kerja: currentData.provinsiLokasiKerja || "",
+                        tanggal_mulai_bekerja: currentData.tanggalMasuk || null,
+                        upah_diterima: cleanGaji
+                    }]);
+                }
+            } catch (laporanErr) {
+                console.error("Gagal menyimpan Laporan Kemnaker:", laporanErr);
+            }
+
+            // Cache rincian kontrak ke localStorage & tandai sudah tersimpan (tidak ada pending edits)
+            const updatedPreview = {
                 ...currentData,
-                id: currentId
-            }));
-        } catch {}
+                isExisting: true,
+                existingId: currentId,
+                isEdited: false
+            };
+            try {
+                localStorage.setItem("kontrak_preview_data", JSON.stringify(updatedPreview));
+                localStorage.setItem("kontrak_items_" + currentData.nomorKontrak, JSON.stringify(updatedPreview));
+            } catch {}
 
-        setSaved(true);
-        setData(prev => prev ? ({ ...prev, isExisting: true, existingId: currentId }) : prev);
-        return currentId;
+            setSaved(true);
+            setData(updatedPreview);
+            setSaveSuccessMessage("Kontrak berhasil disimpan ke database!");
+            toast.success("Kontrak berhasil disimpan ke database!");
+            setTimeout(() => setSaveSuccessMessage(""), 4000);
+
+            return currentId;
+        } catch (err: any) {
+            const msg = err?.message || "Gagal menyimpan kontrak ke database.";
+            setErrorMessage(msg);
+            toast.error(msg);
+            throw err;
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     // Fungsi unduh PDF menggunakan html2pdf.js yang sama seperti invoice
@@ -371,8 +404,8 @@ function KontrakPreviewContent() {
         setErrorMessage("");
 
         try {
-            // 1. Simpan ke database jika belum tersimpan
-            if (!saved && !data.isExisting) {
+            // 1. Simpan ke database jika belum tersimpan (berlaku untuk baru maupun update editan)
+            if (!saved) {
                 await saveToDatabase(data);
             }
 
@@ -466,14 +499,24 @@ function KontrakPreviewContent() {
             link.click();
             document.body.removeChild(link);
             setTimeout(() => URL.revokeObjectURL(url), 2000);
+            toast.success("PDF kontrak berhasil diunduh!");
         } catch (err: unknown) {
-            setErrorMessage(err instanceof Error ? err.message : "Gagal mengunduh PDF");
+            const msg = err instanceof Error ? err.message : "Gagal mengunduh PDF";
+            setErrorMessage(msg);
+            toast.error(msg);
         } finally {
             setIsDownloading(false);
         }
     };
 
-    const handlePrintBrowser = () => {
+    const handlePrintBrowser = async () => {
+        if (!saved && data) {
+            try {
+                await saveToDatabase(data);
+            } catch (e) {
+                console.error("Gagal auto-save sebelum cetak:", e);
+            }
+        }
         window.print();
     };
 
@@ -553,10 +596,22 @@ function KontrakPreviewContent() {
                         {data.jenisKontrak === "permanen" ? "Permanen 3 Bulan" : "Kontrak 1 Tahun"}
                     </span>
 
-                    {saved && (
+                    {saved ? (
                         <span className="text-xs bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
                             <span className="material-symbols-outlined text-[14px]">check_circle</span>
                             Tersimpan
+                        </span>
+                    ) : (
+                        <span className="text-xs bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[14px]">warning</span>
+                            Belum Disimpan
+                        </span>
+                    )}
+
+                    {saveSuccessMessage && (
+                        <span className="text-xs bg-emerald-600 text-white px-3 py-1 rounded-lg font-bold flex items-center gap-1 animate-in fade-in">
+                            <span className="material-symbols-outlined text-[14px]">done</span>
+                            {saveSuccessMessage}
                         </span>
                     )}
                 </div>
@@ -566,6 +621,28 @@ function KontrakPreviewContent() {
                         <span className="text-xs text-red-600 font-semibold bg-red-50 border border-red-200 px-3 py-1 rounded-lg">
                             {errorMessage}
                         </span>
+                    )}
+
+                    {/* TOMBOL SIMPAN KE DATABASE */}
+                    {!saved && (
+                        <button
+                            type="button"
+                            onClick={() => saveToDatabase(data)}
+                            disabled={isSaving}
+                            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-sm transition-all shadow-sm shadow-emerald-200 cursor-pointer disabled:opacity-60"
+                        >
+                            {isSaving ? (
+                                <>
+                                    <span className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+                                    <span>Menyimpan...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="material-symbols-outlined text-[18px]">save</span>
+                                    <span>{data.isExisting ? "Simpan Perubahan" : "Simpan Kontrak"}</span>
+                                </>
+                            )}
+                        </button>
                     )}
 
                     {/* OPSI UKURAN KERTAS (F4 / A4) */}
@@ -597,6 +674,23 @@ function KontrakPreviewContent() {
                             A4
                         </button>
                     </div>
+
+                    {/* OPSI TANDA TANGAN & STEMPEL */}
+                    <button
+                        type="button"
+                        onClick={() => setIncludeTtd((prev) => !prev)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                            includeTtd
+                                ? "bg-emerald-50 text-emerald-800 border-emerald-300 shadow-sm"
+                                : "bg-slate-100 text-slate-500 border-slate-300 hover:text-slate-800"
+                        }`}
+                        title="Tampilkan / Sembunyikan Tanda Tangan Atep Jaenudin & Stempel Jasa Mandiri"
+                    >
+                        <span className="material-symbols-outlined text-[17px] text-emerald-700">
+                            {includeTtd ? "check_box" : "check_box_outline_blank"}
+                        </span>
+                        <span>TTD & Stempel</span>
+                    </button>
 
                     <button
                         type="button"
@@ -642,6 +736,7 @@ function KontrakPreviewContent() {
                             formData={data}
                             pasalList={data.pasalList || []}
                             paperSize={paperSize}
+                            includeTtd={includeTtd}
                         />
                     </div>
 
@@ -651,6 +746,7 @@ function KontrakPreviewContent() {
                             formData={data}
                             pernyataanList={data.pernyataanList || []}
                             paperSize={paperSize}
+                            includeTtd={includeTtd}
                         />
                     </div>
                 </div>

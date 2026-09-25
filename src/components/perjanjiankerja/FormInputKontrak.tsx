@@ -268,8 +268,8 @@ export default function FormInputKontrak({
                         <div><label className="text-xs font-bold text-slate-700">Nama Adik</label><input name="namaAdik" value={formData.namaAdik || ""} onChange={handleChange} className="w-full p-2 border rounded-lg outline-none" /></div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                        <div><label className="text-xs font-bold text-slate-700">Anak Ke</label><input type="number" name="anakKe" value={formData.anakKe || ""} onChange={handleChange} className="w-full p-2 border rounded-lg outline-none" /></div>
-                        <div><label className="text-xs font-bold text-slate-700">Jumlah Saudara</label><input type="number" name="jumlahSaudara" value={formData.jumlahSaudara || ""} onChange={handleChange} className="w-full p-2 border rounded-lg outline-none" /></div>
+                        <div><label className="text-xs font-bold text-slate-700">Anak Ke</label><input type="number" name="anakKe" value={formData.anakKe || ""} onChange={handleChange} onWheel={(e) => e.currentTarget.blur()} className="w-full p-2 border rounded-lg outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" /></div>
+                        <div><label className="text-xs font-bold text-slate-700">Jumlah Saudara</label><input type="number" name="jumlahSaudara" value={formData.jumlahSaudara || ""} onChange={handleChange} onWheel={(e) => e.currentTarget.blur()} className="w-full p-2 border rounded-lg outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" /></div>
                     </div>
 
                     <div className="p-3 bg-blue-50/50 rounded-xl border border-blue-100 space-y-3">
@@ -305,7 +305,7 @@ export default function FormInputKontrak({
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                         <div><label className="text-xs font-bold text-slate-700">Lama Kerja</label><input name="lamaKerja" value={formData.lamaKerja || ""} onChange={handleChange} className="w-full p-2 border rounded-lg outline-none" placeholder="Contoh: 2 Tahun" /></div>
-                        <div><label className="text-xs font-bold text-slate-700">Gaji Terakhir (Rp)</label><input type="number" name="gajiTerakhir" value={formData.gajiTerakhir || ""} onChange={handleChange} className="w-full p-2 border rounded-lg outline-none" /></div>
+                        <div><label className="text-xs font-bold text-slate-700">Gaji Terakhir (Rp)</label><input type="number" name="gajiTerakhir" value={formData.gajiTerakhir || ""} onChange={handleChange} onWheel={(e) => e.currentTarget.blur()} className="w-full p-2 border rounded-lg outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" /></div>
                     </div>
                     <div>
                         <label className="text-xs font-bold text-slate-700">Alamat Kerja Sebelumnya</label>
@@ -331,26 +331,42 @@ export default function FormInputKontrak({
                     <div className="grid grid-cols-2 gap-3">
                         <div>
                             <label className="text-xs font-bold text-slate-700">Gaji Pekerja (Rp)</label>
-                            <input type="number" name="gajiPekerja" value={formData.gajiPekerja || ""} onChange={handleChange} className="w-full p-2 bg-slate-50 border rounded-lg outline-none" />
+                            <input type="number" name="gajiPekerja" value={formData.gajiPekerja || ""} onChange={handleChange} onWheel={(e) => e.currentTarget.blur()} className="w-full p-2 bg-slate-50 border rounded-lg outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
                         </div>
                         <div>
                             <label className="text-xs font-bold text-slate-700">Biaya Admin (Rp)</label>
-                            <input type="number" name="biayaAdmin" value={formData.biayaAdmin || ""} onChange={handleChange} className="w-full p-2 bg-slate-50 border rounded-lg outline-none" />
+                            <input type="number" name="biayaAdmin" value={formData.biayaAdmin || ""} onChange={handleChange} onWheel={(e) => e.currentTarget.blur()} className="w-full p-2 bg-slate-50 border rounded-lg outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                         <div>
                             <label className="text-xs font-bold text-amber-700">Potongan Bln Ke-1 (Rp)</label>
-                            <input type="number" name="potonganBulanPertama" value={formData.potonganBulanPertama || ""} onChange={handleChange} className="w-full p-2 border-amber-200 border rounded-lg outline-none" />
+                            <input type="number" name="potonganBulanPertama" value={formData.potonganBulanPertama || ""} onChange={handleChange} onWheel={(e) => e.currentTarget.blur()} className="w-full p-2 border-amber-200 border rounded-lg outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
                         </div>
                         <div>
                             <label className="text-xs font-bold text-amber-700">Biaya Ongkir (Rp)</label>
-                            <input type="number" name="biayaOngkir" value={formData.biayaOngkir || ""} onChange={handleChange} className="w-full p-2 border-amber-200 border rounded-lg outline-none" />
+                            <input type="number" name="biayaOngkir" value={formData.biayaOngkir || ""} onChange={handleChange} onWheel={(e) => e.currentTarget.blur()} className="w-full p-2 border-amber-200 border rounded-lg outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
                         </div>
                     </div>
                     <div>
                         <label className="text-sm font-bold text-slate-700">Tanggal Mulai Bekerja</label>
                         <input type="date" name="tanggalMasuk" value={formData.tanggalMasuk || ""} onChange={handleChange} className="w-full p-2 bg-slate-50 border rounded-lg outline-none" />
+                    </div>
+
+                    <div className="pt-2">
+                        <label className="flex items-center gap-2.5 p-3 bg-emerald-50/70 hover:bg-emerald-50 rounded-xl border border-emerald-200 cursor-pointer transition-colors">
+                            <input
+                                type="checkbox"
+                                name="includeTtd"
+                                checked={formData.includeTtd !== false}
+                                onChange={handleChange}
+                                className="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer"
+                            />
+                            <div>
+                                <span className="text-xs font-bold text-slate-800 block">Sertakan Tanda Tangan & Stempel Resmi CV Jasa Mandiri (Atep Jaenudin)</span>
+                                <span className="text-[11px] text-slate-500 block">Jika dicentang, surat kontrak dan pernyataan akan otomatis mencantumkan TTD digital & stempel logo.</span>
+                            </div>
+                        </label>
                     </div>
                 </div>
             </div>
